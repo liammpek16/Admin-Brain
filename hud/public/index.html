@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADMIN BRAIN // HUD</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">▚</span> ADMIN&nbsp;BRAIN
+      <span class="sub">// terminal HUD</span>
+    </div>
+    <div class="top-right">
+      <span id="clock" class="clock">--:--:--</span>
+      <span id="conn" class="pill pill-ok">LINK</span>
+      <button id="themeToggle" class="btn btn-sm" title="Toggle phosphor color">THEME: GREEN</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- SYSTEM VITALS -->
+    <section class="panel" id="panel-vitals">
+      <div class="panel-head"><span class="dot"></span> SYSTEM VITALS
+        <span class="head-right" id="vitals-host">host: —</span>
+      </div>
+      <div class="panel-body">
+        <div class="gauge-row">
+          <div class="gauge">
+            <div class="gauge-label">CPU <span id="cpu-pct">—%</span></div>
+            <div class="bar"><div class="bar-fill" id="cpu-bar"></div></div>
+            <pre class="ascii" id="cpu-ascii">[          ]</pre>
+          </div>
+          <div class="gauge">
+            <div class="gauge-label">MEM <span id="mem-pct">—%</span></div>
+            <div class="bar"><div class="bar-fill" id="mem-bar"></div></div>
+            <pre class="ascii" id="mem-ascii">[          ]</pre>
+          </div>
+          <div class="gauge">
+            <div class="gauge-label">DISK <span id="disk-pct">—</span></div>
+            <div class="bar"><div class="bar-fill" id="disk-bar"></div></div>
+            <pre class="ascii" id="disk-ascii">[          ]</pre>
+          </div>
+        </div>
+        <dl class="kv" id="vitals-kv">
+          <div><dt>cpu</dt><dd id="v-cpu">—</dd></div>
+          <div><dt>cores</dt><dd id="v-cores">—</dd></div>
+          <div><dt>mem</dt><dd id="v-mem">—</dd></div>
+          <div><dt>uptime</dt><dd id="v-uptime">—</dd></div>
+          <div><dt>platform</dt><dd id="v-plat">—</dd></div>
+          <div><dt>load</dt><dd id="v-load">—</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- COMMAND DECK -->
+    <section class="panel" id="panel-cmd">
+      <div class="panel-head"><span class="dot"></span> COMMAND DECK</div>
+      <div class="panel-body">
+        <div class="cmd-input-row">
+          <span class="prompt">&gt;</span>
+          <input id="cmd-input" class="cmd-input" type="text" spellcheck="false"
+                 autocomplete="off" placeholder="type a command… (try: help)" />
+          <button id="cmd-run" class="btn">RUN</button>
+        </div>
+        <div class="cmd-buttons" id="cmd-buttons">
+          <button class="btn btn-sm" data-cmd="brief">brief</button>
+          <button class="btn btn-sm" data-cmd="metrics">metrics</button>
+          <button class="btn btn-sm" data-cmd="refresh">refresh</button>
+          <button class="btn btn-sm" data-cmd="vitals">vitals</button>
+          <button class="btn btn-sm" data-cmd="help">help</button>
+          <button class="btn btn-sm" data-cmd="clear">clear</button>
+        </div>
+        <pre class="log" id="cmd-log"></pre>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="panel" id="panel-schedule">
+      <div class="panel-head"><span class="dot"></span> SCHEDULE
+        <span class="head-right" id="sched-date">—</span>
+      </div>
+      <div class="panel-body">
+        <ul class="agenda" id="agenda"></ul>
+      </div>
+    </section>
+
+    <!-- AUDIO I/O -->
+    <section class="panel" id="panel-audio">
+      <div class="panel-head"><span class="dot"></span> AUDIO I/O</div>
+      <div class="panel-body">
+        <div class="audio-controls">
+          <button id="mic-btn" class="btn">🎙 MIC: OFF</button>
+          <button id="speak-btn" class="btn">🔊 SPEAK BRIEF</button>
+          <button id="stop-speak-btn" class="btn btn-sm">■ STOP</button>
+        </div>
+        <div class="audio-status" id="audio-status">Idle.</div>
+        <pre class="transcript" id="transcript"></pre>
+      </div>
+    </section>
+
+    <!-- LIVE VAULT DATA -->
+    <section class="panel panel-wide" id="panel-vault">
+      <div class="panel-head"><span class="dot"></span> LIVE VAULT DATA
+        <span class="head-right" id="vault-gen">gen: —</span>
+      </div>
+      <div class="panel-body vault-body">
+        <div class="vault-col">
+          <div class="col-label">PROJECTS</div>
+          <div class="project-list" id="project-list"></div>
+        </div>
+        <div class="vault-col vault-col-narrow">
+          <div class="col-label">METRICS</div>
+          <div class="metrics-grid" id="metrics-grid"></div>
+          <div class="col-label" style="margin-top:14px">INBOX</div>
+          <ul class="inbox-list" id="inbox-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="statusbar" id="statusbar">
+    <span id="status-msg">booting…</span>
+    <span class="spacer"></span>
+    <span id="status-vault">vault: —</span>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
