@@ -1,0 +1,30 @@
+filters:
+  and:
+    - type == "project"
+views:
+  - type: table
+    name: "All Projects"
+    order:
+      - file.name
+      - status
+      - health
+      - priority
+      - next
+      - updated
+  - type: table
+    name: "Active only"
+    filters:
+      and:
+        - status == "active"
+    order:
+      - file.name
+      - health
+      - priority
+      - next
+  - type: cards
+    name: "Board"
+    order:
+      - file.name
+      - status
+      - health
+      - next
