@@ -1,30 +1,39 @@
 filters:
   and:
-    - type == "project"
+    - 'type == "project"'
+
+formulas:
+  health_icon: 'if(health == "green", "🟢", if(health == "yellow", "🟡", if(health == "red", "🔴", "⚪")))'
+
+properties:
+  formula.health_icon:
+    displayName: "Health"
+  next:
+    displayName: "Next action"
+
 views:
   - type: table
     name: "All Projects"
     order:
       - file.name
       - status
-      - health
+      - formula.health_icon
       - priority
       - next
       - updated
   - type: table
-    name: "Active only"
-    filters:
-      and:
-        - status == "active"
+    name: "By status"
+    groupBy:
+      property: status
+      direction: ASC
     order:
       - file.name
-      - health
+      - formula.health_icon
       - priority
       - next
   - type: cards
     name: "Board"
     order:
       - file.name
-      - status
-      - health
+      - formula.health_icon
       - next
