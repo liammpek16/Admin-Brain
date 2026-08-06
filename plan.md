@@ -2,56 +2,52 @@
 
 > A personal **second brain + command center**: an interface to talk to about my
 > projects and see, at a glance, how all of them are doing. Obsidian vault as the
-> brain, a set of skills as the hands, a dark terminal HUD as the face.
+> brain, a set of skills as the hands, a read-only overview (and later HUD) as the face.
 
 Status: **planning** (v1 restart — clean slate). Repo: `liammpek16/Admin-Brain` (private).
-Last updated: 2026-08-06. Revised after an LLM Council review (see §10 for the record).
+Last updated: 2026-08-06. Revised after **two** LLM Council reviews (design, then cost/tooling — see §11).
 
 ---
 
 ## 1. What we learned from v0 (why we restarted)
 
-The first full build was discarded. The concrete lessons now drive this plan:
-
 - **The Obsidian brain was hand-rolled instead of adopted.** v0 authored a bespoke
-  Obsidian access layer from scratch. Preferred direction: **adopt a reputable,
-  maintained third-party Obsidian integration** and wrap only a thin adapter of our
-  own. (Final sourcing decision is being finalized with the user — see §6 and §9.)
-- **Scope was too broad for a v1.** Five skills + a five-panel HUD + audio + subagents
-  were built before a single core loop had earned its place. We ship a vertical slice first.
-- **The system's value is capped by data freshness.** Every metric derived from
-  hand-maintained frontmatter; nothing fought staleness. This plan minimizes
-  hand-entered data and derives the rest.
-- **The HUD's system vitals / audio were the lowest-value, highest-effort parts.**
-  They're deferred; the real product is an honest, current overview / brief.
+  access layer *and* a bespoke frontmatter parser from scratch. New direction: **adopt
+  reputable third-party tools; own only a thin adapter.** (Sourcing now decided — §6.)
+- **Scope was too broad for a v1.** Ship a vertical slice before adding surface.
+- **Value is capped by data freshness.** Minimize hand-entered data; derive the rest.
+- **The HUD's vitals/audio were the lowest-value, highest-effort parts** — deferred. And
+  the HUD itself may not be needed if Obsidian can render the overview (§6, §7).
 
-## 2. The core insight (what the system actually is)
+## 2. The core insight
 
-The real job is **reducing the uncertainty of not knowing where my projects stand** —
-a *truth-and-trust* problem, not a software problem.
+The real job is **reducing the uncertainty of not knowing where my projects stand** — a
+*truth-and-trust* problem, not a software problem. Ground truth already lives in real
+sources (git activity, the calendar, my head). So:
 
-Ground truth about a project already lives in real sources: **git activity, issue
-trackers, the calendar, and my head.** So the design principle is:
+> **Minimize what a human types to the three things a machine can't infer —
+> `health`, `priority`, `next` — and derive everything else** (recency, activity, progress
+> signals). The vault is a **derived cache / output, not a hand-kept ledger.**
 
-> **Minimize what a human must type to the three things a machine can't infer —
-> `health`, `priority`, `next` — and derive everything else** (recency, activity,
-> progress signals) from sources that already exist. The vault is a **derived cache /
-> output, not a hand-kept ledger.**
+## 3. Cost model — the $0 core (primary constraint)
 
-This is the antidote to the staleness that kills second brains.
+**Goal: the whole core loop runs on zero API credits.** What actually costs money is
+**tokens through a metered endpoint.** Compute, disk, git, and the browser's speech engine
+are free on hardware I already own. Therefore:
 
-## 3. Guiding principles
-
-- **Adopt over invent.** Prefer maintained, reputable third-party tools; own only a thin
-  adapter that insulates our skills from upstream changes. Vet third-party code before installing.
-- **Vault = derived cache, not manual ledger.** Machine-derive everything derivable.
-- **One source of truth, one access layer.** No duplicated parsers, no drift.
-- **Ship a vertical slice first.** Prove the core loop is worth using daily before adding surface.
-- **Contract before components.** Define note schemas + the HUD data shape up front.
-- **Verify, don't trust.** Every deliverable proves it runs with real output before it lands.
-- **Talkable from day one.** The conversational overview is the product, not a add-on.
-- **North Star ≠ v1 scope.** Build the slice so it's *ready* to grow into the autonomous
-  brain (§8), without building that yet.
+- **Hard rule: no LLM in any deterministic path.** `metrics`, `trends`, and the brief's
+  *data assembly* are plain Node functions over vault state → **$0, always.**
+- **The LLM lives behind a boundary** so ~95% of the system runs credit-free and the model
+  is an optional garnish that can be switched off.
+- **v1 conversation is manual, through Claude Code** — no API key, no cloud agents.
+  (Note: Claude Code still draws on my *plan usage* — it isn't literally free, so keep the
+  chat a deliberate action, not a background loop.)
+- **When an LLM is used, feed it code-computed summaries, not raw notes** — small context
+  in, small tokens out. The cheapest token is the one never sent.
+- **Schedule locally** (Windows Task Scheduler → `node brief.js`), never a cloud agent.
+- **Free-tier data APIs only for light status signal, and only once a project is started.**
+- **Local-first is both the cheapest and the most private architecture** — same design wins both.
+- **Ollama (local LLM) is an optional, zero-marginal-cost prose upgrade — never a dependency.**
 
 ## 4. Architecture
 
@@ -59,120 +55,140 @@ This is the antidote to the staleness that kills second brains.
 Admin-Brain/
 ├── plan.md
 ├── docs/DATA-CONTRACT.md          # shared schema (Phase 1)
-├── vault/                         # THE BRAIN — derived cache, source of truth for the UI
+├── vault/                         # THE BRAIN — derived cache, source of truth
 │   └── Projects/ Inbox/ Daily/ Metrics/ Trends/ Plans/
-├── adapters/obsidian/             # thin OWNED wrapper over the chosen 3rd-party integration
-├── skills/                        # THE HANDS
-│   ├── vault/                     #   the ONE accessor (built on the adapter)
+├── adapters/obsidian/             # thin OWNED wrapper over filesystem access (§6)
+├── skills/                        # THE HANDS (deterministic; no LLM)
+│   ├── vault/                     #   the ONE accessor, built on the adapter
 │   └── metrics/ inbox/ trends/ plan/
-└── hud/                           # THE FACE
-    └── (v1: read-only overview page; vitals/audio = LATER)
+└── hud/                           # THE FACE — built ONLY for what Obsidian can't show
 ```
 
-**Data flow:** real sources (git, etc.) + minimal human input → skills derive & write
-vault notes → the overview/brief and (later) HUD render them → I talk to the system to
+**Data flow:** git + minimal human input → skills derive & write vault notes → Obsidian
+(Dataview/Bases) and/or a thin HUD render them → I talk to the system via Claude Code to
 ask "how's everything doing?" and trigger skills.
 
-## 5. Data model (defined in Phase 1)
+## 5. Tracked projects (day-one content)
 
-Markdown + YAML frontmatter (full schema in `docs/DATA-CONTRACT.md`). **Human-entered
-fields are deliberately few; the rest are derived:**
+| Project | Status | Notes / likely free signal source (deferred until started) |
+|---|---|---|
+| **Dota Coach** | active (started) | OpenDota API (free) for match data, later. |
+| **Betting Analysis** | not started | The Odds API / sports data free tier, later. |
+| **Stock Market Analyzer** | not started | Free market data (Alpha Vantage / stooq / Finnhub free), later. |
+| **Job Hunt / Recruiter Helper** | not started | n/a — status tracking only for now. |
 
-- **project** — *human:* `health`, `priority`, `next`. *Derived:* `updated`, activity/recency,
-  progress signals (from git and note edits), `status` where inferable.
-- **metric-snapshot** — daily numeric snapshot (the time series `trends` reads).
-- **inbox** — quick captures awaiting triage.
-- **daily** — daily note + generated morning brief.
-- **trend** — direction + change over a window (needs history; see cold-start note in §7).
-- **plan** — goal, checkboxed steps, risks, horizon.
+Only **Dota Coach** has real activity to derive from in Phase 1; the other three are
+tracked as status-only until they start.
 
 ## 6. Tooling & capability assessment (grounded)
 
-| Need | Status | Approach |
+| Need | Decision | Approach |
 |---|---|---|
-| **Obsidian — Claude's use** | Adopt 3rd-party | Download a reputable community **skill** (e.g. kepano/obsidian-skills) for conventions. |
-| **Obsidian — code accessor** | Decision pending | The HUD/skills need a *callable* API. Options: a maintained **Obsidian MCP server** wrapping the **Local REST API** plugin (live two-way, needs Obsidian running), **or** filesystem access (always-on, robust, no app needed). Wrap the choice in `adapters/obsidian/`. No Obsidian MCP connector exists in the registry (verified). |
-| **System vitals** | ✅ (deferred) | Node `os` + PowerShell `Get-PSDrive` (works on this Win11 build; `wmic` is gone). Not in v1. |
-| **HUD web app** | ✅ | v1 = read-only overview page. Stack: vanilla by default (revisit if richer UI wanted). |
-| **Audio I/O** | Deferred | Browser Web Speech (free, Chrome/Edge) later; premium STT/TTS needs API keys. |
-| **Conversational overview** | ✅ default | Through **Claude Code** (no key) for v1; in-HUD Anthropic-API chat is a later option. |
-| **Derive from git** | ✅ | `git log`/status per project repo → recency & activity signals. The first real derivation source. |
-| **GitHub / scheduling / subagents** | ✅ | `gh` authed; recurring-task scheduling available; master+subagents available when scope warrants. |
-
-**Bottom line:** nothing blocks the slice. The one decision to finalize is the Obsidian
-**code accessor** (§9), now leaning to *adopt third-party* per the v0 lesson.
+| **Obsidian — code accessor** | ✅ **Resolved: filesystem base** | Read/write vault files directly, wrapped in `adapters/obsidian/` so skills depend on a stable internal interface. Works 24/7 even when Obsidian is closed. The Local REST API plugin / a community MCP server can be added *later* for live-app features. (No Obsidian MCP connector exists in the registry — verified.) |
+| **Obsidian — Claude's use** | ✅ Adopt 3rd-party | Download **kepano/obsidian-skills** for conventions (Bases, Canvas, Markdown flavor, wikilinks). Vet before install. |
+| **Frontmatter parsing** | ✅ Adopt lib | **`gray-matter`** — stop hand-rolling the parser (the v0 mistake). |
+| **Derive activity from git** | ✅ Adopt lib | **`simple-git`** — recency/commit-cadence signals per repo. First real derivation source. |
+| **Live UI updates** | ✅ Adopt lib | **`chokidar`** — file-watch the vault instead of polling. |
+| **Dashboard (maybe no HUD)** | ⭐ Try first | **Obsidian Dataview + Bases** may render the whole overview natively, free — possibly deleting the HUD component. Evaluate before building any HUD. |
+| **Vault versioning** | ✅ Optional adopt | **Obsidian Git** plugin — auto-version the brain. |
+| **Action layer** | Optional | **Obsidian Tasks / Templater** — query-able todos + note scaffolding, if wanted. |
+| **Conversational overview** | ✅ Default | Through **Claude Code** (no API key) for v1. |
+| **Prose generation (optional)** | Deferred | **Ollama** local LLM for zero-cost briefs, later — not a dependency. |
+| **Scheduling** | ✅ Local | **Windows Task Scheduler → `node`** for any auto-brief. No cloud agents. |
+| **System vitals / audio** | Deferred | Node `os` + `Get-PSDrive`; browser Web Speech (free). Not in v1. |
+| **GitHub / subagents** | ✅ Available | `gh` authed; subagents only where a phase is genuinely parallelizable. |
 
 ## 7. Build phases
 
-**Phase 1 — Vertical slice (the whole point).**
-Lock the project-note schema; hand-write my **real** 3–5 current projects; stand up the
-`vault` accessor over the chosen adapter; build the **`brief` / overview** command that
-reads the projects and tells the truth about where they stand. Derive `updated`/activity
-from git for any project that's a repo.
-*Exit check:* "how are my projects doing?" returns an accurate, current overview I'd actually read.
+**Phase 0 — Try Obsidian-native first (the cheapest possible win).**
+Install **Dataview + Bases**, write the four project notes, and build one `Projects`
+table/base. If it delivers the overview I want, the HUD shrinks or disappears.
+*Exit check:* a single Obsidian view shows all four projects and their status.
 
-**Phase 2 — Earn the rest.** Only after using the slice daily for ~a week: add `metrics`,
-`inbox` (morning brief), and `plan`. Add `trends` last — it's worthless until snapshots
-accumulate (cold-start), so it starts collecting on day 1 but reports nothing useful for a while.
+**Phase 1 — Vertical slice (the core loop, $0).**
+Lock the project-note schema (`docs/DATA-CONTRACT.md`); seed the four real projects;
+stand up the `vault` accessor (`adapters/obsidian` + `gray-matter`); build the **`brief` /
+overview** command — a deterministic Node script (template over computed state, **no LLM**)
+that tells the truth about where each project stands. Derive Dota Coach's recency from git
+via `simple-git`.
+*Exit check:* "how are my projects doing?" returns an accurate, current overview I'd read — at $0.
 
-**Phase 3 — The face (read-only).** A minimal read-only HUD overview page over the same data.
-*Vitals + audio stay parked* until the data and daily-use habit are real.
+**Phase 2 — Earn the rest.** After using the slice daily (~a week): add `metrics`, `inbox`
+(morning brief, template-generated), `plan`. Add `trends` last — it needs accumulated
+snapshots (cold-start), so it starts *collecting* day 1 but reports nothing useful for a while.
 
-**Phase 4 — Grow toward the North Star.** Deeper integrations (calendar/GitHub issues),
-optional auto-scheduled morning brief, optional in-HUD chat, optional audio — each opt-in.
+**Phase 3 — The face, only for gaps.** Build a minimal **read-only** HUD *only* for what
+Dataview/Bases can't show. Vitals + audio stay parked.
 
-Master owns the contract, every exit check, integration, and all git/push. Subagents are
-used only where a phase is genuinely parallelizable — not by default.
+**Phase 4 — Grow toward the North Star (all opt-in).** Live signal from free-tier APIs as
+each project starts; optional local auto-brief (Task Scheduler); optional Ollama prose;
+optional in-HUD chat / audio. Each is a deliberate, credit-aware choice.
+
+Master owns the contract, every exit check, integration, and all git/push.
 
 ## 8. North Star (vision, not v1 scope)
 
-The endgame isn't a dashboard; it's an **agent-operable substrate** — a machine-readable
-brain an autonomous "chief-of-staff" agent maintains on a schedule: drafting status
-updates, flagging stalls, writing the brief before I wake, and generalizing beyond
-projects to goals/finances/health. Build v1 so it's *ready* for this; don't build it yet.
+An **agent-operable substrate** — a machine-readable brain a local, zero-cost agent
+maintains on a schedule: drafting status updates, flagging stalls, writing the brief before
+I wake, generalizing beyond projects. The $0/local-first core makes constant background
+running *free*, so the constraint pushes toward this vision, not away from it. Build v1
+*ready* for it; don't build it yet.
 
-## 9. Open decisions
+## 9. Data model (defined in Phase 1)
 
-**Collapsed to zero-setup defaults so nothing blocks Phase 1** (each revisitable):
+Markdown + YAML frontmatter (full schema in `docs/DATA-CONTRACT.md`). **Human fields are
+few; the rest are derived:**
 
-1. **Obsidian code accessor** — *pending, user-facing.* Leaning: adopt a maintained 3rd-party
-   integration (MCP server over Local REST API) vs. filesystem-only. Trade-off: live-app
-   two-way (requires Obsidian running) vs. always-on robustness. **To finalize with user.**
-2. Conversational interface — **default: via Claude Code** (no API key).
-3. Audio — **default: deferred**, browser Web Speech later.
-4. HUD stack — **default: vanilla, read-only** in v1.
-5. Auto morning brief — **default: off** until the brief is used manually first.
-6. **Which real projects to track day one** — *need from user* (this is the content that
-   makes the overview meaningful).
+- **project** — *human:* `health`, `priority`, `next`. *Derived:* `updated`, activity/recency
+  (git), progress signals, `status` where inferable.
+- **metric-snapshot** — daily numeric snapshot (the series `trends` reads).
+- **inbox** — quick captures awaiting triage.
+- **daily** — daily note + generated morning brief.
+- **trend** — direction + change over a window (needs history).
+- **plan** — goal, checkboxed steps, risks, horizon.
 
-## 10. LLM Council review — conclusions folded in
+## 10. Open decisions
 
-An LLM Council (Contrarian, First-Principles, Expansionist, Outsider, Executor) evaluated
-this plan. Its conclusions, now reflected above:
+Resolved and defaulted so nothing blocks Phase 0/1:
 
-- **Agrees:** feasibility isn't the risk — *building the wrong thing well* is; value is
-  capped by data freshness; HUD vitals/audio are lowest-value; scope was too broad. → §1–§3, §7.
-- **Clashes:** vault as *derived cache* vs. *manual ledger* (resolved → cache, §2); minimal
-  slice vs. platform ambition (resolved → slice now, North Star later, §7–§8).
-- **Blind spots caught:** v0's failure was never diagnosed (now §1); capture friction is
-  unsolved (tracked); the portfolio/trends premise assumes meaningful N + time (cold-start
-  noted, §7); no explicit cost/value check (slice-first is the hedge).
-- **Final recommendation:** reframe the vault as a mostly-derived cache; shrink human input
-  to `health`/`priority`/`next`; cut the HUD to read-only for v1; collapse the open forks to
-  defaults; keep the vision as North Star, not scope.
-- **The one thing to do first:** write my real 3–5 projects into notes and build the single
-  `brief` command that reads them and tells the truth. If that loop earns a daily spot, the
-  rest has a reason to exist.
+1. ✅ **Obsidian code accessor** — filesystem base + thin adapter; kepano's skill for
+   conventions; REST/MCP later. *(Decided.)*
+2. ✅ Conversational interface — via **Claude Code** (no key).
+3. ✅ Audio — **deferred** (browser Web Speech later).
+4. ✅ HUD stack — **read-only, and only if Obsidian-native can't cover it**; vanilla by default.
+5. ✅ Auto morning brief — **off** until used manually first; then **local** Task Scheduler.
+6. ✅ **Projects to track** — Dota Coach, Betting Analysis, Stock Market Analyzer,
+   Job Hunt / Recruiter Helper. *(Decided — §5.)*
 
-## 11. Definition of done (v1)
+## 11. LLM Council reviews — conclusions folded in
 
-- I can ask "how are my projects doing?" and get an accurate, current overview — and I
-  actually read it as part of my routine.
+**Review 1 (design).** Reframed the vault as a *derived cache*, minimized human input to
+`health`/`priority`/`next`, cut vitals/audio, mandated a vertical slice, added the North
+Star as vision. → §1–§4, §7–§8.
+
+**Review 2 (cost & tooling).** Conclusions now reflected above:
+- **Agrees:** keep the LLM out of deterministic paths (core loop = $0, §3); wire no metered
+  API for v1; local-first is cheapest *and* most private; adopt maintained libs over
+  hand-rolling; schedule locally not via cloud agents.
+- **Clashes → resolved:** Ollama = optional later, not a dependency; free-tier APIs fine for
+  light status pulls but not heavy analysis, deferred until a project starts; Dataview/Bases
+  may replace the HUD.
+- **Blind spots caught:** *time* is the dominant cost (don't over-adopt); Dataview/Bases can
+  delete the HUD (biggest saving); "Claude Code is free" is false (plan usage); cheapest ==
+  most private; good templating can feel smart with no LLM.
+- **The one thing to do first:** build a Dataview/Bases `Projects` table over the four notes
+  before writing any HUD — get the most expensive component for free.
+
+## 12. Definition of done (v1)
+
+- I can ask "how are my projects doing?" and get an accurate, current overview I actually
+  read — produced at **$0** (deterministic core, conversation via Claude Code).
 - Human input per project is limited to `health`, `priority`, `next`; the rest is derived.
 - Reproducible from a clean clone with documented setup, committed to the private repo.
 
 ---
 
 ### Immediate next step
-Finalize decision §9.1 (Obsidian accessor) and list my real projects (§9.6). Then I start
-Phase 1 — the vertical slice.
+**Phase 0:** install Obsidian **Dataview + Bases**, seed the four project notes, and build a
+single `Projects` view. If it shows the overview I want, Phase 1's `brief` becomes a thin,
+zero-credit script on top of it.
