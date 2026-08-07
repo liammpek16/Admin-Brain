@@ -33,8 +33,31 @@ repo: ""                  # optional git path/URL → enables git-derived recenc
 { name, status, health, priority, next, updated, repo,
   activitySource: "git" | "note",   // where recency came from
   lastActivity: "YYYY-MM-DD",
-  daysSince: <integer> }
+  daysSince: <integer>,
+  milestones: { done, total, pct } | null,  // derived from plan-note checkboxes
+  progress: <0-100> | null }                // = milestones.pct (derived, never hand-set)
 ```
+
+## Plan / roadmap note — `vault/Plans/<slug>.md`
+
+```yaml
+---
+type: plan
+project: "Dota Coach"     # links this plan's milestones to a project (must match name)
+horizon: quarter          # day | week | month | quarter
+status: draft             # draft | active | done
+---
+## Goal
+## Steps
+- [ ] a milestone        # checkboxes = milestones
+- [x] a done milestone
+## Risks
+```
+
+**Milestone → progress:** the accessor counts `- [x]` vs total checkboxes across a
+project's plan notes → `milestones {done,total,pct}` and `progress`. Ticking a box in
+Obsidian raises the project's progress everywhere (brief, HUD, and the `avg_progress`
+metric that `trends` can track over time). This is how milestones interface with the system.
 
 The `brief` command renders this. Later components (metrics/trends/inbox/plan) will add
 their own note types to this contract — those schemas are defined when built (Phase 2+).

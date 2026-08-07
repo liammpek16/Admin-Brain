@@ -7,7 +7,8 @@ const PRIO = { high: 0, med: 1, low: 2 };
 const ago = (d) => (d === 0 ? 'today' : d === 1 ? '1d ago' : `${d}d ago`);
 const byPriorityThenStale = (a, b) =>
   (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1) || b.daysSince - a.daysSince;
-const projectLine = (p) => `  ${icon(p.health)} ${p.name} — ${p.priority} — next: ${p.next || '(none set)'}`;
+const mtag = (p) => (p.milestones ? `  ·  ${p.milestones.done}/${p.milestones.total} milestones (${p.milestones.pct}%)` : '');
+const projectLine = (p) => `  ${icon(p.health)} ${p.name} — ${p.priority} — next: ${p.next || '(none set)'}${mtag(p)}`;
 
 const projects = await getProjects();
 const active = projects.filter((p) => p.status === 'active').sort(byPriorityThenStale);

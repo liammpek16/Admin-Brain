@@ -1,7 +1,7 @@
 // vault skill — the ONE domain accessor. Built on adapters/obsidian.
 // Returns normalized project objects with DERIVED recency (per docs/DATA-CONTRACT.md).
 
-import { listMarkdown, readNote, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
+import { listMarkdown, readNote, readFolder, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
 
 const DAY = 86_400_000;
 
@@ -11,14 +11,29 @@ export async function getProjects() {
     .map(readNote)
     .filter((n) => n.data.type === 'project');
 
+  // Milestone progress is DERIVED from ticked checkboxes in a project's plan notes.
+  const plans = readFolder('Plans', 'plan');
+  const progressFor = (name) => {
+    const mine = plans.filter((pl) => (pl.data.project || '') === name);
+    let done = 0;
+    let total = 0;
+    for (const pl of mine) {
+      total += (pl.body.match(/^[ \t]*[-*]\s+\[[ xX]\]/gm) || []).length;
+      done += (pl.body.match(/^[ \t]*[-*]\s+\[[xX]\]/gm) || []).length;
+    }
+    return total ? { done, total, pct: Math.round((done / total) * 100) } : null;
+  };
+
   const projects = [];
   for (const n of notes) {
     const d = n.data;
     const repo = typeof d.repo === 'string' ? d.repo.trim() : '';
     const gitDate = await lastGitActivity(repo);
     const lastActivity = gitDate || n.mtime;
+    const name = d.name || n.name;
+    const milestones = progressFor(name);
     projects.push({
-      name: d.name || n.name,
+      name,
       status: (d.status || 'unknown').toLowerCase(),
       health: (d.health || 'gray').toLowerCase(),
       priority: (d.priority || 'med').toLowerCase(),
@@ -28,6 +43,8 @@ export async function getProjects() {
       activitySource: gitDate ? 'git' : 'note',
       lastActivity: lastActivity.toISOString().slice(0, 10),
       daysSince: Math.max(0, Math.floor((Date.now() - lastActivity.getTime()) / DAY)),
+      milestones,
+      progress: milestones ? milestones.pct : null,
     });
   }
   return projects;

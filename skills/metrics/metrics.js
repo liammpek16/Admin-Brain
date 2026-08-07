@@ -22,6 +22,12 @@ export async function computeSnapshot(date = today()) {
     stale_active: cnt((x) => x.status === 'active' && x.daysSince > 7),
     needs_attention: needsAttention(p).length,
     avg_days_since: p.length ? Math.round(p.reduce((s, x) => s + x.daysSince, 0) / p.length) : 0,
+    milestones_done: p.reduce((s, x) => s + (x.milestones ? x.milestones.done : 0), 0),
+    milestones_total: p.reduce((s, x) => s + (x.milestones ? x.milestones.total : 0), 0),
+    avg_progress: (() => {
+      const w = p.filter((x) => x.progress != null);
+      return w.length ? Math.round(w.reduce((s, x) => s + x.progress, 0) / w.length) : 0;
+    })(),
   };
   return { date, metrics };
 }

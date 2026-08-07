@@ -26,7 +26,7 @@ async function loadOverview() {
     const act = p.activitySource === 'git' ? 'commit' : 'note';
     const ago = p.daysSince === 0 ? 'today' : `${p.daysSince}d`;
     return `<div class="proj-row">
-      <span class="name">${HEALTH[p.health] || '⚪'} ${esc(p.name)}</span>
+      <span class="name">${HEALTH[p.health] || '⚪'} ${esc(p.name)}${p.milestones ? ` <span class="dim">(${p.milestones.done}/${p.milestones.total} · ${p.progress}%)</span>` : ''}</span>
       <span><span class="pill">${esc(p.priority)}</span></span>
       <span class="next">${esc(p.next || '—')}</span>
       <span class="dim">${act} ${ago}</span>

@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Set the current milestone and log the latest session"
+next: "Reduce error in the information shared in the coaching interface"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]

@@ -55,6 +55,7 @@ async function overview() {
     projects: projects.map((p) => ({
       name: p.name, status: p.status, health: p.health, priority: p.priority,
       next: p.next, daysSince: p.daysSince, activitySource: p.activitySource,
+      milestones: p.milestones, progress: p.progress,
     })),
   };
 }
