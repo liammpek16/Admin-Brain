@@ -230,6 +230,20 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
+// Fail friendly instead of throwing an unhandled 'error' with a stack trace.
+server.on('error', (err) => {
+  if (err && err.code === 'EADDRINUSE') {
+    console.error(`\nPort ${PORT} is already in use — the HUD is probably already running.`);
+    console.error(`Open it at  http://${HOST}:${PORT}`);
+    console.error(`Or free the port and retry:`);
+    console.error(`  PowerShell:  Get-NetTCPConnection -LocalPort ${PORT} -State Listen | Select -Expand OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force }`);
+    console.error(`  (or set a different port:  $env:ADMIN_BRAIN_HUD_PORT=4174; npm run hud )\n`);
+    process.exit(1);
+  }
+  console.error(`HUD server error: ${err && err.message ? err.message : err}`);
+  process.exit(1);
+});
+
 server.listen(PORT, HOST, () => {
   console.log(`Admin Brain HUD → http://${HOST}:${PORT}  (Ctrl+C to stop)`);
 });
