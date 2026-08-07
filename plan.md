@@ -4,9 +4,10 @@
 > projects and see, at a glance, how all of them are doing. Obsidian vault as the
 > brain, a set of skills as the hands, a read-only overview (and later HUD) as the face.
 
-Status: **building** — Phase 0 (Obsidian-native dashboard) ✅, Phase 1 (vault accessor +
-`brief`) ✅, Phase 2 (metrics · inbox · trends · plan) ✅. Next: Phase 3 (read-only HUD, only
-for gaps Bases can't fill). Repo: `liammpek16/Admin-Brain` (private). Last updated: 2026-08-07.
+Status: **v1 built** — Phase 0 (Obsidian-native dashboard) ✅, Phase 1 (vault accessor +
+`brief`) ✅, Phase 2 (metrics · inbox · trends · plan) ✅, Phase 3 (gap-filler HUD + action
+deck) ✅. Remaining: Phase 4 (opt-in growth — daily metrics scheduler, live signal per
+project, etc.). Repo: `liammpek16/Admin-Brain` (private). Last updated: 2026-08-07.
 Shaped by **two** LLM Council reviews (design, then cost/tooling — see §11).
 
 ---
