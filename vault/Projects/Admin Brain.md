@@ -4,11 +4,12 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Add the ability to navigate to each project's webapp from the HUD (e.g. the Dota coaching webapp)"
+next: "Goals board: browse every project's goals and manually run one through the loop (alternative to auto-select)"
 started: 2026-08-07
 updated: '2026-08-07'
 tags: [meta, tooling, second-brain]
 repo: "https://github.com/liammpek16/Admin-Brain"
+local_path: "C:/Users/liamm/Admin-Brain"
 ---
 
 ## Summary
