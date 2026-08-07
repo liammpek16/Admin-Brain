@@ -119,8 +119,17 @@ via `simple-git`.
 (morning brief, template-generated), `plan`. Add `trends` last — it needs accumulated
 snapshots (cold-start), so it starts *collecting* day 1 but reports nothing useful for a while.
 
-**Phase 3 — The face, only for gaps.** Build a minimal **read-only** HUD *only* for what
-Dataview/Bases can't show. Vitals + audio stay parked.
+**Phase 3 — The face (gap-filler HUD).** A tiny local Node `http` server (zero new deps)
+that reuses the existing skills and serves a dark terminal-styled page. Fills only what
+Bases can't:
+- **Synthesis panels:** portfolio glance, needs-attention (ranked), focus-today.
+- **Projects** with git recency; **Trends** sparkline from `Metrics/` (graceful cold-start).
+- **Action command deck:** buttons run `metrics` / `inbox` / `brief` via local POST
+  endpoints that spawn the Node skills, output shown inline — the one thing Bases
+  fundamentally can't do ($0, local, no LLM).
+- **Parked (re-addable):** system vitals, audio I/O, in-HUD LLM chat, live calendar.
+- Endpoints: `GET /api/overview`, `GET /api/trends?metric=…`, `POST /api/run/<skill>`.
+*Exit check:* the HUD renders live vault synthesis, and a deck button runs a skill end-to-end.
 
 **Phase 4 — Grow toward the North Star (all opt-in).** Live signal from free-tier APIs as
 each project starts; optional local auto-brief (Task Scheduler); optional Ollama prose;
