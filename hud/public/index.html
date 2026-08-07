@@ -3,42 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ADMIN BRAIN // HUD</title>
+  <title>J.A.R.V.I.S // ADMIN BRAIN</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
   <header class="bar">
-    <span class="brand">ADMIN&nbsp;BRAIN <span class="dim">// HUD</span></span>
-    <span class="dim" id="meta">loading…</span>
-    <button id="refresh" class="btn">↻ refresh</button>
+    <div class="topline">
+      <span class="meta" id="meta">initialising…</span>
+      <button id="refresh" class="btn">↻ SYNC</button>
+    </div>
+    <div class="hero">
+      <div class="reactor" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <circle class="r-core" cx="50" cy="50" r="10" />
+          <circle class="r-ring r-a" cx="50" cy="50" r="20" />
+          <circle class="r-ring r-b" cx="50" cy="50" r="30" />
+          <circle class="r-ring r-c" cx="50" cy="50" r="42" />
+        </svg>
+      </div>
+      <span class="subtitle">ADMIN&nbsp;BRAIN · TACTICAL OVERVIEW</span>
+    </div>
   </header>
 
   <main class="grid">
-    <section class="panel" id="glance">
-      <h2>PORTFOLIO</h2>
+    <section class="panel" data-tag="SYS.01"><h2>PORTFOLIO</h2>
       <div class="glance-nums" id="glance-nums"></div>
       <div class="health" id="glance-health"></div>
       <p class="summary" id="summary"></p>
     </section>
 
-    <section class="panel" id="attention">
-      <h2>NEEDS ATTENTION</h2>
+    <section class="panel alert" data-tag="ALERT"><h2>NEEDS ATTENTION</h2>
       <ul id="attention-list"><li class="dim">…</li></ul>
     </section>
 
-    <section class="panel" id="focus">
-      <h2>FOCUS TODAY</h2>
+    <section class="panel" data-tag="OPS"><h2>FOCUS TODAY</h2>
       <ol id="focus-list"><li class="dim">…</li></ol>
     </section>
 
-    <section class="panel wide" id="projects">
-      <h2>PROJECTS</h2>
+    <section class="panel wide" data-tag="DB.PROJECTS"><h2>PROJECTS</h2>
       <div class="proj-head"><span>project</span><span>pri</span><span>next</span><span>activity</span></div>
       <div id="projects-list"></div>
     </section>
 
-    <section class="panel" id="trends">
-      <h2>TRENDS
+    <section class="panel" data-tag="ANALYTICS"><h2>TRENDS
         <select id="metric" class="sel">
           <option value="projects_active">projects_active</option>
           <option value="projects_planned">projects_planned</option>
@@ -52,18 +62,20 @@
       <p class="trend-note dim" id="trend-note"></p>
     </section>
 
-    <section class="panel" id="deck">
-      <h2>COMMAND DECK</h2>
+    <section class="panel deck" data-tag="CMD"><h2>COMMAND DECK</h2>
       <div class="deck-btns">
-        <button class="btn run" data-skill="brief">brief</button>
-        <button class="btn run" data-skill="metrics">metrics</button>
-        <button class="btn run" data-skill="inbox">inbox</button>
+        <button class="btn run" data-skill="brief">▸ brief</button>
+        <button class="btn run" data-skill="metrics">▸ metrics</button>
+        <button class="btn run" data-skill="inbox">▸ inbox</button>
       </div>
-      <pre class="log" id="deck-log">idle. run a skill — output appears here.</pre>
+      <pre class="log" id="deck-log">> system idle. awaiting command…</pre>
     </section>
   </main>
 
-  <footer class="foot dim">deterministic · $0 · local (127.0.0.1) · no LLM</footer>
+  <footer class="foot">
+    <span class="live"><i></i> ONLINE</span>
+    <span class="dim">deterministic · $0 · local 127.0.0.1 · no LLM</span>
+  </footer>
   <script src="/app.js"></script>
 </body>
 </html>
