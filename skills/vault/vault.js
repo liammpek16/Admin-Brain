@@ -118,6 +118,38 @@ export function updateProjectField(project, field, value) {
   return true;
 }
 
+/**
+ * A project's roadmap goals — the top-level checkbox lines in its plan notes (the same lines
+ * that drive milestone %). Returns { text, done, meta } per goal, with the trailing
+ * " — horizon · priority" split off into `meta`. This is the source for the manual goals board.
+ */
+export function projectGoals(name) {
+  const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === name);
+  const goals = [];
+  for (const pl of plans) {
+    for (const line of pl.body.split(/\r?\n/)) {
+      const m = line.match(/^[-*]\s+\[([ xX])\]\s+(.+?)\s*$/); // top-level checkbox only
+      if (!m) continue;
+      let text = m[2].trim();
+      let meta = '';
+      const i = text.lastIndexOf(' — '); // " — " em-dash separator (ASCII-safe in source)
+      if (i !== -1) { meta = text.slice(i + 3).trim(); text = text.slice(0, i).trim(); }
+      goals.push({ text, done: m[1].toLowerCase() === 'x', meta, plan: pl.name });
+    }
+  }
+  return goals;
+}
+
+/** Set the human-owned `next` on a project note (manual goal selection). Returns true on success. */
+export function setProjectNext(project, text) {
+  const note = listMarkdown('Projects')
+    .map(readNote)
+    .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
+  if (!note) return false;
+  upsertNote('Projects', path.basename(note.path), { ...note.data, next: String(text), updated: today() }, note.body);
+  return true;
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));

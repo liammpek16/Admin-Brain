@@ -105,6 +105,24 @@ async function loadCycles() {
     : '<p class="dim">none yet</p>';
 }
 
+async function loadGoals() {
+  const board = await fetch('/api/goals').then((r) => r.json());
+  const total = board.reduce((n, p) => n + p.goals.length, 0);
+  const open = board.reduce((n, p) => n + p.goals.filter((g) => !g.done).length, 0);
+  $('goals-sub').textContent = `· ${open} open / ${total} across ${board.length} projects`;
+  $('goals-board').innerHTML = board.map((p) => {
+    const items = p.goals.length ? p.goals.map((g) => {
+      const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
+      if (g.done) return `<li class="goal done"><span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}</li>`;
+      const ctrl = p.hasOpenCycle
+        ? `<span class="pill inflight">in flight</span>`
+        : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
+      return `<li class="goal"><span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
+    }).join('') : '<li class="dim">no roadmap goals</li>';
+    return `<div class="goal-group"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul></div>`;
+  }).join('');
+}
+
 async function loopPost(url, payload, running) {
   const log = $('loop-log');
   log.textContent = `▶ ${running}…`;
@@ -114,7 +132,7 @@ async function loopPost(url, payload, running) {
   } catch (e) {
     log.textContent = `✗ ${e}`;
   } finally {
-    await Promise.all([loadOverview(), loadCycles()]);
+    await Promise.all([loadOverview(), loadCycles(), loadGoals()]);
   }
 }
 
@@ -178,7 +196,7 @@ $('projects-list').addEventListener('change', async (e) => {
   await loadOverview(); // re-render reflects the saved value (and any ranking impact)
 });
 
-$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); });
+$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); });
 $('metric').addEventListener('change', loadTrend);
 document.querySelectorAll('.run').forEach((b) => b.addEventListener('click', () => runSkill(b.dataset.skill, b)));
 
@@ -196,7 +214,16 @@ $('loop-active').addEventListener('click', async (e) => {
   else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
 });
 
+// Goals board: manually run a specific roadmap goal through the loop.
+$('goals-board').addEventListener('click', async (e) => {
+  const b = e.target.closest('button.goal-run');
+  if (!b) return;
+  b.disabled = true;
+  await loopPost('/api/loop/select-goal', { project: b.dataset.project, goal: b.dataset.goal }, `run goal`);
+});
+
 loadOverview();
 loadTrend();
 loadCycles();
-setInterval(() => { loadOverview(); loadCycles(); }, 20000); // cheap local poll
+loadGoals();
+setInterval(() => { loadOverview(); loadCycles(); loadGoals(); }, 20000); // cheap local poll
