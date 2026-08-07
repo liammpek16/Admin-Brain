@@ -2,7 +2,8 @@
 type: cycle
 project: Admin Brain
 stage: refine
-status: awaiting-approval
+status: done
+resolution: closed-already-delivered
 task: Run the feature loop from inside the Admin Brain (HUD-triggered cycles)
 started: '2026-08-07'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
@@ -203,3 +204,18 @@ in the loop. The autonomous `claude -p` stage-runner is logged as the explicit *
 - No new server dependency; server still runs no LLM. Approve/run/select all still work.
 - Verified: hit `/api/cycles`, confirm the three handoff strings; load the HUD, confirm the button
   shows on the Claude card and copies.
+
+## Closed (no implementation)
+**Decision at the refine gate: closed as already delivered.** The refine council established that the
+literal task — running the feature loop from inside the Admin Brain HUD — shipped in `a663c92`
+(SELECT + both approval gates run fully from the HUD; REFINE/IMPLEMENT/VERIFY run their deterministic
+half there). This cycle intentionally did **not** go to IMPLEMENT/VERIFY: there was nothing new to
+build for the stated goal. Roadmap goal #1 ticked.
+
+**Logged as future work (not this cycle):**
+1. **Stage handoff** — the "⧉ Copy Claude handoff" affordance (branch-sized; the refined spec above
+   is ready to pick up if wanted).
+2. **Autonomous stage-runner** — spawn `claude -p` from the HUD to run refine/implement/verify
+   unattended (Phase E: needs async jobs, kill switch, prompt-injection guards).
+
+_Cycle complete — no branch, no PR (nothing to implement)._

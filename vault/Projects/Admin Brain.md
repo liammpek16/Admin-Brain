@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Run the feature loop from inside the Admin Brain (HUD-triggered cycles)"
+next: "Add the ability to navigate to each project's webapp from the HUD (e.g. the Dota coaching webapp)"
 started: 2026-08-07
 updated: '2026-08-07'
 tags: [meta, tooling, second-brain]
@@ -18,12 +18,15 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Making the feature loop runnable from inside the Admin Brain itself.
+- Feature loop runs from the HUD (goal #1 done). Next: per-project webapp launch.
 
 ## Blockers
 - none
 
 ## Log
 - 2026-08-07 — Self-hosted: added the project note, README, and roadmap.
+- 2026-08-07 — Goal #1 delivered (HUD FEATURE LOOP panel). Loop-in-HUD cycle closed as
+  already-delivered at the refine gate; handoff button + autonomous `claude -p` runner logged
+  as follow-ups.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.
