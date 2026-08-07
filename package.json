@@ -1,0 +1,15 @@
+{
+  "name": "admin-brain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal second brain + command center — deterministic, $0 core over an Obsidian vault.",
+  "scripts": {
+    "brief": "node brief.js",
+    "projects": "node skills/vault/vault.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "simple-git": "^3.27.0"
+  }
+}
