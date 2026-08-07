@@ -21,6 +21,7 @@ const PORT = Number(process.env.ADMIN_BRAIN_HUD_PORT) || 4173;
 
 // Fixed allowlist — the ONLY things the deck can execute.
 const RUNNABLE = {
+  select: 'skills/select/select.js',
   metrics: 'skills/metrics/metrics.js',
   inbox: 'skills/inbox/inbox.js',
   brief: 'brief.js',
