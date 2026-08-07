@@ -48,6 +48,19 @@
       <div id="projects-list"></div>
     </section>
 
+    <section class="panel wide loop" data-tag="LOOP"><h2>FEATURE LOOP <span class="dim" id="loop-sub"></span></h2>
+      <div class="loop-new">
+        <select id="loop-target" class="sel"></select>
+        <button id="loop-select" class="btn">▸ SELECT NEXT TASK</button>
+        <span class="dim loop-hint">runs ① SELECT → writes a cycle awaiting your approval · <span class="pill claude mini">⤳ Claude</span> = reasoning stage, handed to the orchestrator</span>
+      </div>
+      <div id="loop-active" class="loop-active"><p class="dim">…</p></div>
+      <details class="loop-history"><summary>completed cycles</summary>
+        <div id="cycles-list"></div>
+      </details>
+      <pre class="log" id="loop-log">> feature loop idle…</pre>
+    </section>
+
     <section class="panel" data-tag="ANALYTICS"><h2>TRENDS
         <select id="metric" class="sel">
           <option value="projects_active">projects_active</option>

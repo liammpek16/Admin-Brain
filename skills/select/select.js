@@ -44,35 +44,56 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
 
-  // Optional human override: `--project "<name>"` opens the cycle for a task you've already
-  // decided on, instead of the auto-ranked #1. The full ranking is still shown for context.
-  const pArg = process.argv.indexOf('--project');
-  let top = ranked[0];
-  if (pArg !== -1) {
-    const want = (process.argv[pArg + 1] || '').toLowerCase();
-    const picked = ranked.find((r) => r.project.toLowerCase() === want);
-    if (!picked) {
-      console.log(`No ranked next step for project "${process.argv[pArg + 1]}". Candidates: ${ranked.map((r) => r.project).join(', ')}`);
-      process.exit(1);
-    }
-    top = picked;
-  }
   const date = today();
-
   const rows = ranked
     .map((r, i) => `${i + 1}. [${r.score}] ${r.project} (${r.priority}/${r.status}) — ${r.next}\n      ↳ ${r.why}`)
     .join('\n');
 
-  // Guard: never overwrite a cycle that has already advanced past select.
-  const cyclePath = path.join(vaultPath(), 'Cycles', `${date}-${slugify(top.next)}.md`);
-  if (fs.existsSync(cyclePath)) {
-    const existing = readNote(cyclePath);
-    if (existing.data.stage && existing.data.stage !== 'select') {
-      console.log(`TASK OF THE DAY → ${top.project}: ${top.next}  [score ${top.score}]`);
-      console.log(`\nRanking:\n${rows}`);
-      console.log(`\n⚠ A cycle for "${top.project}" is already at stage '${existing.data.stage}' — not overwriting ${cyclePath}. Advance or abandon it first.`);
+  // A project has a cycle "in flight" if it owns a cycle note that has advanced PAST select
+  // (refine/implement/verify) and isn't done/abandoned. A fresh select-stage proposal is NOT
+  // in flight — it's just the current proposal and stays refreshable. Keyed by project, so a
+  // task-slug rename (project.next moved on) can't hide an existing in-flight cycle.
+  const DONE = new Set(['done', 'abandoned']);
+  const cycleDir = path.join(vaultPath(), 'Cycles');
+  const inFlight = new Map(); // project -> {base, data}
+  for (const f of fs.existsSync(cycleDir) ? fs.readdirSync(cycleDir) : []) {
+    if (!f.endsWith('.md')) continue;
+    const note = readNote(path.join(cycleDir, f));
+    const d = note.data;
+    if (d.type === 'cycle' && d.stage && d.stage !== 'select' && !DONE.has(String(d.status))) {
+      inFlight.set(d.project, { base: f.replace(/\.md$/, ''), data: d });
+    }
+  }
+
+  // Optional human override: `--project "<name>"` opens the cycle for a task you've already
+  // decided on, instead of the auto-ranked #1. Bare `select` auto-picks the top-ranked project
+  // that DOESN'T already have a cycle in flight, so it never proposes a duplicate.
+  const pArg = process.argv.indexOf('--project');
+  let top;
+  if (pArg !== -1) {
+    const want = (process.argv[pArg + 1] || '').toLowerCase();
+    top = ranked.find((r) => r.project.toLowerCase() === want);
+    if (!top) {
+      console.log(`No ranked next step for project "${process.argv[pArg + 1]}". Candidates: ${ranked.map((r) => r.project).join(', ')}`);
+      process.exit(1);
+    }
+  } else {
+    top = ranked.find((r) => !inFlight.has(r.project));
+    if (!top) {
+      console.log(`Ranking:\n${rows}`);
+      console.log(`\n✓ Every candidate already has a cycle in flight — nothing new to propose. Advance or finish an open cycle.`);
       process.exit(0);
     }
+  }
+
+  // Guard: refuse to open a second cycle for a project that already has one in flight
+  // (only reachable via an explicit --project on such a project; bare select skipped it above).
+  if (inFlight.has(top.project)) {
+    const { base, data: d } = inFlight.get(top.project);
+    console.log(`Ranking:\n${rows}`);
+    console.log(`\n⚠ "${top.project}" already has an OPEN cycle: "${d.task}" (stage '${d.stage}', status '${d.status}').`);
+    console.log(`   Finish or abandon ${base}.md before starting a new one.`);
+    process.exit(0);
   }
 
   const body = [

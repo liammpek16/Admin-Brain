@@ -43,6 +43,79 @@ async function loadOverview() {
       <span class="dim">${act} ${ago}</span>
     </div>`;
   }).join('');
+
+  // Keep the feature-loop target dropdown in sync with the project list.
+  const tgt = $('loop-target');
+  if (tgt) {
+    const prev = tgt.value;
+    tgt.innerHTML = `<option value="">auto: top ranked</option>` +
+      o.projects.map((p) => `<option value="${escAttr(p.name)}">${esc(p.name)}</option>`).join('');
+    tgt.value = prev; // preserve selection across refreshes
+  }
+}
+
+// ---- Feature loop ----
+const STAGES = ['select', 'refine', 'implement', 'verify', 'review'];
+const STAGE_LABEL = { select: 'SELECT', refine: 'REFINE', implement: 'IMPLEMENT', verify: 'VERIFY', review: 'REVIEW' };
+
+function stageIndex(stage, done) {
+  if (done) return STAGES.length - 1;
+  const i = STAGES.indexOf(stage);
+  return i < 0 ? 0 : i;
+}
+
+function pipeline(c) {
+  const cur = stageIndex(c.stage, c.done);
+  return `<div class="pipe">` + STAGES.map((s, i) => {
+    const cls = c.done ? 'done' : i < cur ? 'done' : i === cur ? 'cur' : 'pend';
+    return `<span class="pstep ${cls}">${STAGE_LABEL[s]}</span>`;
+  }).join('<span class="parrow">›</span>') + `</div>`;
+}
+
+function actionControl(c) {
+  const k = c.next.kind;
+  if (k === 'approve') return `<button class="btn loop-act" data-act="approve" data-base="${escAttr(c.base)}">✓ ${esc(c.next.label)}</button>`;
+  if (k.indexOf('run:') === 0) {
+    const stage = k.slice(4);
+    return `<button class="btn loop-act" data-act="run" data-stage="${stage}" data-project="${escAttr(c.project)}">▸ ${esc(c.next.label)}</button>`;
+  }
+  if (k === 'claude') return `<span class="pill claude">⤳ ${esc(c.next.label)}</span>`;
+  return `<span class="pill done-pill">✓ ${esc(c.next.label)}</span>`;
+}
+
+function cycleCard(c) {
+  const meta = [c.branch && `⑂ ${esc(c.branch)}`, c.report && `▤ report`].filter(Boolean).join(' · ');
+  return `<div class="cyc-card">
+    <div class="cyc-top"><span class="cyc-proj">${esc(c.project)}</span><span class="cyc-task">${esc(c.task || '—')}</span></div>
+    ${pipeline(c)}
+    <div class="cyc-foot">${actionControl(c)}<span class="cyc-status dim">${meta || `${esc(c.stage)} · ${esc(c.status)}`}</span></div>
+  </div>`;
+}
+
+async function loadCycles() {
+  const data = await fetch('/api/cycles').then((r) => r.json());
+  const active = data.active;
+  const done = data.cycles.filter((c) => c.done);
+  $('loop-sub').textContent = active.length ? `· ${active.length} active` : '· idle';
+  $('loop-active').innerHTML = active.length
+    ? active.map(cycleCard).join('')
+    : '<p class="dim">No active cycle. Pick a target (or leave auto) and SELECT the next task.</p>';
+  $('cycles-list').innerHTML = done.length
+    ? done.map((c) => `<div class="proj-row loop-row"><span class="name">${esc(c.task || c.project)}</span><span class="dim">${esc(c.project)}</span><span class="dim">✓ ${esc(c.status)}</span><span class="dim">${c.branch ? esc(c.branch) : ''}</span></div>`).join('')
+    : '<p class="dim">none yet</p>';
+}
+
+async function loopPost(url, payload, running) {
+  const log = $('loop-log');
+  log.textContent = `▶ ${running}…`;
+  try {
+    const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json());
+    log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || '(done)'}`;
+  } catch (e) {
+    log.textContent = `✗ ${e}`;
+  } finally {
+    await Promise.all([loadOverview(), loadCycles()]);
+  }
 }
 
 async function loadTrend() {
@@ -105,10 +178,25 @@ $('projects-list').addEventListener('change', async (e) => {
   await loadOverview(); // re-render reflects the saved value (and any ranking impact)
 });
 
-$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); });
+$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); });
 $('metric').addEventListener('change', loadTrend);
 document.querySelectorAll('.run').forEach((b) => b.addEventListener('click', () => runSkill(b.dataset.skill, b)));
 
+// Feature loop: SELECT next task, and delegated stage/approve actions on the cycle cards.
+$('loop-select').addEventListener('click', async (e) => {
+  e.currentTarget.disabled = true;
+  await loopPost('/api/loop/run', { stage: 'select', project: $('loop-target').value || '' }, 'select');
+  e.currentTarget.disabled = false;
+});
+$('loop-active').addEventListener('click', async (e) => {
+  const b = e.target.closest('button.loop-act');
+  if (!b) return;
+  b.disabled = true;
+  if (b.dataset.act === 'approve') await loopPost('/api/cycle/approve', { base: b.dataset.base }, 'approve');
+  else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
+});
+
 loadOverview();
 loadTrend();
-setInterval(loadOverview, 20000); // cheap local poll
+loadCycles();
+setInterval(() => { loadOverview(); loadCycles(); }, 20000); // cheap local poll

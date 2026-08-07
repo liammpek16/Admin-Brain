@@ -11,7 +11,7 @@ import { spawn } from 'node:child_process';
 import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
-import { readFolder } from '../adapters/obsidian/index.js';
+import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -79,17 +79,102 @@ function trendSeries(metric) {
   return { metric, series, trend: trend(metric) };
 }
 
-function runSkill(name) {
+// Spawn a project script with fixed args (never a shell). Returns {ok, code, output}.
+function runNode(rel, args = []) {
   return new Promise((resolve) => {
-    const rel = RUNNABLE[name];
-    if (!rel) return resolve({ ok: false, output: `Unknown skill: ${name}` });
-    const child = spawn(process.execPath, [path.join(ROOT, rel)], { cwd: ROOT, env: process.env });
+    const child = spawn(process.execPath, [path.join(ROOT, rel), ...args], { cwd: ROOT, env: process.env });
     let out = '';
     child.stdout.on('data', (d) => (out += d));
     child.stderr.on('data', (d) => (out += d));
     child.on('close', (code) => resolve({ ok: code === 0, code, output: out.trim() }));
     child.on('error', (err) => resolve({ ok: false, output: String(err) }));
   });
+}
+
+function runSkill(name) {
+  const rel = RUNNABLE[name];
+  if (!rel) return Promise.resolve({ ok: false, output: `Unknown skill: ${name}` });
+  return runNode(rel);
+}
+
+// ---- Feature loop (Plan 2) ----
+// The deterministic stage scripts the deck may drive. The reasoning-heavy work inside REFINE/
+// IMPLEMENT/VERIFY is done by Claude Code (the orchestrator) — the HUD runs the scaffolding and
+// owns the human gates, so the server itself stays $0 / no-LLM.
+const LOOP_STAGES = {
+  select: 'skills/select/select.js',
+  refine: 'skills/refine/refine.js',
+  implement: 'skills/implement/implement.js',
+  verify: 'skills/verify/verify.js',
+};
+const STAGE_ORDER = ['select', 'refine', 'implement', 'verify', 'review'];
+const CYCLE_DONE = new Set(['done', 'abandoned']);
+
+// Given a cycle's frontmatter, describe the single next action and who owns it.
+// kind: 'approve' (human gate) | 'run:<stage>' (deck button) | 'claude' (hand to orchestrator) | 'done'
+function cycleNextAction(d) {
+  const stage = d.stage, status = String(d.status || '');
+  if (CYCLE_DONE.has(status)) return { kind: 'done', owner: 'you', label: 'Complete - review & merge the PR' };
+  if (stage === 'select' && status === 'awaiting-approval') return { kind: 'approve', owner: 'you', label: 'Approve -> start REFINE' };
+  if (stage === 'select' && status === 'approved') return { kind: 'run:refine', owner: 'hud', label: 'Run REFINE (assemble brief)' };
+  if (stage === 'refine' && status === 'refining') return { kind: 'claude', owner: 'claude', label: 'Claude fills the council + spec, then Approve' };
+  if (stage === 'refine' && status === 'awaiting-approval') return { kind: 'approve', owner: 'you', label: 'Approve spec -> IMPLEMENT' };
+  if (stage === 'refine' && status === 'approved') return { kind: 'run:implement', owner: 'hud', label: 'Run IMPLEMENT (create branch)' };
+  if (stage === 'implement' && status === 'active') return { kind: 'claude', owner: 'claude', label: 'Claude implements on the branch, then Run VERIFY' };
+  if (stage === 'implement' && status === 'approved') return { kind: 'run:verify', owner: 'hud', label: 'Run VERIFY (scaffold report)' };
+  if (stage === 'verify' && status === 'verifying') return { kind: 'claude', owner: 'claude', label: 'Claude runs the adversarial pass, then mark done' };
+  return { kind: 'claude', owner: 'claude', label: `Continue (${stage}/${status})` };
+}
+
+// Human gates: approve the SELECT proposal, or the refined spec (refine, before implement).
+function canApprove(d) {
+  const s = String(d.status || '');
+  return (d.stage === 'select' && s === 'awaiting-approval') ||
+         (d.stage === 'refine' && (s === 'refining' || s === 'awaiting-approval'));
+}
+
+function listCycles() {
+  const dir = path.join(vaultPath(), 'Cycles');
+  const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.md')) : [];
+  const cycles = files.map((f) => {
+    const d = readNote(path.join(dir, f)).data;
+    return {
+      base: f.replace(/\.md$/, ''),
+      project: d.project || '', task: d.task || '', stage: d.stage || '', status: String(d.status || ''),
+      branch: d.branch || '', report: d.report || '', started: d.started || '',
+      done: CYCLE_DONE.has(String(d.status)),
+      next: cycleNextAction(d), canApprove: canApprove(d),
+    };
+  }).sort((a, b) => b.base.localeCompare(a.base));
+  const active = cycles.filter((c) => !c.done);
+  return { cycles, active, stageOrder: STAGE_ORDER };
+}
+
+// Run one loop stage for a project, composing the correct CLI args per stage.
+async function runLoopStage(stage, project) {
+  const rel = LOOP_STAGES[stage];
+  if (!rel) return { ok: false, output: `Unknown stage: ${stage}` };
+  if (stage === 'select') return runNode(rel, project ? ['--project', project] : []);
+  if (!project) return { ok: false, output: `${stage} requires a project.` };
+  if (stage === 'refine' || stage === 'verify') return runNode(rel, ['--project', project]);
+  if (stage === 'implement') {
+    const proj = (await getProjects()).find((p) => p.name === project);
+    if (!proj) return { ok: false, output: `Project not found: ${project}` };
+    if (!proj.localPath) return { ok: false, output: `No local_path set on "${project}". Add local_path to its project note so IMPLEMENT knows where the clone is.` };
+    return runNode(rel, ['--project', project, '--path', proj.localPath, '--base', 'main']);
+  }
+  return { ok: false, output: `Unhandled stage: ${stage}` };
+}
+
+// Human gate: flip a cycle's status to 'approved' (only from a legit pending-approval state).
+function approveCycle(base) {
+  if (!base || /[\\/]/.test(base)) return { ok: false, output: 'Bad cycle id.' };
+  const file = path.join(vaultPath(), 'Cycles', `${base}.md`);
+  if (!fs.existsSync(file)) return { ok: false, output: 'Cycle not found.' };
+  const note = readNote(file);
+  if (!canApprove(note.data)) return { ok: false, output: `Cannot approve from ${note.data.stage}/${note.data.status}.` };
+  upsertNote('Cycles', base, { ...note.data, status: 'approved' }, note.body);
+  return { ok: true, output: `Approved "${note.data.task}" -> ${note.data.stage === 'select' ? 'ready to REFINE' : 'ready to IMPLEMENT'}.` };
 }
 
 function serveStatic(req, res) {
@@ -112,6 +197,23 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, trendSeries(url.searchParams.get('metric') || 'projects_active'));
     if (req.method === 'POST' && url.pathname.startsWith('/api/run/'))
       return sendJson(res, 200, await runSkill(url.pathname.slice('/api/run/'.length)));
+    if (req.method === 'GET' && url.pathname === '/api/cycles') return sendJson(res, 200, listCycles());
+    if (req.method === 'POST' && url.pathname === '/api/loop/run') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { stage, project } = JSON.parse((await readBody(req)) || '{}');
+        r = await runLoopStage(String(stage || ''), project ? String(project) : '');
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, 200, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/cycle/approve') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { base } = JSON.parse((await readBody(req)) || '{}');
+        r = approveCycle(String(base || ''));
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
     if (req.method === 'POST' && url.pathname === '/api/project/update') {
       let ok = false;
       try {

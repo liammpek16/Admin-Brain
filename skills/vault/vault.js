@@ -41,6 +41,7 @@ export async function getProjects() {
       next: d.next || '',
       updated: d.updated || null,
       repo,
+      localPath: typeof d.local_path === 'string' ? d.local_path.trim() : '',
       activitySource: gitDate ? 'git' : 'note',
       lastActivity: lastActivity.toISOString().slice(0, 10),
       daysSince: Math.max(0, Math.floor((Date.now() - lastActivity.getTime()) / DAY)),
