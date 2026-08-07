@@ -1,8 +1,8 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: >-
   Goals board: browse every project's goals and manually run one through the
   loop (alternative to auto-select)
@@ -10,6 +10,7 @@ started: '2026-08-07'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
 branch: auto/goals-board-browse-every-project-s-goals-and-manually-run-on
 target_path: 'C:/Users/liamm/Admin-Brain'
+report: 2026-08-07-goals-board-browse-every-project-s-goals-and-manually-run-on
 ---
 
 ## Task (from SELECT)
@@ -231,3 +232,14 @@ incomplete goal, disabled when that project has a cycle in flight. Server stays 
 
 **Implement complete.** Ready for Phase D (verify).
 
+## Verify (Phase D)
+Independent adversarial pass: **pass-with-notes** (8 checks). Core is solid — injection guard holds
+(non-roadmap goal refused; the goal is never a shell arg; a colon/comma goal round-trips YAML-safe),
+done/in-flight rejections work, the happy path opens a proper cycle, and the server stays $0/no-LLM.
+**One confirmed gap:** `hasOpenCycle`/`select-goal` only count cycles *past* select, so running a
+second different goal before approving the first creates a duplicate select-stage proposal (A2/A3).
+Report: [[2026-08-07-goals-board-browse-every-project-s-goals-and-manually-run-on]].
+**Recommended follow-up (⑤ → ①):** "Count select-stage proposals as open in the goals board (broaden
+`hasOpenCycle` + the `select-goal` guard) so a project can't accumulate duplicate proposals."
+
+_Cycle complete (Admin-Brain PR #1 draft, awaiting your review/merge)._
