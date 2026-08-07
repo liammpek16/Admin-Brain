@@ -33,6 +33,40 @@ export async function getProjects() {
   return projects;
 }
 
+// ---- Shared derivations (one implementation, reused by every skill) ----
+
+export const HEALTH_ICON = { green: '🟢', yellow: '🟡', red: '🔴', gray: '⚪' };
+export const icon = (h) => HEALTH_ICON[h] || '⚪';
+export const today = () => new Date().toISOString().slice(0, 10);
+
+/** Count projects by health bucket. */
+export function healthCounts(projects) {
+  const h = { green: 0, yellow: 0, red: 0, gray: 0 };
+  for (const p of projects) h[p.health] = (h[p.health] || 0) + 1;
+  return h;
+}
+
+/**
+ * Deterministic "needs attention" rules — the same logic the brief, metrics,
+ * and morning brief all agree on.
+ */
+export function needsAttention(projects) {
+  const flags = [];
+  for (const p of projects) {
+    if (p.status === 'blocked') {
+      flags.push(`${p.name}: blocked — ${p.next || 'no next action set'}`);
+    } else if (p.status === 'active' && (p.health === 'red' || p.health === 'yellow')) {
+      flags.push(`${p.name}: health ${p.health}${p.next ? ` — ${p.next}` : ''}`);
+    } else if (p.status === 'active' && p.daysSince > 7) {
+      flags.push(`${p.name}: stale — no activity in ${p.daysSince}d`);
+    }
+    if (p.status === 'planned' && p.priority === 'high') {
+      flags.push(`${p.name}: high priority, not started yet`);
+    }
+  }
+  return flags;
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));

@@ -6,7 +6,10 @@
   "description": "Personal second brain + command center — deterministic, $0 core over an Obsidian vault.",
   "scripts": {
     "brief": "node brief.js",
-    "projects": "node skills/vault/vault.js"
+    "projects": "node skills/vault/vault.js",
+    "metrics": "node skills/metrics/metrics.js",
+    "inbox": "node skills/inbox/inbox.js",
+    "trends": "node skills/trends/trends.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

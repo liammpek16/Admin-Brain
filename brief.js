@@ -1,51 +1,22 @@
 // brief — deterministic project overview. No LLM, no network, $0.
 // Answers "how are my projects doing?" from the vault. Prints to stdout.
 
-import { getProjects } from './skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, icon, today } from './skills/vault/vault.js';
 
-const HEALTH = { green: '🟢', yellow: '🟡', red: '🔴', gray: '⚪' };
 const PRIO = { high: 0, med: 1, low: 2 };
-
-const icon = (h) => HEALTH[h] || '⚪';
 const ago = (d) => (d === 0 ? 'today' : d === 1 ? '1d ago' : `${d}d ago`);
 const byPriorityThenStale = (a, b) =>
   (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1) || b.daysSince - a.daysSince;
-
-function projectLine(p) {
-  return `  ${icon(p.health)} ${p.name} — ${p.priority} — next: ${p.next || '(none set)'}`;
-}
-
-function needsAttention(projects) {
-  const flags = [];
-  for (const p of projects) {
-    if (p.status === 'blocked') {
-      flags.push(`${p.name}: blocked — ${p.next || 'no next action set'}`);
-    } else if (p.status === 'active' && (p.health === 'red' || p.health === 'yellow')) {
-      flags.push(`${p.name}: health ${p.health}${p.next ? ` — ${p.next}` : ''}`);
-    } else if (p.status === 'active' && p.daysSince > 7) {
-      flags.push(`${p.name}: stale — no activity in ${p.daysSince}d`);
-    }
-    if (p.status === 'planned' && p.priority === 'high') {
-      flags.push(`${p.name}: high priority, not started yet`);
-    }
-  }
-  return flags;
-}
+const projectLine = (p) => `  ${icon(p.health)} ${p.name} — ${p.priority} — next: ${p.next || '(none set)'}`;
 
 const projects = await getProjects();
-const today = new Date().toISOString().slice(0, 10);
-
 const active = projects.filter((p) => p.status === 'active').sort(byPriorityThenStale);
 const planned = projects.filter((p) => p.status === 'planned').sort(byPriorityThenStale);
-const other = projects
-  .filter((p) => !['active', 'planned'].includes(p.status))
-  .sort(byPriorityThenStale);
-
-const hc = { green: 0, yellow: 0, red: 0, gray: 0 };
-for (const p of projects) hc[p.health] = (hc[p.health] || 0) + 1;
+const other = projects.filter((p) => !['active', 'planned'].includes(p.status)).sort(byPriorityThenStale);
+const hc = healthCounts(projects);
 
 const L = [];
-L.push(`ADMIN BRAIN — PROJECT BRIEF   ${today}`);
+L.push(`ADMIN BRAIN — PROJECT BRIEF   ${today()}`);
 L.push('='.repeat(46));
 L.push(
   `Portfolio: ${projects.length} projects · ${active.length} active · ${planned.length} planned` +

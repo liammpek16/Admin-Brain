@@ -58,6 +58,26 @@ export async function lastGitActivity(repoPath) {
   }
 }
 
+/** Read every note in a folder, optionally filtered to a frontmatter `type`. */
+export function readFolder(folder, type = null) {
+  return listMarkdown(folder)
+    .map(readNote)
+    .filter((n) => !type || n.data.type === type);
+}
+
+/**
+ * Write (create or overwrite) a note with frontmatter + body.
+ * Creates the folder if needed. Returns the absolute path written.
+ */
+export function upsertNote(folder, filename, data = {}, body = '') {
+  const dir = path.join(vaultPath(), folder);
+  fs.mkdirSync(dir, { recursive: true });
+  const name = filename.toLowerCase().endsWith('.md') ? filename : `${filename}.md`;
+  const file = path.join(dir, name);
+  fs.writeFileSync(file, matter.stringify(body ? `\n${body}\n` : '', data), 'utf8');
+  return file;
+}
+
 /** True when this module is being run directly (cross-platform). */
 export function isMain(url) {
   return process.argv[1] && url === pathToFileURL(process.argv[1]).href;
