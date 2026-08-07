@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Goals board: browse every project's goals and manually run one through the loop (alternative to auto-select)"
+next: "Add the ability to navigate to each project's webapp from the HUD (e.g. the Dota coaching webapp)"
 started: 2026-08-07
 updated: '2026-08-07'
 tags: [meta, tooling, second-brain]
@@ -19,7 +19,8 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Feature loop runs from the HUD (goal #1 done). Next: per-project webapp launch.
+- Goals board shipped (PR #1). Next: per-project webapp launch — or pick any goal from the
+  HUD goals board.
 
 ## Blockers
 - none
