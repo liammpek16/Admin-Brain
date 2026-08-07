@@ -1,7 +1,8 @@
 // vault skill — the ONE domain accessor. Built on adapters/obsidian.
 // Returns normalized project objects with DERIVED recency (per docs/DATA-CONTRACT.md).
 
-import { listMarkdown, readNote, readFolder, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
+import path from 'node:path';
+import { listMarkdown, readNote, readFolder, upsertNote, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
 
 const DAY = 86_400_000;
 
@@ -100,6 +101,20 @@ export function getSessions() {
 /** Sessions within the last `days` days, optionally filtered to a project. */
 export function sessionsWithin(days, project = null) {
   return getSessions().filter((s) => s.daysAgo != null && s.daysAgo >= 0 && s.daysAgo <= days && (!project || s.project === project));
+}
+
+// Human-owned fields that may be edited from the HUD, with their allowed values.
+const EDITABLE = { priority: ['high', 'med', 'low'], health: ['green', 'yellow', 'red', 'gray'] };
+
+/** Update one human-owned field (priority|health) on a project note. Returns true on success. */
+export function updateProjectField(project, field, value) {
+  if (!EDITABLE[field] || !EDITABLE[field].includes(String(value))) return false;
+  const note = listMarkdown('Projects')
+    .map(readNote)
+    .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
+  if (!note) return false;
+  upsertNote('Projects', path.basename(note.path), { ...note.data, [field]: value, updated: today() }, note.body);
+  return true;
 }
 
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.

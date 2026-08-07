@@ -4,11 +4,13 @@ name: Betting Analysis
 status: planned
 health: gray
 priority: med
-next: "Define scope and pick a data source"
-started:
-updated: 2026-08-06
-tags: [data, betting]
-repo: ""
+next: Define scope and pick a data source
+started: null
+updated: '2026-08-07'
+tags:
+  - data
+  - betting
+repo: ''
 ---
 
 ## Summary

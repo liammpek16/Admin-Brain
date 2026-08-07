@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder } from '../adapters/obsidian/index.js';
@@ -33,6 +33,14 @@ function sendJson(res, code, obj) {
   const body = JSON.stringify(obj);
   res.writeHead(code, { 'content-type': 'application/json', 'content-length': Buffer.byteLength(body) });
   res.end(body);
+}
+
+function readBody(req) {
+  return new Promise((resolve) => {
+    let b = '';
+    req.on('data', (c) => (b += c));
+    req.on('end', () => resolve(b));
+  });
 }
 
 async function overview() {
@@ -104,6 +112,14 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, trendSeries(url.searchParams.get('metric') || 'projects_active'));
     if (req.method === 'POST' && url.pathname.startsWith('/api/run/'))
       return sendJson(res, 200, await runSkill(url.pathname.slice('/api/run/'.length)));
+    if (req.method === 'POST' && url.pathname === '/api/project/update') {
+      let ok = false;
+      try {
+        const { project, field, value } = JSON.parse((await readBody(req)) || '{}');
+        ok = updateProjectField(project, field, value);
+      } catch {}
+      return sendJson(res, ok ? 200 : 400, { ok });
+    }
     if (req.method === 'GET') return serveStatic(req, res);
     res.writeHead(405);
     res.end('Method not allowed');

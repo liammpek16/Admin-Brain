@@ -30,12 +30,15 @@ async function loadOverview() {
       }).join('')
     : '<li class="dim">no sessions logged yet</li>';
 
+  const opt = (val, list, label) => list.map((v) => `<option value="${v}"${v === val ? ' selected' : ''}>${label ? label(v) : v}</option>`).join('');
   $('projects-list').innerHTML = o.projects.map((p) => {
     const act = p.activitySource === 'git' ? 'commit' : 'note';
     const ago = p.daysSince === 0 ? 'today' : `${p.daysSince}d`;
+    const pj = escAttr(p.name);
     return `<div class="proj-row">
-      <span class="name">${HEALTH[p.health] || '⚪'} ${esc(p.name)}${p.milestones ? ` <span class="dim">(${p.milestones.done}/${p.milestones.total} · ${p.progress}%)</span>` : ''}</span>
-      <span><span class="pill">${esc(p.priority)}</span></span>
+      <span class="name">${esc(p.name)}${p.milestones ? ` <span class="dim">(${p.milestones.done}/${p.milestones.total} · ${p.progress}%)</span>` : ''}</span>
+      <select class="edit" data-project="${pj}" data-field="health">${opt(p.health, ['green', 'yellow', 'red', 'gray'], (v) => `${HEALTH[v]} ${v}`)}</select>
+      <select class="edit" data-project="${pj}" data-field="priority">${opt(p.priority, ['high', 'med', 'low'])}</select>
       <span class="next">${esc(p.next || '—')}</span>
       <span class="dim">${act} ${ago}</span>
     </div>`;
@@ -80,6 +83,27 @@ async function runSkill(skill, btn) {
 function esc(s) {
   return String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 }
+function escAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+// Write-back: editing a project's health/priority dropdown updates the vault note.
+$('projects-list').addEventListener('change', async (e) => {
+  const sel = e.target.closest('select.edit');
+  if (!sel) return;
+  sel.disabled = true;
+  try {
+    const r = await fetch('/api/project/update', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project: sel.dataset.project, field: sel.dataset.field, value: sel.value }),
+    }).then((r) => r.json());
+    if (!r.ok) throw new Error('rejected');
+  } catch {
+    /* fall through — reload restores the true value */
+  }
+  await loadOverview(); // re-render reflects the saved value (and any ranking impact)
+});
 
 $('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); });
 $('metric').addEventListener('change', loadTrend);
