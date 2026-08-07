@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { execFile } from 'node:child_process';
 import matter from 'gray-matter';
 import { simpleGit } from 'simple-git';
 
@@ -40,16 +41,59 @@ export function readNote(absPath) {
   };
 }
 
+// Resolve the GitHub CLI. Uses your existing gh auth for private repos — we never
+// read or store the token ourselves. Override with ADMIN_BRAIN_GH.
+function resolveGh() {
+  const candidates = [
+    process.env.ADMIN_BRAIN_GH,
+    'C:\\Program Files\\GitHub CLI\\gh.exe',
+    process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'Microsoft', 'WinGet', 'Links', 'gh.exe'),
+    process.env['ProgramFiles(x86)'] && path.join(process.env['ProgramFiles(x86)'], 'GitHub CLI', 'gh.exe'),
+  ].filter(Boolean);
+  for (const c of candidates) {
+    try { if (fs.existsSync(c)) return c; } catch {}
+  }
+  return 'gh'; // last resort: rely on PATH
+}
+
+// Parse "github.com/owner/repo", a git URL, or bare "owner/repo".
+function parseGithub(ref) {
+  const m =
+    ref.match(/github\.com[:/]+([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i) ||
+    ref.match(/^([\w.-]+)\/([\w.-]+?)(?:\.git)?$/);
+  return m ? { owner: m[1], repo: m[2] } : null;
+}
+
+// Last commit date for a GitHub repo via `gh api` (free with your gh auth; no tokens handled).
+function githubLastCommit(owner, repo) {
+  return new Promise((resolve) => {
+    const args = ['api', `repos/${owner}/${repo}/commits?per_page=1`, '--jq', '.[0].commit.committer.date'];
+    execFile(resolveGh(), args, { timeout: 8000, windowsHide: true }, (err, stdout) => {
+      if (err) return resolve(null);
+      const d = (stdout || '').trim();
+      const date = d ? new Date(d) : null;
+      resolve(date && !Number.isNaN(date.getTime()) ? date : null);
+    });
+  });
+}
+
 /**
- * Last commit date for a LOCAL git repo, or null.
- * Accepts a filesystem path; remote URLs (http/git@) return null (no clone).
+ * Last commit date driving a project's recency, or null (→ caller falls back to note mtime).
+ * - GitHub URL / "owner/repo" → queried remotely via `gh` (always fresh; needs network).
+ * - Local filesystem path → read from the local clone via simple-git (offline).
  */
 export async function lastGitActivity(repoPath) {
   if (!repoPath || typeof repoPath !== 'string') return null;
-  if (/^(https?:|git@|ssh:)/i.test(repoPath)) return null; // remote URL — skip
+  const ref = repoPath.trim();
+  if (!ref) return null;
+
+  const gh = parseGithub(ref);
+  if (gh && (/github\.com/i.test(ref) || !fs.existsSync(ref))) {
+    return githubLastCommit(gh.owner, gh.repo);
+  }
   try {
-    if (!fs.existsSync(repoPath)) return null;
-    const git = simpleGit(repoPath);
+    if (!fs.existsSync(ref)) return null;
+    const git = simpleGit(ref);
     if (!(await git.checkIsRepo())) return null;
     const log = await git.log({ maxCount: 1 });
     return log.latest ? new Date(log.latest.date) : null;

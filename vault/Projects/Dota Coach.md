@@ -8,7 +8,7 @@ next: "Set the current milestone and log the latest session"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]
-repo: "C:/Users/liamm/Scripts"
+repo: "https://github.com/liammpek16/dota-projects"
 ---
 
 ## Summary

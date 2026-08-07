@@ -25,5 +25,6 @@ const projects = await getProjects();
 
 ## Notes
 - Vault path defaults to `<repo>/vault`; override with `ADMIN_BRAIN_VAULT`.
-- Remote `repo` URLs are skipped for recency (no clone); set a LOCAL path to enable
-  git-derived activity. No network, no API — runs at $0.
+- `repo` accepts a **GitHub URL** (queried remotely via `gh` for always-fresh recency —
+  free with your gh auth, no tokens handled) **or a LOCAL path** (read offline via
+  simple-git). Network/errors fall back to the note's mtime. No LLM, $0.
