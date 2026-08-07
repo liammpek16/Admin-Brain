@@ -43,7 +43,20 @@ if (isMain(import.meta.url)) {
     console.log('No candidate next steps found (add a `next` to a project).');
     process.exit(0);
   }
-  const top = ranked[0];
+
+  // Optional human override: `--project "<name>"` opens the cycle for a task you've already
+  // decided on, instead of the auto-ranked #1. The full ranking is still shown for context.
+  const pArg = process.argv.indexOf('--project');
+  let top = ranked[0];
+  if (pArg !== -1) {
+    const want = (process.argv[pArg + 1] || '').toLowerCase();
+    const picked = ranked.find((r) => r.project.toLowerCase() === want);
+    if (!picked) {
+      console.log(`No ranked next step for project "${process.argv[pArg + 1]}". Candidates: ${ranked.map((r) => r.project).join(', ')}`);
+      process.exit(1);
+    }
+    top = picked;
+  }
   const date = today();
 
   const rows = ranked

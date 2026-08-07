@@ -11,7 +11,7 @@ status: active
 Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platform.
 
 ## Steps
-- [ ] Reduce error in the information shared in the coaching interface — near · high
+- [x] Reduce error in the information shared in the coaching interface — near · high
 - [ ] Real-time per-fight coaching feedback: target prioritization, missed spells, positioning — mid · high
 - [ ] Clean up the interface — mid · med
 - [ ] Determine feasibility of moving API calls to a known script — mid · med
