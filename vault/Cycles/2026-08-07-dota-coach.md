@@ -113,6 +113,7 @@ scoped to the static knowledge/constants layer (heroes, items, key mechanics):
 - ✅ Re-runnable (guards future changes) and documented in the README.
 - ✅ No change to unrelated app behavior (adds one script + a README section).
 
-**Implement complete on the branch.** Not pushed to the dota-projects remote yet — awaiting
-approval to open a draft PR. Ready for Phase D (independent verification).
+**Implement complete.** Draft PR: https://github.com/liammpek16/dota-projects/pull/1 (base
+`main`). Branch pushed; dota working copy returned to `main`. Ready for Phase D (independent
+verification), then human review/merge (⑤).
 
