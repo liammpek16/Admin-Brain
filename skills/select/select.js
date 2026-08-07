@@ -2,8 +2,10 @@
 // important one, transparently. Deterministic, inspectable, $0. Writes a cycle note
 // (status: awaiting-approval) for the human gate. No LLM, no network.
 
+import fs from 'node:fs';
+import path from 'node:path';
 import { getProjects, needsAttention, today } from '../vault/vault.js';
-import { upsertNote, isMain } from '../../adapters/obsidian/index.js';
+import { vaultPath, readNote, upsertNote, isMain } from '../../adapters/obsidian/index.js';
 
 // Tunable weights (plan_2 §9.4). All 1.0 for a transparent baseline.
 const W = { priority: 1, health: 1, staleness: 1, attention: 1, stalled: 1 };
@@ -47,6 +49,18 @@ if (isMain(import.meta.url)) {
   const rows = ranked
     .map((r, i) => `${i + 1}. [${r.score}] ${r.project} (${r.priority}/${r.status}) — ${r.next}\n      ↳ ${r.why}`)
     .join('\n');
+
+  // Guard: never overwrite a cycle that has already advanced past select.
+  const cyclePath = path.join(vaultPath(), 'Cycles', `${date}-${slugify(top.project)}.md`);
+  if (fs.existsSync(cyclePath)) {
+    const existing = readNote(cyclePath);
+    if (existing.data.stage && existing.data.stage !== 'select') {
+      console.log(`TASK OF THE DAY → ${top.project}: ${top.next}  [score ${top.score}]`);
+      console.log(`\nRanking:\n${rows}`);
+      console.log(`\n⚠ A cycle for "${top.project}" is already at stage '${existing.data.stage}' — not overwriting ${cyclePath}. Advance or abandon it first.`);
+      process.exit(0);
+    }
+  }
 
   const body = [
     '## Proposed task of the day',

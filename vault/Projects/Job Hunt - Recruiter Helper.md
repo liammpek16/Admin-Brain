@@ -4,11 +4,11 @@ name: Job Hunt / Recruiter Helper
 status: planned
 health: gray
 priority: high
-next: "Define scope and target roles"
+next: "Build the resume reviewer skill"
 started:
 updated: 2026-08-06
 tags: [career, tooling]
-repo: ""
+repo: "C:/Users/liamm/job-hunt"
 ---
 
 ## Summary
