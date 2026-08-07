@@ -118,9 +118,31 @@ async function loadGoals() {
         ? `<span class="pill inflight">in flight</span>`
         : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
       return `<li class="goal"><span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
-    }).join('') : '<li class="dim">no roadmap goals</li>';
-    return `<div class="goal-group"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul></div>`;
+    }).join('') : '<li class="dim">no roadmap goals yet</li>';
+    const add = `<div class="goal-add">
+      <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
+      <button class="btn goal-add-btn" data-project="${escAttr(p.name)}">+ Add</button>
+    </div>`;
+    return `<div class="goal-group"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul>${add}</div>`;
   }).join('');
+}
+
+async function addGoal(project, input) {
+  const text = ((input && input.value) || '').trim();
+  if (!text) return;
+  const log = $('loop-log');
+  log.textContent = `▶ adding goal to ${project}…`;
+  try {
+    const r = await fetch('/api/project/add-goal', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project, text }),
+    }).then((r) => r.json());
+    log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
+    if (r.ok) { if (input) input.value = ''; await Promise.all([loadOverview(), loadGoals()]); }
+    // on failure, leave the board (and the typed text) as-is
+  } catch (e) {
+    log.textContent = `✗ ${e}`;
+  }
 }
 
 async function loopPost(url, payload, running) {
@@ -214,12 +236,15 @@ $('loop-active').addEventListener('click', async (e) => {
   else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
 });
 
-// Goals board: manually run a specific roadmap goal through the loop.
+// Goals board: run a goal through the loop, or add a new goal to a project.
 $('goals-board').addEventListener('click', async (e) => {
-  const b = e.target.closest('button.goal-run');
-  if (!b) return;
-  b.disabled = true;
-  await loopPost('/api/loop/select-goal', { project: b.dataset.project, goal: b.dataset.goal }, `run goal`);
+  const run = e.target.closest('button.goal-run');
+  if (run) { run.disabled = true; await loopPost('/api/loop/select-goal', { project: run.dataset.project, goal: run.dataset.goal }, `run goal`); return; }
+  const add = e.target.closest('button.goal-add-btn');
+  if (add) { await addGoal(add.dataset.project, add.closest('.goal-group').querySelector('.goal-input')); }
+});
+$('goals-board').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.classList.contains('goal-input')) { e.preventDefault(); addGoal(e.target.dataset.project, e.target); }
 });
 
 loadOverview();

@@ -150,6 +150,51 @@ export function setProjectNext(project, text) {
   return true;
 }
 
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+
+/**
+ * Add a new roadmap goal (an unchecked checkbox line) to a project from the HUD. Appends under
+ * the plan note's `## Steps`; if the project has no roadmap plan yet, creates a minimal one.
+ * Returns { ok, error? }. Rejects empty/multi-line/duplicate goals and unknown projects.
+ */
+export function addProjectGoal(project, text) {
+  const goal = String(text || '').trim();
+  if (!goal) return { ok: false, error: 'goal text is empty' };
+  if (/[\r\n]/.test(goal)) return { ok: false, error: 'goal must be a single line' };
+  const projNote = listMarkdown('Projects')
+    .map(readNote)
+    .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
+  if (!projNote) return { ok: false, error: `project not found: ${project}` };
+  if (projectGoals(project).some((g) => g.text.toLowerCase() === goal.toLowerCase())) {
+    return { ok: false, error: 'that goal already exists' };
+  }
+
+  const line = `- [ ] ${goal}`;
+  const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === project);
+  if (plans.length) {
+    const pl = plans[0];
+    const lines = pl.body.split(/\r?\n/);
+    const si = lines.findIndex((l) => /^##\s+Steps\b/i.test(l));
+    if (si === -1) {
+      lines.push('', '## Steps', line); // no Steps section yet — start one
+    } else {
+      let end = lines.length; // end of the Steps block = next "## " heading or EOF
+      for (let i = si + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) { end = i; break; } }
+      let ins = end;
+      while (ins > si + 1 && lines[ins - 1].trim() === '') ins--; // insert after the last non-blank step
+      lines.splice(ins, 0, line);
+    }
+    upsertNote('Plans', pl.name, pl.data, lines.join('\n'));
+  } else {
+    upsertNote(
+      'Plans', `${slugify(project)}-roadmap`,
+      { type: 'plan', kind: 'roadmap', created: today(), project, horizon: 'quarter', status: 'active' },
+      `## Goal\n${project} roadmap.\n\n## Steps\n${line}`,
+    );
+  }
+  return { ok: true };
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));

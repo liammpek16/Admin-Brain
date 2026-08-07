@@ -243,3 +243,15 @@ Report: [[2026-08-07-goals-board-browse-every-project-s-goals-and-manually-run-o
 `hasOpenCycle` + the `select-goal` guard) so a project can't accumulate duplicate proposals."
 
 _Cycle complete (Admin-Brain PR #1 draft, awaiting your review/merge)._
+
+## Post-verify follow-ups (same branch / PR #1)
+Applied on the branch before merge, at the user's request:
+1. **Fixed the verify finding (duplicate proposals).** `hasOpenCycle` and the `select-goal` guard
+   now use `projectsWithOpenCycle()` — counts **any** non-done cycle, including an unapproved
+   select-stage proposal. Verified: run goal A → project shows in-flight → running goal B is
+   rejected ("already has an open cycle …"), no duplicate note created.
+2. **New feature — add goals from the HUD.** `vault.js` `addProjectGoal(project, text)` appends a
+   `- [ ] …` line under the roadmap's `## Steps` (creates a roadmap note if the project has none);
+   rejects empty/duplicate/multi-line. `POST /api/project/add-goal`; each PROJECT GOALS group has a
+   "+ write a new goal…" input + Add button (Enter also submits). Verified: add to Dota (existing
+   roadmap), add to Betting (creates `betting-analysis-roadmap.md`), reject duplicate + empty.

@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, projectGoals, setProjectNext, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, projectGoals, setProjectNext, addProjectGoal, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
@@ -177,28 +177,32 @@ function approveCycle(base) {
   return { ok: true, output: `Approved "${note.data.task}" -> ${note.data.stage === 'select' ? 'ready to REFINE' : 'ready to IMPLEMENT'}.` };
 }
 
-// Projects that already have a cycle in flight (past select, not done) — the same condition
-// `select` refuses to duplicate. Used to gate the goals board's Run buttons.
-function inFlightProjects() {
+// Projects that already have an OPEN cycle → project -> { task, stage, status }. "Open" = any
+// cycle that isn't done/abandoned, INCLUDING an unapproved select-stage proposal. Broader than
+// select.js's past-select guard on purpose: for the manual goals board this stops a project from
+// accumulating duplicate proposals (running a 2nd goal before approving the 1st).
+function projectsWithOpenCycle() {
   const dir = path.join(vaultPath(), 'Cycles');
-  const set = new Set();
+  const map = new Map();
   for (const f of fs.existsSync(dir) ? fs.readdirSync(dir) : []) {
     if (!f.endsWith('.md')) continue;
     const d = readNote(path.join(dir, f)).data;
-    if (d.type === 'cycle' && d.stage && d.stage !== 'select' && !CYCLE_DONE.has(String(d.status))) set.add(d.project);
+    if (d.type === 'cycle' && !CYCLE_DONE.has(String(d.status)) && !map.has(d.project)) {
+      map.set(d.project, { task: d.task || '', stage: d.stage || '', status: String(d.status || '') });
+    }
   }
-  return set;
+  return map;
 }
 
 // ---- Goals board (manual loop entry point) ----
 // Every project's roadmap goals + whether a Run is currently possible.
 async function goalsBoard() {
   const projects = await getProjects();
-  const inflight = inFlightProjects();
+  const open = projectsWithOpenCycle();
   return projects.map((p) => ({
     name: p.name,
     status: p.status,
-    hasOpenCycle: inflight.has(p.name),
+    hasOpenCycle: open.has(p.name),
     goals: projectGoals(p.name),
   }));
 }
@@ -212,7 +216,8 @@ async function selectGoal(project, goal) {
   const match = goals.find((g) => g.text === goal);
   if (!match) return { ok: false, output: `"${goal}" is not a roadmap goal of ${project}.` };
   if (match.done) return { ok: false, output: `That goal is already marked done.` };
-  if (inFlightProjects().has(project)) return { ok: false, output: `${project} already has a cycle in flight — finish or abandon it first.` };
+  const open = projectsWithOpenCycle().get(project);
+  if (open) return { ok: false, output: `${project} already has an open cycle: "${open.task}" (${open.stage}/${open.status}). Finish or abandon it first.` };
   if (!setProjectNext(project, goal)) return { ok: false, output: `Project note not found: ${project}` };
   const r = await runNode(LOOP_STAGES.select, ['--project', project]);
   return { ok: r.ok, output: r.output };
@@ -240,6 +245,15 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, await runSkill(url.pathname.slice('/api/run/'.length)));
     if (req.method === 'GET' && url.pathname === '/api/cycles') return sendJson(res, 200, listCycles());
     if (req.method === 'GET' && url.pathname === '/api/goals') return sendJson(res, 200, await goalsBoard());
+    if (req.method === 'POST' && url.pathname === '/api/project/add-goal') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { project, text } = JSON.parse((await readBody(req)) || '{}');
+        const res2 = addProjectGoal(String(project || ''), String(text || ''));
+        r = res2.ok ? { ok: true, output: `Added goal to ${project}.` } : { ok: false, output: res2.error || 'failed' };
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
     if (req.method === 'POST' && url.pathname === '/api/loop/select-goal') {
       let r = { ok: false, output: 'Bad request.' };
       try {
