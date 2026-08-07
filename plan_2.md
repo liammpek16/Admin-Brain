@@ -1,176 +1,181 @@
-# Admin Brain — Plan 2: The Autonomous Project Cycle
+# Admin Brain — Plan 2: The Project Cycle
 
-> Evolve Admin Brain from a board that *shows* me where projects stand into an engine
-> that *drives them forward*: pick the single most important next step across all
-> projects, sharpen it with a council, build it autonomously on a branch inside one
-> Claude Code usage window, stress-test it, and hand me a report to decide what's next.
+> Evolve Admin Brain from a board that *shows* where projects stand into an engine that
+> *drives them forward*: pick the most important next step across all projects, sharpen it
+> with a council, build it (supervised) on a branch, independently verify it, and hand me a
+> report to decide what's next.
 
-Status: **vision / planning**. Builds on `plan.md` (v1: vault + skills + HUD, all $0).
-Repo: `liammpek16/Admin-Brain` (private). Last updated: 2026-08-07.
+Status: **planning**. Revised after **two** LLM Council reviews (see §11). Builds on
+`plan.md` (v1: vault + skills + HUD, all $0). Repo: `liammpek16/Admin-Brain` (private).
+Last updated: 2026-08-07.
 
-> ⚠️ **This plan deliberately breaks the $0 rule** — for two stages only. See §5.
+> ⚠️ Two stages (implement, verify) deliberately spend Claude Code usage. The board and the
+> decision stages stay $0. See §6.
 
 ---
 
-## 1. The cycle (your five stages, as a pipeline)
+## 1. What the council changed (the reframe)
+
+Plan 2's first draft optimized the wrong thing. The corrections now baked in:
+
+- **The unit of work is a well-specified, branch-sized task — not the 5-hour window.** The
+  window is a *usage budget*, not the design axis. We stopped architecting around it.
+- **③ IMPLEMENT starts human-supervised.** Fully-unattended, window-long autonomous coding
+  is a *destination earned* after verification is trustworthy — not a starting point.
+- **④ is promoted to a first-class, INDEPENDENT verification stage.** Its own tests, never
+  the implementer grading its own homework. This is the load-bearing wall, so it gets real
+  design — not one paragraph.
+- **The cycle is a protocol with a pluggable implementer.** Headless Claude today; a
+  stronger agent (or a human) can drop into ③ later without changing the cycle.
+- **The portfolio is thin** (≈1 active project). Build the cheap decide/refine core now; the
+  autonomous machinery earns its place as active work grows.
+
+## 2. The cycle (your five stages)
 
 ```
-① SELECT      rank every project's next step → pick THE one → set "task of the day"     [you approve]
-② REFINE      a council reviews the task vs the project's README → sharpens it            [you approve]
-③ IMPLEMENT   build it on a branch within one ~5h usage window; checkpoint; resume/retry  [autonomous]
-④ STRESS-TEST break the new feature; write a weaknesses/improvements report               [autonomous]
-⑤ REVIEW      you read the report → decide the project's next step (which re-enters ①)     [you decide]
+① SELECT   rank every project's next step → propose THE one → cycle note      [you approve]
+② REFINE   council reviews task vs the project's README → sharpened spec        [you approve]
+③ IMPLEMENT build it on a branch, SUPERVISED, checkpointing as it goes          [you can veto]
+④ VERIFY   INDEPENDENT tests try to break it → weaknesses/improvements report   [autonomous]
+⑤ REVIEW   you read the report + PR → decide the project's next step → back to ① [you decide]
 ```
 
-Three **human gates** (①, ②, ⑤) bracket two **autonomous stages** (③, ④). The loop is
-closed: your review in ⑤ becomes the input to the next ①.
+Human gates at ①, ②, ⑤; ③ is supervised (you can stop it); ④ is an independent check.
 
-## 2. The cycle as a resumable state machine
+## 3. The cycle as a resumable record
 
-Every cycle is one record the system can pause and resume — because stage ③ may not
-finish in a single usage window.
+A task may span more than one sitting, so each cycle is a record we can pause and resume:
 
-- **Cycle note:** `vault/Cycles/<date>-<task-slug>.md`
+- **Cycle note** `vault/Cycles/<date>-<task-slug>.md`:
   ```yaml
   type: cycle
   project: "Dota Coach"
-  stage: implement          # select | refine | implement | test | review | done
-  status: active            # active | awaiting-approval | paused | done | abandoned
-  branch: "auto/reduce-info-error"
+  stage: select            # select | refine | implement | verify | review | done
+  status: awaiting-approval # awaiting-approval | approved | active | paused | done | abandoned
+  branch: ""               # set at implement
+  task: "the next step"
+  score: 0
   started: 2026-08-07
-  window_started: 2026-08-07T09:00
-  last_checkpoint: <commit sha>
   ```
-  Body: the approved task spec, a running progress log, and a checklist of sub-steps.
-- **Code progress** lives on the git branch as frequent **checkpoint commits** (WIP is
-  never lost even if a run is killed mid-window).
-- **Resume =** read the cycle note + branch, continue from `last_checkpoint` and the
-  unchecked sub-steps. This is the "save progress" mechanism.
+  Body: proposed/approved task spec, the ranking, a progress log, a sub-step checklist.
+- **Code progress** lives on the branch as **checkpoint commits** — WIP is never lost.
+- **Resume =** read the cycle note + branch and continue. (Unattended resume/retry is a
+  *later, earned* capability — see §8, and the honest caveat in §5.)
 
-A small **conductor** advances the machine and invokes Claude Code for the heavy stages;
-at each human gate it flips `status: awaiting-approval` and stops until you say go.
+## 4. Stage-by-stage design
 
-## 3. Stage-by-stage design
-
-### ① SELECT — the most important next step, everywhere
-Mostly **deterministic** (cheap), with a light LLM tiebreak:
-- Score each project's `next` using signals we already derive: `priority`, `health`
-  (red/blocked boosts), staleness (`daysSince`), milestone `progress` (stalled → boost),
-  and `trends` direction (declining → boost). This is a formula over existing metrics.
-- Feed only the **top shortlist** (3–5) to a single short LLM pass to pick THE one and
-  justify it in one paragraph.
-- Write it as the day's task into the cycle note. **You approve** (or override).
+### ① SELECT — the most important next step, transparently
+**Deterministic and inspectable** (so you can *trust the pick*): score each project's `next`
+from signals we already derive — `priority`, `health`/`blocked`, staleness (`daysSince`,
+active projects only), whether `needsAttention` flags it, and stalled milestone `progress`.
+Rank, propose the top one, and **show the full score breakdown** so the pick is auditable.
+Weights are tunable constants (§9.4). You approve or override. *(Trend inputs join once
+per-project history exists.)*
 
 ### ② REFINE — the council sharpens the task
-Reuse the **LLM Council** pattern from this project (Contrarian, First-Principles,
-Expansionist, Outsider, Executor):
-- Inputs: the task as written **+ the project's `README.md`** (fetched from its repo —
-  local clone or GitHub via `gh`, using the `repo` field we already set).
-- Job: find gaps between the task and the project's actual goal (from the README),
-  then produce a **sharpened task spec** with a clear definition of done.
-- Output: a proposal in the cycle note. **You approve** the refined spec.
+Reuse the LLM Council (Contrarian, First-Principles, Expansionist, Outsider, Executor):
+- Inputs: the task **+ the project's `README.md`** (from its repo — local or GitHub via `gh`).
+- Job: find gaps between the task and the project's real goal; produce a **sharpened spec
+  with a clear definition of done**, small enough to be branch-sized (split if not).
+- You approve the refined spec.
 
-### ③ IMPLEMENT — autonomous, branch-only, resumable
-- Create branch `auto/<task-slug>` off `main`. **Never touches `main`.**
-- Run Claude Code **headless** against the approved spec, in a loop that:
-  - works in small increments and **commits a checkpoint** after each,
-  - updates the cycle note's checklist + `last_checkpoint`,
-  - stops cleanly when the spec's definition-of-done is met **or** the usage window ends.
-- If the window ends incomplete → `status: paused`; a scheduled retry resumes it when the
-  next window is available (see §4 for the honest caveat on "token reset").
-- Opens a **draft PR** so the work is reviewable.
+### ③ IMPLEMENT — supervised, branch-only
+- Branch `auto/<task-slug>` off `main`. **Never touches `main`.**
+- Claude Code works the approved spec **with you able to veto at checkpoints**, committing a
+  checkpoint after each increment and updating the cycle note.
+- Opens a **draft PR**. Unattended, window-long runs are deferred until ④ earns trust (§8).
 
-### ④ STRESS-TEST — try to break it, then report
-- Generate and run tests aimed at breaking the new feature (edge cases, bad input,
-  regressions). 
-- Produce `vault/Reports/<date>-<task-slug>.md`: what broke, weaknesses, and concrete
-  improvements — an honest post-mortem, not a victory lap.
+### ④ VERIFY — independent, try to break it
+- **A separate pass** (not the implementer) writes and runs tests aimed at breaking the
+  feature: edge cases, bad input, regressions against the definition of done.
+- Produces `vault/Reports/<date>-<task-slug>.md`: what broke, weaknesses, concrete
+  improvements. **Verification gates the merge proposal** — honest, not a victory lap.
 
 ### ⑤ REVIEW — you decide
-- You read the report + PR. Merge, request changes, or shelve.
-- You decide the project's **next** step → it flows back into ①.
+Read the report + PR → merge / request changes / shelve → set the project's next step,
+which re-enters ①.
 
-## 4. Tooling & capability assessment (grounded, with caveats)
+## 5. Tooling & capability assessment (grounded)
 
 | Need | Mechanism | Notes |
 |---|---|---|
-| Rank tasks (①) | existing `metrics`/`trends`/`vault` skills | deterministic; cheap |
-| Council (②) | subagents (as used here) + `gh` to fetch the repo README | bounded reasoning pass |
-| Autonomous build (③) | **Claude Code headless** (`claude -p`) or the **Agent SDK**, driven by the conductor | the usage-spending core |
-| Isolation | git branch (or worktree) + draft PR via `gh` | never `main`; human merges |
-| Checkpoint / resume | git checkpoint commits + the cycle note state | survives a killed window |
-| Retry after reset | scheduled job (Windows Task Scheduler / a Claude Code routine) | **caveat below** |
+| Rank tasks (①) | existing `metrics`/`trends`/`vault` | deterministic, inspectable, $0 |
+| Council (②) | subagents + `gh` to fetch the repo README | bounded reasoning pass |
+| Supervised build (③) | **Claude Code headless CLI** *(provisional §9.1)* | already installed; no new infra |
+| Isolation | git branch/worktree + draft PR via `gh` | never `main`; you merge |
+| Independent verify (④) | a *separate* test pass, not the implementer | the load-bearing stage |
+| Resume | cycle note + checkpoint commits | supervised now; unattended later |
 | Coordination store | the vault (`Cycles/`, `Reports/`) | consistent with v1 |
 
-**Honest caveat on "retry when tokens reset":** there is no reliable in-process signal for
-the exact moment a subscription usage window resets. The pragmatic design is a **scheduled
-retry on a fixed cadence** (aligned to the ~5h window) that only acts when a cycle is
-`paused` and enough time has elapsed — not a precise reset detector. We accept approximate
-timing rather than pretend to detect the reset exactly.
+**Honest caveat (unattended retry, deferred):** there is no reliable in-process signal for
+when a subscription window resets. If/when we add unattended resume, it will be a
+**fixed-cadence scheduled retry** that only acts on `paused` cycles after enough time — not
+a precise reset detector. We don't build this until supervised cycles prove the loop.
 
-## 5. Cost model — where this spends (and where it doesn't)
+## 6. Cost model — where this spends
 
-v1 is $0. Plan 2 keeps most of that and spends deliberately in two places:
+- **$0 / approval-gated:** ① (deterministic ranking) and ② (one bounded council pass).
+- **The deliberate spend:** ③ implement and ④ verify consume your Claude Code subscription —
+  by design. Keeping ③ **supervised** is also a *cost control*: a confidently-wrong
+  unattended branch wastes a whole window plus your review time; a human veto stops that
+  early.
+- **No external paid APIs.** Rides your subscription; nothing new to pay for.
 
-- **Cheap / approval-gated:** ① ranking (deterministic + one short LLM pass) and ② the
-  council (one bounded reasoning pass). Minimal usage.
-- **The deliberate spend:** ③ implement and ④ test **consume your Claude Code subscription
-  usage** — that's the whole point of "use the 5h slot." This is the opposite of the $0
-  core, by design and within a bounded window.
-- **No external paid APIs.** It rides your existing subscription; nothing new to pay for.
-
-The boundary is explicit so the cost is never a surprise: the board stays free; only the
-autonomous builder spends, and only on a task you approved.
-
-## 6. Guardrails & safety (non-negotiable for an autonomous coder)
+## 7. Guardrails & safety
 
 - **Branch-only, PR for merge.** The agent never writes to `main`; you merge.
-- **Three human gates.** Nothing autonomous starts without your approval at ① and ②;
-  nothing ships without your review at ⑤.
-- **Bounded scope.** The council-refined spec defines "done"; the agent works to that spec,
-  not open-endedly.
+- **Human gates at ①, ②, ⑤** + **veto during ③**.
+- **Bounded scope.** ② defines "done"; the task must be branch-sized.
+- **Independent verification (④) gates the merge** — not self-grading.
 - **Everything logged** to the cycle note; WIP committed continuously.
-- **Tests gate the PR.** ④ must run before a merge is proposed, and the report is honest
-  about weaknesses.
-- **Kill switch.** Setting a cycle's `status: abandoned` stops all further automation on it.
+- **Kill switch.** `status: abandoned` stops all automation on a cycle.
 
-## 7. Phased build (incremental, not a moonshot)
+## 8. Phased build (earn each step)
 
-- **Phase A — SELECT.** The ranking + approval, over existing metrics/trends. Cheap,
-  buildable now. *Exit:* it proposes a defensible "task of the day" you can approve.
-- **Phase B — REFINE.** Wire the council to (task + repo README) → sharpened spec. *Exit:*
-  a refined task spec with a clear definition of done.
-- **Phase C — IMPLEMENT harness.** Branch + headless run + checkpoint/state + resume,
-  **manual-trigger first**. *Exit:* it builds a small approved task on a branch and can
-  resume after being interrupted.
-- **Phase D — Scheduled retry.** Add the cadence-based resume for paused cycles. *Exit:* an
-  interrupted cycle continues on the next window unattended.
-- **Phase E — STRESS-TEST + REPORT**, then wire the full ①→⑤ loop with the human gates.
-  *Exit:* one end-to-end cycle completes with a report you review.
+- **Phase A — SELECT (now).** Deterministic ranking + a proposed "task of the day" cycle note
+  for approval. Cheap, reuses metrics/trends, spends nothing. *Exit:* it proposes a pick you'd
+  approve — i.e. **you trust the ranking.**
+- **Phase B — REFINE.** Council on (task + repo README) → sharpened, branch-sized spec.
+  *Exit:* a refined spec with a clear definition of done.
+- **Phase C — SUPERVISED IMPLEMENT.** Branch + checkpointed build with you watching + draft PR.
+  *Exit:* a small approved task built on a branch, reviewable.
+- **Phase D — INDEPENDENT VERIFY.** A separate test pass + report that can actually fail the
+  work. *Exit:* verification catches a real weakness on a real task.
+- **Phase E — Close the loop**, then *only after several trustworthy supervised cycles*
+  consider **unattended stretches + scheduled resume** (§5 caveat). *Exit:* one end-to-end
+  cycle you'd run again.
 
-## 8. Open risks & uncertainties (stated plainly)
+## 9. Open decisions
 
-- **Autonomous multi-hour coding is genuinely hard.** Quality varies; the mitigations are
-  bounded scope, checkpointing, tests, and your review — not blind trust.
-- **Reset timing is approximate** (§4). Expect "resumes within the next window," not "the
-  instant tokens refresh."
-- **This is a real escalation** from a deterministic $0 tool to a usage-spending agent that
-  changes code. The gates and branch-only rule are what keep it safe.
-- **A task must be branch-sized.** Huge or vague tasks won't fit one window; ② should split
-  or shrink them.
+**Provisionally decided (council advice):**
+1. ✅ **Orchestration engine → Claude Code headless CLI.** Already installed, zero new infra,
+   stays on your machine + subscription. Migrate to the Agent SDK / cloud routines *later*,
+   only if the proven loop needs it.
+3. ✅ **Autonomy in ③ → supervised checkpoints, not unattended.** Start watching with veto;
+   earn longer unattended stretches once ④ is trustworthy.
 
-## 9. Open decisions (need your input before Phase A)
-
-1. **Orchestration engine** — Claude Code **headless CLI loop** (simplest, local) vs the
-   **Agent SDK** (more control) vs **scheduled cloud agents/routines**.
-2. **Where it runs** — your local machine (uses your box + subscription) vs cloud.
-3. **Autonomy level in ③** — fully unattended within the window, or periodic quick
-   checkpoints you can veto.
-4. **Ranking weights (①)** — how to weigh priority vs health vs staleness vs trend.
-5. **Retry cadence (④/§4)** — fixed interval, or only on-demand when you say "resume."
-6. **Scope guard** — a max task size / time budget before ② must split it.
+**Still open:**
+2. Where it runs — local (default) vs cloud.
+4. Ranking weights (①) — priority vs health vs staleness vs attention vs stalled-progress.
+5. Retry cadence — deferred until Phase E; on-demand "resume" until then.
+6. Scope guard — a max task size before ② must split it.
 
 ## 10. Immediate next step
-Decide §9.1 (engine) and §9.3 (autonomy level), then build **Phase A** — the task selector
-+ approval — since it's cheap, reuses what we have, and immediately proves the "pick the
-most important next step" idea before any autonomous spending begins.
+**Build Phase A** — the `select` command that ranks every project's next step, proposes the
+single most important one with a transparent score breakdown, and writes it to a cycle note
+for approval. It answers the question the whole plan rests on: *do you trust its pick?*
+
+## 11. LLM Council reviews — conclusions folded in
+
+**Review 1 (design, plan.md era):** vault-as-cache, minimal human input, slice-first, North Star.
+
+**Review 2 (plan_2 feasibility + the two decisions):**
+- **Agrees:** the cheap value is ①②⑤; **④ verification is the under-designed load-bearing
+  wall** (and can't be self-grading); the **5h window is a billing artifact, not a work
+  unit**; build **Phase A only** now; the portfolio is too thin for the full engine yet.
+- **Clashes → resolved:** ambition vs restraint → build the minimum loop *as a protocol*;
+  unattended ③ → keep supervised until ④ earns trust; retry-on-reset → deferred.
+- **Blind spots:** not enough active work to feed the engine; a confidently-wrong branch
+  costs trust + rework (not just tokens); both open decisions were premature → provisional
+  defaults set above.
+- **The one thing first:** Phase A — prove you trust the pick before building anything on it.
