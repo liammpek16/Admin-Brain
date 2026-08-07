@@ -1,13 +1,14 @@
 ---
 type: cycle
 project: Dota Coach
-stage: implement
-status: active
+stage: verify
+status: done
 task: Reduce error in the information shared in the coaching interface
 started: '2026-08-07'
 readme_source: 'https://github.com/liammpek16/dota-projects'
 branch: auto/reduce-error-in-the-information-shared-in-the-coaching-inter
 target_path: 'C:/Users/liamm/Scripts'
+report: 2026-08-07-reduce-error-in-the-information-shared-in-the-coaching-inter
 ---
 
 ## Task (from SELECT)
@@ -117,3 +118,11 @@ scoped to the static knowledge/constants layer (heroes, items, key mechanics):
 `main`). Branch pushed; dota working copy returned to `main`. Ready for Phase D (independent
 verification), then human review/merge (⑤).
 
+## Verify (Phase D)
+Independent verification: **pass-with-notes** — 14/14 adversarial tests pass, but the DoD's
+"core ability facts" and the `dota_knowledge*.py` files were not covered. PR #1 merged.
+Report: [[2026-08-07-reduce-error-in-the-information-shared-in-the-coaching-inter]].
+**Recommended next step (⑤ → ①):** "extend the validator to ability facts + the knowledge
+Python files."
+
+_Cycle complete._

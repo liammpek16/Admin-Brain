@@ -12,6 +12,8 @@
     "trends": "node skills/trends/trends.js",
     "select": "node skills/select/select.js",
     "refine": "node skills/refine/refine.js",
+    "implement": "node skills/implement/implement.js",
+    "verify": "node skills/verify/verify.js",
     "hud": "node hud/server.js"
   },
   "dependencies": {
