@@ -9,7 +9,8 @@
     "projects": "node skills/vault/vault.js",
     "metrics": "node skills/metrics/metrics.js",
     "inbox": "node skills/inbox/inbox.js",
-    "trends": "node skills/trends/trends.js"
+    "trends": "node skills/trends/trends.js",
+    "hud": "node hud/server.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
