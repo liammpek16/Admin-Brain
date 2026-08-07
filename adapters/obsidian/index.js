@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { execFile } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { simpleGit } from 'simple-git';
 
@@ -100,6 +100,36 @@ export async function lastGitActivity(repoPath) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Fetch a project's README text, or null.
+ * - GitHub URL / owner-repo → `gh api …/readme` (uses your gh auth).
+ * - Local filesystem path → the README file on disk.
+ */
+export function readmeFor(repo) {
+  if (!repo || typeof repo !== 'string') return null;
+  const ref = repo.trim();
+  if (!ref) return null;
+
+  const gh = parseGithub(ref);
+  if (gh && (/github\.com/i.test(ref) || !fs.existsSync(ref))) {
+    try {
+      const b64 = execFileSync(resolveGh(), ['api', `repos/${gh.owner}/${gh.repo}/readme`, '--jq', '.content'], {
+        timeout: 8000, windowsHide: true,
+      }).toString().trim();
+      return b64 ? Buffer.from(b64, 'base64').toString('utf8') : null;
+    } catch {
+      return null;
+    }
+  }
+  try {
+    for (const name of ['README.md', 'readme.md', 'Readme.md', 'README.MD']) {
+      const p = path.join(ref, name);
+      if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8');
+    }
+  } catch {}
+  return null;
 }
 
 /** Read every note in a folder, optionally filtered to a frontmatter `type`. */
