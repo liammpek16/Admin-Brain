@@ -118,6 +118,83 @@ export function updateProjectField(project, field, value) {
   return true;
 }
 
+/**
+ * A project's roadmap goals — the top-level checkbox lines in its plan notes (the same lines
+ * that drive milestone %). Returns { text, done, meta } per goal, with the trailing
+ * " — horizon · priority" split off into `meta`. This is the source for the manual goals board.
+ */
+export function projectGoals(name) {
+  const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === name);
+  const goals = [];
+  for (const pl of plans) {
+    for (const line of pl.body.split(/\r?\n/)) {
+      const m = line.match(/^[-*]\s+\[([ xX])\]\s+(.+?)\s*$/); // top-level checkbox only
+      if (!m) continue;
+      let text = m[2].trim();
+      let meta = '';
+      const i = text.lastIndexOf(' — '); // " — " em-dash separator (ASCII-safe in source)
+      if (i !== -1) { meta = text.slice(i + 3).trim(); text = text.slice(0, i).trim(); }
+      goals.push({ text, done: m[1].toLowerCase() === 'x', meta, plan: pl.name });
+    }
+  }
+  return goals;
+}
+
+/** Set the human-owned `next` on a project note (manual goal selection). Returns true on success. */
+export function setProjectNext(project, text) {
+  const note = listMarkdown('Projects')
+    .map(readNote)
+    .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
+  if (!note) return false;
+  upsertNote('Projects', path.basename(note.path), { ...note.data, next: String(text), updated: today() }, note.body);
+  return true;
+}
+
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+
+/**
+ * Add a new roadmap goal (an unchecked checkbox line) to a project from the HUD. Appends under
+ * the plan note's `## Steps`; if the project has no roadmap plan yet, creates a minimal one.
+ * Returns { ok, error? }. Rejects empty/multi-line/duplicate goals and unknown projects.
+ */
+export function addProjectGoal(project, text) {
+  const goal = String(text || '').trim();
+  if (!goal) return { ok: false, error: 'goal text is empty' };
+  if (/[\r\n]/.test(goal)) return { ok: false, error: 'goal must be a single line' };
+  const projNote = listMarkdown('Projects')
+    .map(readNote)
+    .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
+  if (!projNote) return { ok: false, error: `project not found: ${project}` };
+  if (projectGoals(project).some((g) => g.text.toLowerCase() === goal.toLowerCase())) {
+    return { ok: false, error: 'that goal already exists' };
+  }
+
+  const line = `- [ ] ${goal}`;
+  const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === project);
+  if (plans.length) {
+    const pl = plans[0];
+    const lines = pl.body.split(/\r?\n/);
+    const si = lines.findIndex((l) => /^##\s+Steps\b/i.test(l));
+    if (si === -1) {
+      lines.push('', '## Steps', line); // no Steps section yet — start one
+    } else {
+      let end = lines.length; // end of the Steps block = next "## " heading or EOF
+      for (let i = si + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) { end = i; break; } }
+      let ins = end;
+      while (ins > si + 1 && lines[ins - 1].trim() === '') ins--; // insert after the last non-blank step
+      lines.splice(ins, 0, line);
+    }
+    upsertNote('Plans', pl.name, pl.data, lines.join('\n'));
+  } else {
+    upsertNote(
+      'Plans', `${slugify(project)}-roadmap`,
+      { type: 'plan', kind: 'roadmap', created: today(), project, horizon: 'quarter', status: 'active' },
+      `## Goal\n${project} roadmap.\n\n## Steps\n${line}`,
+    );
+  }
+  return { ok: true };
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));
