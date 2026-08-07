@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder } from '../adapters/obsidian/index.js';
@@ -57,6 +57,8 @@ async function overview() {
       next: p.next, daysSince: p.daysSince, activitySource: p.activitySource,
       milestones: p.milestones, progress: p.progress,
     })),
+    sessionsThisWeek: sessionsWithin(7).length,
+    recentSessions: getSessions().slice(0, 5).map((s) => ({ date: s.date, project: s.project, player: s.player, daysAgo: s.daysAgo })),
   };
 }
 

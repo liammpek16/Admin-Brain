@@ -22,6 +22,14 @@ async function loadOverview() {
     ? o.focus.map((f) => `<li>${esc(f)}</li>`).join('')
     : '<li class="dim">nothing queued</li>';
 
+  $('sess-count').textContent = `· ${o.sessionsThisWeek} this week`;
+  $('sessions-list').innerHTML = o.recentSessions.length
+    ? o.recentSessions.map((s) => {
+        const ago = s.daysAgo === 0 ? 'today' : `${s.daysAgo}d ago`;
+        return `<li>${s.date} — ${esc(s.project)}${s.player ? ` · ${esc(s.player)}` : ''} <span class="dim">(${ago})</span></li>`;
+      }).join('')
+    : '<li class="dim">no sessions logged yet</li>';
+
   $('projects-list').innerHTML = o.projects.map((p) => {
     const act = p.activitySource === 'git' ? 'commit' : 'note';
     const ago = p.daysSince === 0 ? 'today' : `${p.daysSince}d`;

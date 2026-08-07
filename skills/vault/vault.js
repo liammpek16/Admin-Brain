@@ -84,6 +84,24 @@ export function needsAttention(projects) {
   return flags;
 }
 
+/** All coaching sessions, newest first. */
+export function getSessions() {
+  return readFolder('Sessions', 'session')
+    .map((n) => {
+      const d = n.data;
+      const date = d.date ? String(d.date).slice(0, 10) : null;
+      const daysAgo = date ? Math.floor((Date.now() - new Date(`${date}T00:00:00Z`).getTime()) / DAY) : null;
+      return { date, project: d.project || '', player: d.player || '', rating: Number(d.rating) || 0, daysAgo };
+    })
+    .filter((s) => s.date)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** Sessions within the last `days` days, optionally filtered to a project. */
+export function sessionsWithin(days, project = null) {
+  return getSessions().filter((s) => s.daysAgo != null && s.daysAgo >= 0 && s.daysAgo <= days && (!project || s.project === project));
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));

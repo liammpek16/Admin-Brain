@@ -59,5 +59,24 @@ project's plan notes → `milestones {done,total,pct}` and `progress`. Ticking a
 Obsidian raises the project's progress everywhere (brief, HUD, and the `avg_progress`
 metric that `trends` can track over time). This is how milestones interface with the system.
 
+## Session note — `vault/Sessions/<date>-<slug>.md`
+
+```yaml
+---
+type: session
+project: "Dota Coach"
+date: 2026-08-07
+player: ""
+rating: 0                 # optional 1–5
+---
+## What we covered
+## Feedback given
+## Action items
+- [ ]
+```
+
+Written by the `session` skill. `sessionsWithin(7)` powers the HUD "sessions this week"
+readout and the `sessions_7d` metric (a coaching-cadence signal `trends` can track).
+
 The `brief` command renders this. Later components (metrics/trends/inbox/plan) will add
 their own note types to this contract — those schemas are defined when built (Phase 2+).

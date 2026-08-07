@@ -1,7 +1,7 @@
 // metrics skill — compute today's numeric snapshot from vault state and write
 // vault/Metrics/<date>.md (type: metric-snapshot). Idempotent. No LLM, $0.
 
-import { getProjects, healthCounts, needsAttention, today } from '../vault/vault.js';
+import { getProjects, healthCounts, needsAttention, sessionsWithin, today } from '../vault/vault.js';
 import { upsertNote, isMain } from '../../adapters/obsidian/index.js';
 
 /** Compute the snapshot object for a date from current vault state. */
@@ -28,6 +28,7 @@ export async function computeSnapshot(date = today()) {
       const w = p.filter((x) => x.progress != null);
       return w.length ? Math.round(w.reduce((s, x) => s + x.progress, 0) / w.length) : 0;
     })(),
+    sessions_7d: sessionsWithin(7).length,
   };
   return { date, metrics };
 }
