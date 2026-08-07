@@ -51,7 +51,7 @@ if (isMain(import.meta.url)) {
     .join('\n');
 
   // Guard: never overwrite a cycle that has already advanced past select.
-  const cyclePath = path.join(vaultPath(), 'Cycles', `${date}-${slugify(top.project)}.md`);
+  const cyclePath = path.join(vaultPath(), 'Cycles', `${date}-${slugify(top.next)}.md`);
   if (fs.existsSync(cyclePath)) {
     const existing = readNote(cyclePath);
     if (existing.data.stage && existing.data.stage !== 'select') {
@@ -80,7 +80,7 @@ if (isMain(import.meta.url)) {
 
   const file = upsertNote(
     'Cycles',
-    `${date}-${slugify(top.project)}`,
+    `${date}-${slugify(top.next)}`,
     { type: 'cycle', project: top.project, stage: 'select', status: 'awaiting-approval', task: top.next, score: top.score, started: date },
     body
   );

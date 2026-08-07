@@ -5,7 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { today } from '../vault/vault.js';
+import { getProjects, today } from '../vault/vault.js';
 import { vaultPath, readNote, upsertNote, isMain } from '../../adapters/obsidian/index.js';
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
@@ -16,8 +16,10 @@ if (isMain(import.meta.url)) {
   const project = get('--project');
   if (!project) { console.error('Usage: node skills/verify/verify.js --project "<name>"'); process.exit(1); }
 
-  const cyclePath = path.join(vaultPath(), 'Cycles', `${today()}-${slugify(project)}.md`);
-  if (!fs.existsSync(cyclePath)) { console.error(`No cycle note for ${project}`); process.exit(2); }
+  const proj = (await getProjects()).find((p) => p.name === project);
+  if (!proj || !proj.next) { console.error(`Project not found or has no task: ${project}`); process.exit(2); }
+  const cyclePath = path.join(vaultPath(), 'Cycles', `${today()}-${slugify(proj.next)}.md`);
+  if (!fs.existsSync(cyclePath)) { console.error(`No cycle note for task "${proj.next}"`); process.exit(2); }
   const cyc = readNote(cyclePath);
   const reportName = `${today()}-${slugify(cyc.data.task || project)}`;
 

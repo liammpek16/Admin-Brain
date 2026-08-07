@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { today } from '../vault/vault.js';
+import { getProjects, today } from '../vault/vault.js';
 import { vaultPath, readNote, upsertNote, isMain } from '../../adapters/obsidian/index.js';
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
@@ -24,8 +24,10 @@ if (isMain(import.meta.url)) {
     process.exit(1);
   }
 
-  const cyclePath = path.join(vaultPath(), 'Cycles', `${today()}-${slugify(project)}.md`);
-  if (!fs.existsSync(cyclePath)) { console.error(`No cycle note for ${project} at ${cyclePath}`); process.exit(2); }
+  const proj = (await getProjects()).find((p) => p.name === project);
+  if (!proj || !proj.next) { console.error(`Project not found or has no task: ${project}`); process.exit(2); }
+  const cyclePath = path.join(vaultPath(), 'Cycles', `${today()}-${slugify(proj.next)}.md`);
+  if (!fs.existsSync(cyclePath)) { console.error(`No cycle note for task "${proj.next}" at ${cyclePath}`); process.exit(2); }
   const cyc = readNote(cyclePath);
   if (cyc.data.status !== 'approved') {
     console.error(`Cycle status is '${cyc.data.status}', expected 'approved' — approve the refined spec first.`);
@@ -44,7 +46,7 @@ if (isMain(import.meta.url)) {
 
   const body =
     `${cyc.body}\n\n## Implementation\n- branch: \`${branch}\` in \`${localPath}\` (off \`${base}\`) — never touches main\n- started: ${now()}\n\n### Checkpoint log\n- ${now()} — branch created; supervised implementation started.\n`;
-  upsertNote('Cycles', `${today()}-${slugify(project)}`, { ...cyc.data, stage: 'implement', status: 'active', branch, target_path: localPath }, body);
+  upsertNote('Cycles', path.basename(cyclePath, '.md'), { ...cyc.data, stage: 'implement', status: 'active', branch, target_path: localPath }, body);
 
   console.log(`IMPLEMENT set up for "${project}"`);
   console.log(`  branch: ${branch}  (in ${localPath}, off ${base}) — main untouched`);

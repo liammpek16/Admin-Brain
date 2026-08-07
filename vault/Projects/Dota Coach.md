@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Reduce error in the information shared in the coaching interface"
+next: "Extend the constants validator to ability facts and the knowledge Python files"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]

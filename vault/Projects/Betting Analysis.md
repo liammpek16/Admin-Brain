@@ -3,7 +3,7 @@ type: project
 name: Betting Analysis
 status: planned
 health: gray
-priority: med
+priority: low
 next: Define scope and pick a data source
 started: null
 updated: '2026-08-07'

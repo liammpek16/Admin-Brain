@@ -2,13 +2,15 @@
 type: project
 name: Job Hunt / Recruiter Helper
 status: planned
-health: gray
+health: yellow
 priority: high
-next: "Build the resume reviewer skill"
-started:
-updated: 2026-08-06
-tags: [career, tooling]
-repo: "C:/Users/liamm/job-hunt"
+next: Build the resume reviewer skill
+started: null
+updated: '2026-08-07'
+tags:
+  - career
+  - tooling
+repo: 'C:/Users/liamm/job-hunt'
 ---
 
 ## Summary

@@ -55,7 +55,7 @@ if (isMain(import.meta.url)) {
 
   const file = upsertNote(
     'Cycles',
-    `${date}-${slugify(brief.project)}`,
+    `${date}-${slugify(brief.task || brief.project)}`,
     { type: 'cycle', project: brief.project, stage: 'refine', status: 'refining', task: brief.task || '', started: date, readme_source: brief.repo || '' },
     body
   );

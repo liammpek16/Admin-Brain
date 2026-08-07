@@ -4,11 +4,13 @@ name: Stock Market Analyzer
 status: planned
 health: gray
 priority: med
-next: "Define scope and pick a free market-data source"
-started:
-updated: 2026-08-06
-tags: [data, finance]
-repo: ""
+next: Define scope and pick a free market-data source
+started: null
+updated: '2026-08-07'
+tags:
+  - data
+  - finance
+repo: ''
 ---
 
 ## Summary
