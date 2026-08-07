@@ -1,11 +1,13 @@
 ---
 type: cycle
 project: Dota Coach
-stage: refine
-status: awaiting-approval
+stage: implement
+status: active
 task: Reduce error in the information shared in the coaching interface
 started: '2026-08-07'
 readme_source: 'https://github.com/liammpek16/dota-projects'
+branch: auto/reduce-error-in-the-information-shared-in-the-coaching-inter
+target_path: 'C:/Users/liamm/Scripts'
 ---
 
 ## Task (from SELECT)
@@ -92,3 +94,25 @@ scoped to the static knowledge/constants layer (heroes, items, key mechanics):
 - **0 unexplained mismatches** on the checked subset (each either fixed or documented).
 - The validator is re-runnable (guards future changes) and documented in the repo.
 - No change to unrelated app behavior.
+
+## Implementation
+- branch: `auto/reduce-error-in-the-information-shared-in-the-coaching-inter` in `C:/Users/liamm/Scripts` (off `main`) — never touches main
+- started: 2026-08-07T14:25
+
+### Checkpoint log
+- 2026-08-07T14:25 — branch created; supervised implementation started.
+- 2026-08-07T14:40 — Added `dota_coach/validate_constants.py`: diffs local heroes/items
+  constants vs OpenDota `/constants` over a bounded subset; `--upstream-dir` (pinned) +
+  `--insecure` options. Checkpoint commit `1860b38`.
+- 2026-08-07T14:42 — Ran it: **0 discrepancies** on current constants (127 heroes, 501
+  items match). Detection self-tested — injected 3 errors, flagged exactly those, exit 1.
+
+### Result — DoD check
+- ✅ Runnable `validate` script in `dota_coach` that prints a discrepancy report.
+- ✅ 0 unexplained mismatches on the checked subset (constants are correct — nothing to fix).
+- ✅ Re-runnable (guards future changes) and documented in the README.
+- ✅ No change to unrelated app behavior (adds one script + a README section).
+
+**Implement complete on the branch.** Not pushed to the dota-projects remote yet — awaiting
+approval to open a draft PR. Ready for Phase D (independent verification).
+
