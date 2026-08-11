@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Add a hero-name alias map so drift can't recur (durable hardening), then move to per-fight coaching feedback"
+next: "Real-time per-fight coaching feedback: target prioritization, missed spells, positioning"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]
