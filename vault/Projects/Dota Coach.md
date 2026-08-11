@@ -11,7 +11,7 @@ tags: [gaming, coaching]
 repo: "https://github.com/liammpek16/dota-projects"
 local_path: "C:/Users/liamm/Scripts"
 webapp_url: "http://127.0.0.1:8080"
-webapp_cmd: "powershell -NoProfile -ExecutionPolicy Bypass -File run-webapp.ps1 -Demo"
+webapp_cmd: "powershell -NoProfile -ExecutionPolicy Bypass -File run-webapp.ps1"
 webapp_cwd: "C:/Users/liamm/Scripts"
 ---
 
