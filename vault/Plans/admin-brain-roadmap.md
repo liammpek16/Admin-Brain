@@ -16,7 +16,8 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (`a663c92`): FEATURE LOOP panel — pipeline, gates, stage runners. Follow-ups logged: stage handoff button; autonomous `claude -p` stage-runner (Phase E)._
 - [x] Goals board: browse every project's goals and manually run one through the loop (alternative to auto-select) — near · high
   - _Delivered (PR #1): PROJECT GOALS panel — per-goal Run buttons + add-goals-from-the-HUD; one-open-cycle-per-project enforced._
-- [ ] Add the ability to navigate to each project's webapp when applicable (e.g. the Dota coaching webapp) — near · high
+- [x] Add the ability to navigate to each project's webapp when applicable (e.g. the Dota coaching webapp) — near · high
+  - _Delivered (PR #2): ⧉ webapp button launches + opens the project's server (Dota wired to live mode on :8080). Follow-up: per-project in-flight lock (verify finding — double-launch race)._
 - [ ] Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD) — near · high
 - [ ] Improve the HUD for aesthetic reasons — mid · low (longer-term)
 - [ ] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)

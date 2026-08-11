@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Add the ability to navigate to each project's webapp from the HUD (e.g. the Dota coaching webapp)"
+next: "Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD)"
 started: 2026-08-07
 updated: '2026-08-07'
 tags: [meta, tooling, second-brain]
@@ -19,8 +19,8 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Goals board shipped (PR #1). Next: per-project webapp launch — or pick any goal from the
-  HUD goals board.
+- Webapp launch shipped (PR #2, Dota live). Next: in-HUD quick-note capture — or pick any goal
+  from the HUD goals board.
 
 ## Blockers
 - none
