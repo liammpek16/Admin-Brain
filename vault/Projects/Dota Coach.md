@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Real-time per-fight coaching feedback: target prioritization, missed spells, positioning"
+next: "Harden heroes.json hand-corrections so a constants refresh can't silently revert them"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]

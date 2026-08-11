@@ -1,8 +1,8 @@
 ---
 type: plan
 kind: roadmap
-created: 2026-08-07
-project: "Dota Coach"
+created: 2026-08-07T00:00:00.000Z
+project: Dota Coach
 horizon: quarter
 status: active
 ---
@@ -12,11 +12,14 @@ Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platfo
 
 ## Steps
 - [x] Reduce error in the information shared in the coaching interface — near · high
-- [ ] Real-time per-fight coaching feedback: target prioritization, missed spells, positioning — mid · high
+- [x] Real-time per-fight coaching feedback: target prioritization, missed spells, positioning — mid · high
+  - _Delivered (PR #4): deterministic "Coaching read" per fight in the webapp (target priority / missed spells / positioning), no LLM. Live in-game version remains a separate future goal._
 - [ ] Clean up the interface — mid · med
 - [ ] Determine feasibility of moving API calls to a known script — mid · med
 - [ ] Land the first paying subscription (first revenue) — mid · high
 - [ ] Per-fight video playback — long · low (stretch goal)
+- [ ] Add security to the webapp before launching live
+- [ ] Harden heroes.json hand-corrections so a constants refresh can't silently revert them — near · high
 
 ## Risks
 - Real-time accuracy is hard, and errors erode coaching trust — milestone 1 de-risks everything after it.
