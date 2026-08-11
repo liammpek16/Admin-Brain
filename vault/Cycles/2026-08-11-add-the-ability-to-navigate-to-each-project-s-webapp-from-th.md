@@ -1,8 +1,8 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: >-
   Add the ability to navigate to each project's webapp from the HUD (e.g. the
   Dota coaching webapp)
@@ -10,6 +10,7 @@ started: '2026-08-11'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
 branch: auto/add-the-ability-to-navigate-to-each-project-s-webapp-from-th
 target_path: 'C:/Users/liamm/Admin-Brain'
+report: 2026-08-11-add-the-ability-to-navigate-to-each-project-s-webapp-from-th
 ---
 
 ## Task (from SELECT)
@@ -230,3 +231,15 @@ real work is the probe→launch→poll→open mechanism + a safe, note-only comm
 
 **Implement complete.** Ready for Phase D (verify).
 
+## Verify (Phase D)
+Independent adversarial pass: **pass-with-notes** (8 checks). The button genuinely *opens the
+server* — it launched the Dota webapp (demo), waited for it, and :8080 served the real app;
+idempotent (2nd call `already:true`); **secure** (W2: request body can't inject a command — the
+launch command is note-only); no regressions. **Findings (minor):** double-launch race if two calls
+arrive before the server is up (button-disable covers the common case); probe checks liveness not
+identity; `webapp_url` can be any URL; spawned server is detached/unmanaged (by design). Report:
+[[2026-08-11-add-the-ability-to-navigate-to-each-project-s-webapp-from-th]].
+**Recommended follow-up (⑤ → ①):** "Add a per-project in-flight lock to the webapp launcher so
+concurrent clicks can't double-spawn."
+
+_Cycle complete (Admin-Brain PR #2 draft, awaiting your review/merge)._
