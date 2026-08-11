@@ -3,6 +3,7 @@
 // Bound to 127.0.0.1 only; runnable skills are a fixed allowlist (no arbitrary commands).
 
 import http from 'node:http';
+import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,7 +65,7 @@ async function overview() {
     projects: projects.map((p) => ({
       name: p.name, status: p.status, health: p.health, priority: p.priority,
       next: p.next, daysSince: p.daysSince, activitySource: p.activitySource,
-      milestones: p.milestones, progress: p.progress,
+      milestones: p.milestones, progress: p.progress, webappUrl: p.webappUrl,
     })),
     sessionsThisWeek: sessionsWithin(7).length,
     recentSessions: getSessions().slice(0, 5).map((s) => ({ date: s.date, project: s.project, player: s.player, daysAgo: s.daysAgo })),
@@ -223,6 +224,48 @@ async function selectGoal(project, goal) {
   return { ok: r.ok, output: r.output };
 }
 
+// ---- Project webapp launcher ----
+// Probe a URL: resolve true if the server answers at all (any HTTP status), false on error/timeout.
+function probeUrl(u, timeoutMs = 1500) {
+  return new Promise((resolve) => {
+    let parsed;
+    try { parsed = new URL(u); } catch { return resolve(false); }
+    const mod = parsed.protocol === 'https:' ? https : http;
+    const req = mod.get(u, { timeout: timeoutMs }, (res) => { res.resume(); resolve(true); });
+    req.on('timeout', () => { req.destroy(); resolve(false); });
+    req.on('error', () => resolve(false));
+  });
+}
+
+// "Open the server": ensure a project's webapp is up (launch its note-declared command if not,
+// then wait for it to answer), and hand back the URL for the browser to open. The command is read
+// ONLY from the project note — the request carries just `project`. Spawned detached on 127.0.0.1.
+async function launchWebapp(project) {
+  const proj = (await getProjects()).find((p) => p.name === project);
+  if (!proj) return { ok: false, output: `Project not found: ${project}` };
+  if (!proj.webappUrl) return { ok: false, output: `No webapp configured for "${project}".` };
+  const url = proj.webappUrl;
+
+  if (await probeUrl(url)) return { ok: true, url, already: true, output: `${project} webapp already running — opening ${url}` };
+  if (!proj.webappCmd) return { ok: true, url, already: false, output: `Opening ${url} (no launch command configured).` };
+
+  try {
+    const child = spawn(proj.webappCmd, {
+      cwd: proj.webappCwd || proj.localPath || undefined,
+      shell: true, detached: true, stdio: 'ignore', windowsHide: true,
+    });
+    child.unref();
+  } catch (e) {
+    return { ok: false, url, output: `Failed to launch ${project} webapp: ${(e && e.message) || e}` };
+  }
+
+  for (let i = 0; i < 40; i++) { // poll up to ~20s for the server to come up
+    await new Promise((r) => setTimeout(r, 500));
+    if (await probeUrl(url)) return { ok: true, url, started: true, output: `Started ${project} webapp at ${url}` };
+  }
+  return { ok: false, url, output: `Launched ${project} webapp, but ${url} isn't responding yet — it may still be starting (check the terminal).` };
+}
+
 function serveStatic(req, res) {
   let rel = req.url.split('?')[0];
   if (rel === '/') rel = '/index.html';
@@ -275,6 +318,14 @@ const server = http.createServer(async (req, res) => {
       try {
         const { base } = JSON.parse((await readBody(req)) || '{}');
         r = approveCycle(String(base || ''));
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/project/webapp') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { project } = JSON.parse((await readBody(req)) || '{}');
+        r = await launchWebapp(String(project || ''));
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
     }

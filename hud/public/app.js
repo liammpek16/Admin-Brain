@@ -35,8 +35,10 @@ async function loadOverview() {
     const act = p.activitySource === 'git' ? 'commit' : 'note';
     const ago = p.daysSince === 0 ? 'today' : `${p.daysSince}d`;
     const pj = escAttr(p.name);
+    const webapp = p.webappUrl
+      ? ` <button class="webapp-btn" data-project="${pj}" title="Launch &amp; open ${escAttr(p.webappUrl)}">⧉ webapp</button>` : '';
     return `<div class="proj-row">
-      <span class="name">${esc(p.name)}${p.milestones ? ` <span class="dim">(${p.milestones.done}/${p.milestones.total} · ${p.progress}%)</span>` : ''}</span>
+      <span class="name">${esc(p.name)}${p.milestones ? ` <span class="dim">(${p.milestones.done}/${p.milestones.total} · ${p.progress}%)</span>` : ''}${webapp}</span>
       <select class="edit" data-project="${pj}" data-field="health">${opt(p.health, ['green', 'yellow', 'red', 'gray'], (v) => `${HEALTH[v]} ${v}`)}</select>
       <select class="edit" data-project="${pj}" data-field="priority">${opt(p.priority, ['high', 'med', 'low'])}</select>
       <span class="next">${esc(p.next || '—')}</span>
@@ -216,6 +218,34 @@ $('projects-list').addEventListener('change', async (e) => {
     /* fall through — reload restores the true value */
   }
   await loadOverview(); // re-render reflects the saved value (and any ranking impact)
+});
+
+// Launch + open a project's webapp. Open the tab inside the click gesture (so it isn't
+// popup-blocked), then point it at the URL once the server is confirmed up.
+$('projects-list').addEventListener('click', async (e) => {
+  const b = e.target.closest('button.webapp-btn');
+  if (!b) return;
+  const win = window.open('', '_blank'); // reserve a tab within the user gesture
+  b.disabled = true;
+  const orig = b.textContent;
+  b.textContent = '⧉ opening…';
+  const log = $('deck-log');
+  log.textContent = `▶ ensuring ${b.dataset.project} webapp is up…`;
+  try {
+    const r = await fetch('/api/project/webapp', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project: b.dataset.project }),
+    }).then((r) => r.json());
+    log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
+    if (r.ok && r.url) { if (win) win.location = r.url; }
+    else if (win) win.close();
+  } catch (err) {
+    log.textContent = `✗ ${err}`;
+    if (win) win.close();
+  } finally {
+    b.disabled = false;
+    b.textContent = orig;
+  }
 });
 
 $('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); });
