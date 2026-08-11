@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Harden heroes.json hand-corrections so a constants refresh can't silently revert them"
+next: "Clean up the interface"
 started: 2026-08-06
 updated: 2026-08-06
 tags: [gaming, coaching]

@@ -19,7 +19,8 @@ Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platfo
 - [ ] Land the first paying subscription (first revenue) — mid · high
 - [ ] Per-fight video playback — long · low (stretch goal)
 - [ ] Add security to the webapp before launching live
-- [ ] Harden heroes.json hand-corrections so a constants refresh can't silently revert them — near · high
+- [x] Harden heroes.json hand-corrections so a constants refresh can't silently revert them — near · high
+  - _Delivered (PR #5): id-keyed canonical overlay re-applied on every hero-constants refresh (fetch + offline-fallback); a stale upstream can no longer revert Outworld Destroyer / Ringmaster. Validator stays the net._
 
 ## Risks
 - Real-time accuracy is hard, and errors erode coaching trust — milestone 1 de-risks everything after it.
