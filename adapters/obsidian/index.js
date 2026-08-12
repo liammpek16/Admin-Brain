@@ -77,12 +77,7 @@ function githubLastCommit(owner, repo) {
   });
 }
 
-/**
- * Last commit date driving a project's recency, or null (→ caller falls back to note mtime).
- * - GitHub URL / "owner/repo" → queried remotely via `gh` (always fresh; needs network).
- * - Local filesystem path → read from the local clone via simple-git (offline).
- */
-export async function lastGitActivity(repoPath) {
+async function _computeLastGitActivity(repoPath) {
   if (!repoPath || typeof repoPath !== 'string') return null;
   const ref = repoPath.trim();
   if (!ref) return null;
@@ -100,6 +95,37 @@ export async function lastGitActivity(repoPath) {
   } catch {
     return null;
   }
+}
+
+// Git recency (a `gh api` network call for GitHub repos, or local `simple-git`) only moves on a new
+// commit, so cache it per-repo for a short TTL. Caching the PROMISE also de-dupes the concurrent
+// callers (e.g. the HUD's overview + goals fetches firing at once) into a single lookup. This is the
+// difference between the HUD phoning GitHub on every refresh vs. only once a minute per repo.
+const _recencyCache = new Map(); // key -> { at: ms, promise: Promise<Date|null> }
+const RECENCY_TTL_MS = Number(process.env.ADMIN_BRAIN_RECENCY_TTL_MS) || 60_000;
+
+/**
+ * Last commit date driving a project's recency, or null (→ caller falls back to note mtime).
+ * - GitHub URL / "owner/repo" → queried remotely via `gh` (needs network).
+ * - Local filesystem path → read from the local clone via simple-git (offline).
+ * Cached per-repo for RECENCY_TTL_MS; `_computeLastGitActivity` never rejects, so the cached
+ * promise is always safe to reuse. Pass a falsy `repoPath` to skip the cache (returns null).
+ */
+export function lastGitActivity(repoPath) {
+  const key = (typeof repoPath === 'string' ? repoPath.trim() : '');
+  if (!key) return Promise.resolve(null);
+  const now = Date.now();
+  const hit = _recencyCache.get(key);
+  if (hit && (now - hit.at) < RECENCY_TTL_MS) return hit.promise;
+  const promise = _computeLastGitActivity(key);
+  _recencyCache.set(key, { at: now, promise });
+  return promise;
+}
+
+/** Drop cached git-recency (all repos, or one) — e.g. after a commit you want reflected now. */
+export function clearRecencyCache(repoPath) {
+  if (repoPath) _recencyCache.delete(String(repoPath).trim());
+  else _recencyCache.clear();
 }
 
 /**
