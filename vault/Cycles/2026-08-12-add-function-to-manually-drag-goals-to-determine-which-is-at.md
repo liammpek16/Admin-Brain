@@ -1,8 +1,8 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: >-
   add function to manually drag goals to determine which is at the top of the
   order
@@ -10,6 +10,7 @@ started: '2026-08-12'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
 branch: auto/add-function-to-manually-drag-goals-to-determine-which-is-at
 target_path: 'C:/Users/liamm/Admin-Brain'
+report: 2026-08-12-add-function-to-manually-drag-goals-to-determine-which-is-at
 ---
 
 ## Task (from SELECT)
@@ -224,3 +225,13 @@ is atomic goal-block moves + a no-loss guard.
 
 **Implement complete.** Ready for Phase D (verify).
 
+## Verify (Phase D)
+Independent pass: **pass** (10 checks). Drag persists (fetch + synthetic browser drag); atomic goal-
+block moves preserve done/meta/Delivered sub-bullets AND the ## Goal/## Risks sections; the no-loss
+permutation guard rejects foreign-goal, duplicate, bad-set, and unknown-project orders (400, file
+unchanged); idempotent. Notes: pre-existing HUD poll doesn'''t try/catch fetch (console noise when the
+server is down, out of scope); matching is by goal text (dup-text projects can'''t reorder — safe
+edge); a raw-shell test payload was mangled on the → unicode (browser/fetch send clean UTF-8). Report:
+[[2026-08-12-add-function-to-manually-drag-goals-to-determine-which-is-at]].
+
+_Cycle complete (Admin-Brain PR #3 draft, awaiting your review/merge)._
