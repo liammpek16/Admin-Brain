@@ -4,12 +4,17 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD)"
-started: 2026-08-07
-updated: '2026-08-07'
-tags: [meta, tooling, second-brain]
-repo: "https://github.com/liammpek16/Admin-Brain"
-local_path: "C:/Users/liamm/Admin-Brain"
+next: >-
+  add function to manually drag goals to determine which is at the top of the
+  order
+started: 2026-08-07T00:00:00.000Z
+updated: '2026-08-12'
+tags:
+  - meta
+  - tooling
+  - second-brain
+repo: 'https://github.com/liammpek16/Admin-Brain'
+local_path: 'C:/Users/liamm/Admin-Brain'
 ---
 
 ## Summary

@@ -1,8 +1,8 @@
 ---
 type: plan
 kind: roadmap
-created: 2026-08-07
-project: "Admin Brain"
+created: 2026-08-07T00:00:00.000Z
+project: Admin Brain
 horizon: quarter
 status: active
 ---
@@ -21,6 +21,8 @@ project from one place, capture notes without leaving it, and eventually drive i
 - [ ] Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD) — near · high
 - [ ] Improve the HUD for aesthetic reasons — mid · low (longer-term)
 - [ ] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)
+- [ ] add function to manually drag goals to determine which is at the top of the order
+- [ ] fix latency issue with writing new project goals in the admin brain
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
