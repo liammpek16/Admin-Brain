@@ -1,8 +1,13 @@
 const HEALTH = { green: '🟢', yellow: '🟡', red: '🔴', gray: '⚪' };
 const $ = (id) => document.getElementById(id);
 
+// Latest /api/overview payload — stashed so the audio briefing (🔊 AGENDA) can read today's
+// focus/attention without re-fetching. Updated on every loadOverview().
+let lastOverview = null;
+
 async function loadOverview() {
   const o = await fetch('/api/overview').then((r) => r.json());
+  lastOverview = o;
   $('meta').textContent = `${o.date} · updated ${o.generated}`;
 
   $('glance-nums').innerHTML = [
@@ -338,6 +343,7 @@ const VOICE_COMMANDS = [
   { rx: /\b(brief|standup|stand up|daily)\b/, sel: '.run[data-skill="brief"]', label: 'brief' },
   { rx: /\bmetrics\b/, sel: '.run[data-skill="metrics"]', label: 'metrics' },
   { rx: /\binbox\b/, sel: '.run[data-skill="inbox"]', label: 'inbox' },
+  { rx: /\b(agenda|read (my )?goals|say (my )?goals|speak (my )?goals|read the agenda)\b/, sel: '#tts-btn', label: 'audio agenda' },
   { rx: /\b(select|next task|choose next)\b/, sel: '#loop-select', label: 'select next task' },
   { rx: /\b(sync|refresh|reload|update)\b/, sel: '#refresh', label: 'sync' },
 ];
@@ -359,8 +365,8 @@ function setVoiceStatus(msg) { const el = $('voice-status'); if (el) el.textCont
 // Fire the matched command by clicking the real button (reuses its handler), or explain the miss.
 function handleVoiceTranscript(transcript) {
   const m = matchVoiceCommand(transcript);
-  if (!m) { setVoiceStatus(`🎙 heard “${transcript}” — no command. Try: brief, metrics, inbox, select, sync.`); return; }
-  if (m.help) { setVoiceStatus('Commands: brief · metrics · inbox · select (next task) · sync.'); return; }
+  if (!m) { setVoiceStatus(`🎙 heard “${transcript}” — no command. Try: brief, metrics, inbox, agenda, select, sync.`); return; }
+  if (m.help) { setVoiceStatus('Commands: brief · metrics · inbox · agenda (audio) · select (next task) · sync.'); return; }
   const target = document.querySelector(m.sel);
   if (target) { setVoiceStatus(`🎙 heard “${transcript}” → ${m.label}`); target.click(); }
   else setVoiceStatus(`🎙 “${m.label}” isn't available right now.`);
@@ -399,6 +405,108 @@ function startVoice() {
     return;
   }
   btn.addEventListener('click', startVoice);
+})();
+
+// ---- Audio briefing (🔊 AGENDA — Jarvis-styled, browser-native speech synthesis) ----
+// The synthesis twin of the voice command bar: reads today's agenda aloud via the browser's
+// own SpeechSynthesis. Deterministic, $0, no deps; nothing leaves the machine. A movie-accurate
+// Jarvis clone would need an external neural-TTS service (out of scope) — this picks the best
+// available British male voice as an honest approximation.
+function getSpeechSynthesis() { return window.speechSynthesis || null; }
+function setTtsStatus(msg) { const el = $('tts-status'); if (el) el.textContent = msg || ''; }
+
+// Make a focus/attention line speakable: drop markdown, turn dashes/arrows into pauses.
+function speechClean(s) {
+  return String(s == null ? '' : s)
+    .replace(/[`*#_>|]/g, '')
+    .replace(/\s*[—–]\s*/g, ', ')
+    .replace(/\s*→\s*/g, ', ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Pure + global so it's unit-testable without audio: compose a short, Jarvis-styled briefing
+// from an /api/overview payload. Handles missing/empty focus + attention gracefully.
+function buildBriefingScript(o) {
+  if (!o) return 'Good day, sir. I have no data to brief you on just yet.';
+  const hr = new Date().getHours();
+  const partOfDay = hr < 12 ? 'morning' : hr < 18 ? 'afternoon' : 'evening';
+  const focus = Array.isArray(o.focus) ? o.focus.map(speechClean).filter(Boolean) : [];
+  const attention = Array.isArray(o.attention) ? o.attention.filter(Boolean) : [];
+  const active = o.counts && typeof o.counts.active === 'number' ? o.counts.active : null;
+
+  const lines = [`Good ${partOfDay}, sir.`];
+  if (active !== null) lines.push(`You have ${active} active ${active === 1 ? 'project' : 'projects'}.`);
+  lines.push(attention.length
+    ? `${attention.length} ${attention.length === 1 ? 'item needs' : 'items need'} your attention.`
+    : 'Nothing is flagged for your attention.');
+  if (focus.length) {
+    lines.push('Here is your agenda for today.');
+    focus.forEach((f, i) => lines.push(`${i + 1}. ${f}.`));
+  } else {
+    lines.push('There is nothing on the focus board for today.');
+  }
+  lines.push('That concludes your briefing.');
+  return lines.join(' ');
+}
+
+// Pure + global: choose the most Jarvis-like installed voice — a British male by preference,
+// then any en-GB, then any English, else null (→ the engine's default). Tolerates an empty list.
+const JARVIS_VOICE_PREFS = [
+  'Google UK English Male',
+  'Microsoft Ryan Online (Natural) - English (United Kingdom)',
+  'Microsoft George - English (United Kingdom)',
+  'Microsoft Ryan - English (United Kingdom)',
+  'Daniel (English (United Kingdom))',
+  'Daniel',
+  'Arthur',
+];
+function pickJarvisVoice(voices) {
+  const list = Array.isArray(voices) ? voices.filter(Boolean) : [];
+  if (!list.length) return null;
+  for (const pref of JARVIS_VOICE_PREFS) {
+    const v = list.find((x) => x.name === pref);
+    if (v) return v;
+  }
+  const enGB = list.filter((x) => /en[-_]?GB/i.test(x.lang || ''));
+  const male = enGB.find((x) => /\b(male|daniel|george|ryan|arthur)\b/i.test(x.name || ''));
+  if (male) return male;
+  if (enGB.length) return enGB[0];
+  return list.find((x) => /^en/i.test(x.lang || '')) || null;
+}
+
+let ttsSpeaking = false;
+function speakAgenda() {
+  const synth = getSpeechSynthesis();
+  if (!synth) { setTtsStatus('Speech synthesis not supported in this browser.'); return; }
+  const btn = $('tts-btn');
+  if (ttsSpeaking || synth.speaking) { synth.cancel(); return; } // second click = stop
+  const u = new SpeechSynthesisUtterance(buildBriefingScript(lastOverview));
+  const voice = pickJarvisVoice(synth.getVoices());
+  if (voice) u.voice = voice;
+  u.lang = (voice && voice.lang) || 'en-GB';
+  u.rate = 0.95; u.pitch = 0.9;
+  u.onstart = () => { ttsSpeaking = true; btn && btn.classList.add('speaking'); setTtsStatus(`🔊 briefing…${voice ? ` (${voice.name})` : ''}`); };
+  const reset = () => { ttsSpeaking = false; btn && btn.classList.remove('speaking'); };
+  u.onend = () => { reset(); setTtsStatus(''); };
+  u.onerror = (e) => { reset(); setTtsStatus(e.error === 'interrupted' || e.error === 'canceled' ? '' : `speech error: ${e.error}`); };
+  try { synth.speak(u); } catch (err) { setTtsStatus(`speech error: ${err}`); }
+}
+
+// Feature-detect + wire the 🔊 button (disabled with a note when unsupported). Warm up the async
+// voice list so the first briefing can already pick the Jarvis voice.
+(() => {
+  const btn = $('tts-btn');
+  if (!btn) return;
+  const synth = getSpeechSynthesis();
+  if (!synth) {
+    btn.disabled = true;
+    btn.title = 'Audio briefing not supported in this browser';
+    setTtsStatus('audio briefing not supported here');
+    return;
+  }
+  try { synth.getVoices(); synth.addEventListener('voiceschanged', () => synth.getVoices()); } catch {}
+  btn.addEventListener('click', speakAgenda);
 })();
 
 loadOverview();
