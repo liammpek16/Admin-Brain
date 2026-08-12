@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "fix latency issue with writing new project goals in the admin brain"
+next: Voice-activation module for the Admin Brain and all commands
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-08-12'
 tags:

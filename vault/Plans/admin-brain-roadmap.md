@@ -23,7 +23,8 @@ project from one place, capture notes without leaving it, and eventually drive i
 - [ ] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)
 - [x] add function to manually drag goals to determine which is at the top of the order
   - _Delivered (PR #3): drag `.goal` rows (⠿ grip) to reorder within a project; persists to the roadmap Steps with atomic goal-block moves + a no-loss permutation guard._
-- [ ] fix latency issue with writing new project goals in the admin brain
+- [x] fix latency issue with writing new project goals in the admin brain
+  - _Delivered (PR #4): TTL promise-cache + parallelized git-recency in getProjects — add-goal 1788ms→171ms, warm reads ~800ms→6ms._
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
