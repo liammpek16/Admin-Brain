@@ -20,7 +20,8 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #2): ⧉ webapp button launches + opens the project's server (Dota wired to live mode on :8080). Follow-up: per-project in-flight lock (verify finding — double-launch race)._
 - [ ] Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD) — near · high
 - [ ] Improve the HUD for aesthetic reasons — mid · low (longer-term)
-- [ ] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)
+- [x] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)
+  - _Delivered (PR #5): push-to-talk voice command bar (🎤) — browser Web Speech, deterministic keyword grammar → clicks the matching HUD button; no deps/LLM. Live mic to be confirmed by the user; future: wake-word, TTS._
 - [x] add function to manually drag goals to determine which is at the top of the order
   - _Delivered (PR #3): drag `.goal` rows (⠿ grip) to reorder within a project; persists to the roadmap Steps with atomic goal-block moves + a no-loss permutation guard._
 - [x] fix latency issue with writing new project goals in the admin brain
