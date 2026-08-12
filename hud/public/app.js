@@ -103,7 +103,7 @@ async function loadCycles() {
     ? active.map(cycleCard).join('')
     : '<p class="dim">No active cycle. Pick a target (or leave auto) and SELECT the next task.</p>';
   $('cycles-list').innerHTML = done.length
-    ? done.map((c) => `<div class="proj-row loop-row"><span class="name">${esc(c.task || c.project)}</span><span class="dim">${esc(c.project)}</span><span class="dim">✓ ${esc(c.status)}</span><span class="dim">${c.branch ? esc(c.branch) : ''}</span></div>`).join('')
+    ? done.map((c) => `<div class="proj-row loop-row"><span class="name">${esc(c.task || c.project)}</span><span class="dim">${esc(c.project)}</span><span class="dim">✓ ${esc(c.status)}</span><span class="cyc-del-cell"><span class="dim">${c.branch ? esc(c.branch) : ''}</span><button class="note-del" title="Delete this cycle note + report (git-recoverable)" data-base="${escAttr(c.base)}" data-report="${escAttr(c.report || '')}">✕</button></span></div>`).join('')
     : '<p class="dim">none yet</p>';
 }
 
@@ -265,6 +265,36 @@ $('loop-active').addEventListener('click', async (e) => {
   b.disabled = true;
   if (b.dataset.act === 'approve') await loopPost('/api/cycle/approve', { base: b.dataset.base }, 'approve');
   else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
+});
+
+// Delete a completed cycle's note (+ its report) from the vault — guarded server-side, confirm here.
+async function deleteNoteReq(folder, name) {
+  return fetch('/api/note/delete', {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ folder, name }),
+  }).then((r) => r.json());
+}
+$('cycles-list').addEventListener('click', async (e) => {
+  const b = e.target.closest('button.note-del');
+  if (!b) return;
+  if (!confirm("Delete this completed cycle's note (and its report)? Recoverable via git.")) return;
+  b.disabled = true;
+  const log = $('loop-log');
+  log.textContent = '▶ deleting note…';
+  try {
+    const parts = [];
+    let ok = true;
+    if (b.dataset.report) { // delete the linked report first, if present
+      const r1 = await deleteNoteReq('Reports', b.dataset.report);
+      ok = ok && r1.ok; parts.push(`report ${r1.ok ? '✓' : '✗ ' + (r1.output || '')}`);
+    }
+    const r2 = await deleteNoteReq('Cycles', b.dataset.base);
+    ok = ok && r2.ok; parts.push(`cycle ${r2.ok ? '✓' : '✗ ' + (r2.output || '')}`);
+    log.textContent = `${ok ? '✓ deleted' : '✗ delete failed'} — ${parts.join(' · ')}`;
+  } catch (err) {
+    log.textContent = `✗ ${err}`;
+  }
+  await Promise.all([loadCycles(), loadOverview()]);
 });
 
 // Goals board: run a goal through the loop, or add a new goal to a project.

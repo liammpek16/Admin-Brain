@@ -1,8 +1,9 @@
 // vault skill — the ONE domain accessor. Built on adapters/obsidian.
 // Returns normalized project objects with DERIVED recency (per docs/DATA-CONTRACT.md).
 
+import fs from 'node:fs';
 import path from 'node:path';
-import { listMarkdown, readNote, readFolder, upsertNote, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
+import { listMarkdown, readNote, readFolder, upsertNote, lastGitActivity, vaultPath, isMain } from '../../adapters/obsidian/index.js';
 
 const DAY = 86_400_000;
 
@@ -142,6 +143,38 @@ export function projectGoals(name) {
     }
   }
   return goals;
+}
+
+// The ONLY vault folders a note may be deleted from via the HUD — the records that safely
+// accumulate. Core/source-of-truth folders (Projects, Plans, Sessions, _Dashboards, Home, …)
+// are deliberately absent and can never be deleted through deleteNote.
+const DELETABLE_FOLDERS = new Set(['Cycles', 'Reports', 'Daily', 'Metrics']);
+
+/**
+ * Delete one note file, guarded. Allowlisted folders only; path-safe (bare `.md` filename, no
+ * separators/`..`/absolute, must resolve inside the folder); a Cycles note is deletable only when
+ * it's `done`/`abandoned` (never an in-flight cycle). Files are git-tracked, so a delete is
+ * recoverable — there's no separate trash. Returns { ok, error? }.
+ */
+export function deleteNote(folder, name) {
+  if (!DELETABLE_FOLDERS.has(folder)) return { ok: false, error: `folder not deletable: ${folder || '(none)'}` };
+  const raw = String(name || '').trim();
+  if (!raw || raw.includes('/') || raw.includes('\\') || raw.includes('..') || path.isAbsolute(raw)) {
+    return { ok: false, error: 'bad note name' };
+  }
+  const file = raw.toLowerCase().endsWith('.md') ? raw : `${raw}.md`;
+  const dir = path.resolve(vaultPath(), folder);
+  const target = path.resolve(dir, file);
+  if (path.dirname(target) !== dir) return { ok: false, error: 'path escapes the folder' };
+  if (!fs.existsSync(target)) return { ok: false, error: 'note not found' };
+  if (folder === 'Cycles') {
+    const status = String(readNote(target).data.status || '');
+    if (status !== 'done' && status !== 'abandoned') {
+      return { ok: false, error: `cycle is in-flight (${status || 'unknown'}) — finish or abandon it first` };
+    }
+  }
+  fs.unlinkSync(target);
+  return { ok: true };
 }
 
 /** Set the human-owned `next` on a project note (manual goal selection). Returns true on success. */

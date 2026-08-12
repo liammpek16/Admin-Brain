@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteNote, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
@@ -294,6 +294,15 @@ const server = http.createServer(async (req, res) => {
         const { project, text } = JSON.parse((await readBody(req)) || '{}');
         const res2 = addProjectGoal(String(project || ''), String(text || ''));
         r = res2.ok ? { ok: true, output: `Added goal to ${project}.` } : { ok: false, output: res2.error || 'failed' };
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/note/delete') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { folder, name } = JSON.parse((await readBody(req)) || '{}');
+        const res2 = deleteNote(String(folder || ''), String(name || ''));
+        r = res2.ok ? { ok: true, output: `Deleted ${folder}/${name}` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
     }
