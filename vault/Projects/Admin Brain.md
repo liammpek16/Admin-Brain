@@ -4,9 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: >-
-  audio break down of goals for the day. Make the voice sound like Jarvis from
-  Iron Man
+next: Improve the HUD for aesthetic reasons
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-08-12'
 tags:
@@ -24,8 +22,8 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Delete-goal ✕ shipped (PR #6). Next: in-HUD quick-note capture — or pick any goal
-  from the HUD goals board.
+- Audio agenda shipped (PR #7): 🔊 AGENDA speaks the day's focus in a Jarvis-styled voice.
+  Next: HUD aesthetic polish — or pick any goal from the HUD goals board.
 
 ## Blockers
 - none
@@ -37,5 +35,8 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   as follow-ups.
 - 2026-08-12 — "delete notes" goal delivered + ticked (PR #6): a guarded delete-goal ✕ in the
   PROJECT GOALS panel. Redirected at review from an earlier cycle-note-file delete.
+- 2026-08-12 — "audio breakdown / Jarvis voice" goal delivered + ticked (PR #7): 🔊 AGENDA
+  speaks the day's agenda via browser Web Speech synthesis (best British male voice). True neural
+  clone declined at the refine gate (would need external paid TTS). User to confirm the audio.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.
