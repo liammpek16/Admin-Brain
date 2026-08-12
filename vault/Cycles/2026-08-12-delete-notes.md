@@ -1,13 +1,14 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: delete notes
 started: '2026-08-12'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
 branch: auto/delete-notes
 target_path: 'C:/Users/liamm/Admin-Brain'
+report: 2026-08-12-delete-notes
 ---
 
 ## Task (from SELECT)
@@ -225,3 +226,14 @@ guards (allowlist, done-only, path-safety, confirm), not the unlink.
 
 **Implement complete.** Ready for Phase D (verify).
 
+## Verify (Phase D)
+Independent pass: **pass** (12 checks, throwaways only, real notes intact throughout). Guards hold on
+every path: rejects Projects/Plans folders, /absolute/slashes/Windows-backslash traversal, empty/
+bare , case variants (cycles/CYCLES/reports), nonexistent, and in-flight (non-done) cycles;
+deletes a throwaway done cycle+report+Daily via function, endpoint, and the UI ✕ (confirm) with the
+row disappearing; -less names append . Core notes proven undeletable. Minor notes (not
+blockers): Reports/Daily/Metrics have no status-guard (reachable only via the raw endpoint; UI exposes
+delete on completed cycles only; git-recoverable); orphan-report possible via the raw endpoint (UI
+deletes both). Report: [[2026-08-12-delete-notes]].
+
+_Cycle complete (Admin-Brain PR #6 draft, awaiting your review/merge)._
