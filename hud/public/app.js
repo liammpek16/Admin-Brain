@@ -115,17 +115,18 @@ async function loadGoals() {
   $('goals-board').innerHTML = board.map((p) => {
     const items = p.goals.length ? p.goals.map((g) => {
       const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
-      if (g.done) return `<li class="goal done"><span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}</li>`;
+      const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
+      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}</li>`;
       const ctrl = p.hasOpenCycle
         ? `<span class="pill inflight">in flight</span>`
         : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-      return `<li class="goal"><span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
+      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
     }).join('') : '<li class="dim">no roadmap goals yet</li>';
     const add = `<div class="goal-add">
       <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
       <button class="btn goal-add-btn" data-project="${escAttr(p.name)}">+ Add</button>
     </div>`;
-    return `<div class="goal-group"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul>${add}</div>`;
+    return `<div class="goal-group" data-project="${escAttr(p.name)}"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul>${add}</div>`;
   }).join('');
 }
 
@@ -275,6 +276,50 @@ $('goals-board').addEventListener('click', async (e) => {
 });
 $('goals-board').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.target.classList.contains('goal-input')) { e.preventDefault(); addGoal(e.target.dataset.project, e.target); }
+});
+
+// Drag to reorder goals within a project; persisted to the roadmap on drop.
+let dragEl = null;
+$('goals-board').addEventListener('dragstart', (e) => {
+  const li = e.target.closest('li.goal');
+  if (!li) return;
+  dragEl = li;
+  li.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  try { e.dataTransfer.setData('text/plain', li.dataset.goal || ''); } catch {}
+});
+$('goals-board').addEventListener('dragover', (e) => {
+  if (!dragEl) return;
+  const group = e.target.closest('.goal-group');
+  if (!group || group !== dragEl.closest('.goal-group')) return; // same project only
+  e.preventDefault();
+  const over = e.target.closest('li.goal');
+  if (!over || over === dragEl) return;
+  const rect = over.getBoundingClientRect();
+  const after = (e.clientY - rect.top) > rect.height / 2;
+  over.parentNode.insertBefore(dragEl, after ? over.nextSibling : over);
+});
+$('goals-board').addEventListener('drop', (e) => { if (dragEl) e.preventDefault(); });
+$('goals-board').addEventListener('dragend', async () => {
+  if (!dragEl) return;
+  const li = dragEl; dragEl = null;
+  li.classList.remove('dragging');
+  const group = li.closest('.goal-group');
+  if (!group) return;
+  const project = group.dataset.project;
+  const order = [...group.querySelectorAll('li.goal')].map((x) => x.dataset.goal);
+  const log = $('loop-log');
+  log.textContent = `▶ reordering ${project} goals…`;
+  try {
+    const r = await fetch('/api/project/reorder-goals', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project, order }),
+    }).then((r) => r.json());
+    log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
+  } catch (err) {
+    log.textContent = `✗ ${err}`;
+  }
+  await loadGoals(); // re-render from the persisted order (snaps back if the write was rejected)
 });
 
 loadOverview();

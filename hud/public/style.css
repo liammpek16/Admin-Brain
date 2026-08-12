@@ -178,6 +178,9 @@ li { margin: 5px 0; }
 .goal-list { list-style: none; margin: 0; padding: 0; }
 .goal { display: flex; align-items: baseline; gap: 7px; padding: 4px 0; border-bottom: 1px solid rgba(92,240,255,0.05); }
 .goal:last-child { border-bottom: none; }
+.goal .grip { flex: 0 0 auto; color: var(--dim); cursor: grab; font-size: 11px; line-height: 1; user-select: none; align-self: center; }
+.goal .grip:active { cursor: grabbing; }
+.goal.dragging { opacity: 0.45; background: rgba(92,240,255,0.06); }
 .gcheck { flex: 0 0 auto; font-size: 11px; }
 .goal.done .gcheck { color: var(--cyan); }
 .gtext { flex: 1 1 auto; color: var(--fg); line-height: 1.35; }

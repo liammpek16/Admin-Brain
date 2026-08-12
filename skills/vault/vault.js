@@ -198,6 +198,65 @@ export function addProjectGoal(project, text) {
   return { ok: true };
 }
 
+const goalTextOf = (line) => {
+  const m = line.match(/^[-*]\s+\[[ xX]\]\s+(.+?)\s*$/);
+  if (!m) return null;
+  let text = m[1].trim();
+  const i = text.lastIndexOf(' — ');
+  return i !== -1 ? text.slice(0, i).trim() : text;
+};
+
+/**
+ * Reorder a project's roadmap goals to match `orderedTexts` (drag-to-reorder in the HUD).
+ * Parses `## Steps` into goal-BLOCKS — each a top-level checkbox line PLUS its following
+ * indented/sub-bullet lines (e.g. `_Delivered…_`) — and rewrites them in the given order,
+ * so a goal's done state, meta, and Delivered note always move together. Refuses (no write)
+ * unless `orderedTexts` is exactly the current set of goal texts — no add/drop/duplicate.
+ * Returns { ok, error? }.
+ */
+export function reorderProjectGoals(project, orderedTexts) {
+  if (!Array.isArray(orderedTexts) || !orderedTexts.length) return { ok: false, error: 'no order given' };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+
+  const lines = pl.body.split(/\r?\n/);
+  const si = lines.findIndex((l) => /^##\s+Steps\b/i.test(l));
+  if (si === -1) return { ok: false, error: 'no Steps section' };
+  let end = lines.length;
+  for (let i = si + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) { end = i; break; } }
+
+  const region = lines.slice(si + 1, end);
+  const suffix = [];
+  while (region.length && region[region.length - 1].trim() === '') suffix.unshift(region.pop());
+
+  // Parse into blocks; lines before the first checkbox are a preamble kept up top.
+  const preamble = [];
+  const blocks = [];
+  let cur = null;
+  for (const ln of region) {
+    const text = goalTextOf(ln);
+    if (text !== null) { cur = { text, lines: [ln] }; blocks.push(cur); }
+    else if (cur) cur.lines.push(ln);
+    else preamble.push(ln);
+  }
+
+  // No-loss guard: the requested order must be exactly the existing goal set.
+  const have = blocks.map((b) => b.text);
+  const want = orderedTexts.map(String);
+  if (want.length !== have.length || new Set(want).size !== want.length
+      || !want.every((t) => have.includes(t))) {
+    return { ok: false, error: 'order must be a permutation of the existing goals' };
+  }
+
+  const byText = new Map(blocks.map((b) => [b.text, b]));
+  const newRegion = [];
+  for (const t of want) newRegion.push(...byText.get(t).lines);
+
+  const newBody = [...lines.slice(0, si + 1), ...preamble, ...newRegion, ...suffix, ...lines.slice(end)].join('\n');
+  upsertNote('Plans', pl.name, pl.data, newBody);
+  return { ok: true };
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));
