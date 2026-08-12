@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: "Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD)"
+next: delete notes
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-08-12'
 tags:
