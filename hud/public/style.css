@@ -67,6 +67,9 @@ body {
 .btn:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(92,240,255,0.4); color: #eaffff; }
 .btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: 0.4; cursor: wait; }
+#voice-btn.listening { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 12px rgba(255,207,107,0.5); animation: voicePulse 1.1s ease-in-out infinite; }
+@keyframes voicePulse { 0%,100% { box-shadow: 0 0 8px rgba(255,207,107,0.35); } 50% { box-shadow: 0 0 16px rgba(255,207,107,0.7); } }
+.voice-status { font-size: 11px; letter-spacing: 0.5px; max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---- panels: angled HUD frames with corner brackets ---- */
 .grid {

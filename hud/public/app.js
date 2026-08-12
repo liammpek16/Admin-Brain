@@ -322,6 +322,76 @@ $('goals-board').addEventListener('dragend', async () => {
   await loadGoals(); // re-render from the persisted order (snaps back if the write was rejected)
 });
 
+// ---- Voice command bar (push-to-talk, browser-native Web Speech API) ----
+// Maps a spoken phrase to one of the HUD's existing buttons. Deterministic keyword grammar —
+// no LLM/NLU. The recognition engine is the browser's own; nothing leaves via our server.
+const VOICE_COMMANDS = [
+  { rx: /\b(brief|standup|stand up|daily)\b/, sel: '.run[data-skill="brief"]', label: 'brief' },
+  { rx: /\bmetrics\b/, sel: '.run[data-skill="metrics"]', label: 'metrics' },
+  { rx: /\binbox\b/, sel: '.run[data-skill="inbox"]', label: 'inbox' },
+  { rx: /\b(select|next task|choose next)\b/, sel: '#loop-select', label: 'select next task' },
+  { rx: /\b(sync|refresh|reload|update)\b/, sel: '#refresh', label: 'sync' },
+];
+
+// Pure + global (window.matchVoiceCommand) so it's unit-testable without a microphone.
+function matchVoiceCommand(transcript) {
+  const t = String(transcript || '').toLowerCase().trim();
+  if (!t) return null;
+  if (/\b(help|commands|what can (i|you))\b/.test(t)) return { help: true, label: 'help' };
+  for (const c of VOICE_COMMANDS) if (c.rx.test(t)) return { sel: c.sel, label: c.label };
+  return null;
+}
+
+function getSpeechRecognition() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+function setVoiceStatus(msg) { const el = $('voice-status'); if (el) el.textContent = msg || ''; }
+
+// Fire the matched command by clicking the real button (reuses its handler), or explain the miss.
+function handleVoiceTranscript(transcript) {
+  const m = matchVoiceCommand(transcript);
+  if (!m) { setVoiceStatus(`🎙 heard “${transcript}” — no command. Try: brief, metrics, inbox, select, sync.`); return; }
+  if (m.help) { setVoiceStatus('Commands: brief · metrics · inbox · select (next task) · sync.'); return; }
+  const target = document.querySelector(m.sel);
+  if (target) { setVoiceStatus(`🎙 heard “${transcript}” → ${m.label}`); target.click(); }
+  else setVoiceStatus(`🎙 “${m.label}” isn't available right now.`);
+}
+
+let voiceRec = null;
+let voiceListening = false;
+function startVoice() {
+  const SR = getSpeechRecognition();
+  if (!SR) { setVoiceStatus('Voice not supported in this browser.'); return; }
+  const btn = $('voice-btn');
+  if (voiceListening) { try { voiceRec && voiceRec.stop(); } catch {} return; } // second click = stop
+  const rec = new SR();
+  voiceRec = rec;
+  rec.lang = 'en-US'; rec.interimResults = false; rec.continuous = false; rec.maxAlternatives = 1;
+  rec.onstart = () => { voiceListening = true; btn.classList.add('listening'); setVoiceStatus('🎙 listening…'); };
+  rec.onend = () => { voiceListening = false; btn.classList.remove('listening'); };
+  rec.onerror = (e) => setVoiceStatus(
+    e.error === 'not-allowed' || e.error === 'service-not-allowed' ? '🎤 mic permission denied.'
+      : e.error === 'no-speech' ? "didn't hear anything — try again." : `voice error: ${e.error}`);
+  rec.onresult = (e) => {
+    const transcript = (e.results && e.results[0] && e.results[0][0] && e.results[0][0].transcript) || '';
+    handleVoiceTranscript(transcript);
+  };
+  try { rec.start(); } catch (err) { setVoiceStatus(`voice error: ${err}`); }
+}
+
+// Feature-detect + wire the mic button (disabled with a note when unsupported).
+(() => {
+  const btn = $('voice-btn');
+  if (!btn) return;
+  if (!getSpeechRecognition()) {
+    btn.disabled = true;
+    btn.title = 'Voice not supported in this browser';
+    setVoiceStatus('voice not supported here');
+    return;
+  }
+  btn.addEventListener('click', startVoice);
+})();
+
 loadOverview();
 loadTrend();
 loadCycles();
