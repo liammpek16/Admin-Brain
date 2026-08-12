@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: delete notes
+next: Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD)
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-08-12'
 tags:
@@ -22,7 +22,7 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Webapp launch shipped (PR #2, Dota live). Next: in-HUD quick-note capture — or pick any goal
+- Delete-goal ✕ shipped (PR #6). Next: in-HUD quick-note capture — or pick any goal
   from the HUD goals board.
 
 ## Blockers
@@ -33,5 +33,7 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 - 2026-08-07 — Goal #1 delivered (HUD FEATURE LOOP panel). Loop-in-HUD cycle closed as
   already-delivered at the refine gate; handoff button + autonomous `claude -p` runner logged
   as follow-ups.
+- 2026-08-12 — "delete notes" goal delivered + ticked (PR #6): a guarded delete-goal ✕ in the
+  PROJECT GOALS panel. Redirected at review from an earlier cycle-note-file delete.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.

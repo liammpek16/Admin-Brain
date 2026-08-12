@@ -24,7 +24,8 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #5): push-to-talk voice command bar (🎤) — browser Web Speech, deterministic keyword grammar → clicks the matching HUD button; no deps/LLM. Live mic to be confirmed by the user; future: wake-word, TTS._
 - [x] add function to manually drag goals to determine which is at the top of the order
   - _Delivered (PR #3): drag `.goal` rows (⠿ grip) to reorder within a project; persists to the roadmap Steps with atomic goal-block moves + a no-loss permutation guard._
-- [ ] delete notes
+- [x] delete notes
+  - _Delivered (PR #6): a hover-reveal ✕ on every goal in the PROJECT GOALS panel → confirm → removes that goal's `## Steps` block (checkbox + Delivered/meta sub-lines) via `deleteProjectGoal`; git-recoverable. Shared `parseSteps`/`writeSteps` now back both reorder and delete._
 - [x] fix latency issue with writing new project goals in the admin brain
   - _Delivered (PR #4): TTL promise-cache + parallelized git-recency in getProjects — add-goal 1788ms→171ms, warm reads ~800ms→6ms._
 
