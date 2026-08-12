@@ -25,15 +25,16 @@ export async function getProjects() {
     return total ? { done, total, pct: Math.round((done / total) * 100) } : null;
   };
 
-  const projects = [];
-  for (const n of notes) {
+  // Resolve each project's git recency concurrently (not one-await-at-a-time) — the per-project
+  // lookups are independent, and lastGitActivity is TTL-cached, so this is fast and network-light.
+  const projects = await Promise.all(notes.map(async (n) => {
     const d = n.data;
     const repo = typeof d.repo === 'string' ? d.repo.trim() : '';
     const gitDate = await lastGitActivity(repo);
     const lastActivity = gitDate || n.mtime;
     const name = d.name || n.name;
     const milestones = progressFor(name);
-    projects.push({
+    return {
       name,
       status: (d.status || 'unknown').toLowerCase(),
       health: (d.health || 'gray').toLowerCase(),
@@ -50,8 +51,8 @@ export async function getProjects() {
       daysSince: Math.max(0, Math.floor((Date.now() - lastActivity.getTime()) / DAY)),
       milestones,
       progress: milestones ? milestones.pct : null,
-    });
-  }
+    };
+  }));
   return projects;
 }
 
