@@ -237,3 +237,25 @@ the UI exposes delete on completed cycles only; git-recoverable); orphan-report 
 endpoint (the UI deletes both). Report: [[2026-08-12-delete-notes]].
 
 _Cycle complete (Admin-Brain PR #6 draft, awaiting your review/merge)._
+
+## Course correction (review feedback)
+At review the user redirected the feature: **the delete control should live in the PROJECT GOALS
+panel and remove a _goal_ — not sit in the FEATURE LOOP panel deleting cycle-note files.** The branch
+was reshaped accordingly (still `auto/delete-notes`, PR #6):
+
+- **Removed** the note-file path entirely — `vault.js deleteNote()` + the `Cycles/Reports/Daily/Metrics`
+  allowlist, `POST /api/note/delete`, the ✕ on completed-cycle rows, and its CSS.
+- **Added** `vault.js deleteProjectGoal(project, text)` — removes the matching `## Steps` goal-BLOCK
+  (its checkbox line **and** its indented Delivered/meta sub-lines), refuses if the goal isn't found or
+  the project has no roadmap, and no-ops nothing else. Roadmap files are git-tracked → recoverable.
+- **Refactor:** factored the shared `## Steps` block parsing into `parseSteps`/`writeSteps`, now used by
+  **both** `reorderProjectGoals` and `deleteProjectGoal` (single source of truth for goal-block handling).
+- **`POST /api/project/delete-goal { project, goal }`** → 200 ok / 400 with the reason. 127.0.0.1, no shell.
+- **HUD:** a hover-reveal **✕** on every goal in the goals board → `confirm()` → deletes → reloads
+  (goals + overview, so milestone % updates).
+
+**Re-verified (throwaways only; real notes untouched):** 14/14 vault checks (rejects unknown project /
+unknown goal / empty; deletes a done goal incl. its `_Delivered_` sub-line; preamble kept; reorder still
+works after the refactor; rejects non-permutation) + 5/5 endpoint checks over HTTP (goals list; unknown
+project→400; unknown goal→400; delete→200; goal removed, siblings intact). Live server confirmed serving
+the new assets. Only vault change on disk is the pre-existing roadmap edit.

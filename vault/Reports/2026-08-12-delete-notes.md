@@ -48,3 +48,27 @@ case sensitivity, in-flight protection). Minor notes, not blockers:
 data), path-safety against traversal/absolute/Windows separators, a case-sensitive check, an
 in-flight-cycle protection, and a UI confirm — with git as the recovery net. Positive paths work via
 function, endpoint, and the ✕ UI; core notes proven undeletable. Safe on the branch behind draft PR #6.
+
+---
+
+## Re-verification after course correction (delete a GOAL, in the goals panel)
+The feature was redirected at review to **delete a roadmap goal from the PROJECT GOALS panel** (the
+note-file delete was removed). Re-tested against the reshaped code, throwaways only.
+
+| # | Check | Result |
+|---|-------|--------|
+| V1 | `deleteProjectGoal` rejects unknown project / unknown goal / empty text (no write) | ✅ |
+| V2 | Deletes a **done** goal and takes its indented `_Delivered_` sub-line with it | ✅ |
+| V3 | Sibling goals + the `## Goal` preamble untouched after a delete | ✅ |
+| V4 | `reorderProjectGoals` still works after the `parseSteps`/`writeSteps` refactor | ✅ |
+| V5 | Reorder still rejects a non-permutation | ✅ |
+| E1 | `POST /api/project/delete-goal` — goals listed via `/api/goals` | ✅ |
+| E2 | Unknown project → **400**, nothing deleted | ✅ |
+| E3 | Unknown goal → **400**, nothing deleted | ✅ |
+| E4 | Delete a real goal → **200**, `/api/goals` no longer lists it; siblings intact | ✅ |
+| S1 | Live HUD serves the new app.js/style.css (goal ✕ in; note ✕ out) | ✅ |
+| S2 | Only vault change on disk is the pre-existing roadmap edit | ✅ |
+
+**Re-verdict: pass.** Removing a goal is a bounded, git-recoverable roadmap edit; guards refuse
+unknown targets and the refactor kept reorder intact. The note-file delete endpoint/allowlist were
+removed, closing the "loose destructive endpoint with no UI" concern raised in the original council.

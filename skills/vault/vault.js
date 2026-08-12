@@ -1,9 +1,8 @@
 // vault skill — the ONE domain accessor. Built on adapters/obsidian.
 // Returns normalized project objects with DERIVED recency (per docs/DATA-CONTRACT.md).
 
-import fs from 'node:fs';
 import path from 'node:path';
-import { listMarkdown, readNote, readFolder, upsertNote, lastGitActivity, vaultPath, isMain } from '../../adapters/obsidian/index.js';
+import { listMarkdown, readNote, readFolder, upsertNote, lastGitActivity, isMain } from '../../adapters/obsidian/index.js';
 
 const DAY = 86_400_000;
 
@@ -145,38 +144,6 @@ export function projectGoals(name) {
   return goals;
 }
 
-// The ONLY vault folders a note may be deleted from via the HUD — the records that safely
-// accumulate. Core/source-of-truth folders (Projects, Plans, Sessions, _Dashboards, Home, …)
-// are deliberately absent and can never be deleted through deleteNote.
-const DELETABLE_FOLDERS = new Set(['Cycles', 'Reports', 'Daily', 'Metrics']);
-
-/**
- * Delete one note file, guarded. Allowlisted folders only; path-safe (bare `.md` filename, no
- * separators/`..`/absolute, must resolve inside the folder); a Cycles note is deletable only when
- * it's `done`/`abandoned` (never an in-flight cycle). Files are git-tracked, so a delete is
- * recoverable — there's no separate trash. Returns { ok, error? }.
- */
-export function deleteNote(folder, name) {
-  if (!DELETABLE_FOLDERS.has(folder)) return { ok: false, error: `folder not deletable: ${folder || '(none)'}` };
-  const raw = String(name || '').trim();
-  if (!raw || raw.includes('/') || raw.includes('\\') || raw.includes('..') || path.isAbsolute(raw)) {
-    return { ok: false, error: 'bad note name' };
-  }
-  const file = raw.toLowerCase().endsWith('.md') ? raw : `${raw}.md`;
-  const dir = path.resolve(vaultPath(), folder);
-  const target = path.resolve(dir, file);
-  if (path.dirname(target) !== dir) return { ok: false, error: 'path escapes the folder' };
-  if (!fs.existsSync(target)) return { ok: false, error: 'note not found' };
-  if (folder === 'Cycles') {
-    const status = String(readNote(target).data.status || '');
-    if (status !== 'done' && status !== 'abandoned') {
-      return { ok: false, error: `cycle is in-flight (${status || 'unknown'}) — finish or abandon it first` };
-    }
-  }
-  fs.unlinkSync(target);
-  return { ok: true };
-}
-
 /** Set the human-owned `next` on a project note (manual goal selection). Returns true on success. */
 export function setProjectNext(project, text) {
   const note = listMarkdown('Projects')
@@ -241,21 +208,15 @@ const goalTextOf = (line) => {
 };
 
 /**
- * Reorder a project's roadmap goals to match `orderedTexts` (drag-to-reorder in the HUD).
- * Parses `## Steps` into goal-BLOCKS — each a top-level checkbox line PLUS its following
- * indented/sub-bullet lines (e.g. `_Delivered…_`) — and rewrites them in the given order,
- * so a goal's done state, meta, and Delivered note always move together. Refuses (no write)
- * unless `orderedTexts` is exactly the current set of goal texts — no add/drop/duplicate.
- * Returns { ok, error? }.
+ * Parse a plan note's `## Steps` section into goal-BLOCKS — each a top-level checkbox line PLUS
+ * its following indented/sub-bullet lines (e.g. `_Delivered…_`) — so a goal's done state, meta,
+ * and Delivered note always travel together. Returns { lines, si, end, preamble, blocks, suffix }
+ * or null if there's no Steps section. Shared by reorder + delete.
  */
-export function reorderProjectGoals(project, orderedTexts) {
-  if (!Array.isArray(orderedTexts) || !orderedTexts.length) return { ok: false, error: 'no order given' };
-  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
-  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
-
+function parseSteps(pl) {
   const lines = pl.body.split(/\r?\n/);
   const si = lines.findIndex((l) => /^##\s+Steps\b/i.test(l));
-  if (si === -1) return { ok: false, error: 'no Steps section' };
+  if (si === -1) return null;
   let end = lines.length;
   for (let i = si + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) { end = i; break; } }
 
@@ -263,7 +224,7 @@ export function reorderProjectGoals(project, orderedTexts) {
   const suffix = [];
   while (region.length && region[region.length - 1].trim() === '') suffix.unshift(region.pop());
 
-  // Parse into blocks; lines before the first checkbox are a preamble kept up top.
+  // Lines before the first checkbox are a preamble kept up top.
   const preamble = [];
   const blocks = [];
   let cur = null;
@@ -273,21 +234,60 @@ export function reorderProjectGoals(project, orderedTexts) {
     else if (cur) cur.lines.push(ln);
     else preamble.push(ln);
   }
+  return { lines, si, end, preamble, blocks, suffix };
+}
+
+/** Rewrite a plan's `## Steps` from the given ordered blocks (preamble/suffix preserved). */
+function writeSteps(pl, parsed, blocks) {
+  const { lines, si, end, preamble, suffix } = parsed;
+  const newRegion = [];
+  for (const b of blocks) newRegion.push(...b.lines);
+  const newBody = [...lines.slice(0, si + 1), ...preamble, ...newRegion, ...suffix, ...lines.slice(end)].join('\n');
+  upsertNote('Plans', pl.name, pl.data, newBody);
+}
+
+/**
+ * Reorder a project's roadmap goals to match `orderedTexts` (drag-to-reorder in the HUD).
+ * Rewrites the `## Steps` goal-blocks in the given order. Refuses (no write) unless `orderedTexts`
+ * is exactly the current set of goal texts — no add/drop/duplicate. Returns { ok, error? }.
+ */
+export function reorderProjectGoals(project, orderedTexts) {
+  if (!Array.isArray(orderedTexts) || !orderedTexts.length) return { ok: false, error: 'no order given' };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+  const parsed = parseSteps(pl);
+  if (!parsed) return { ok: false, error: 'no Steps section' };
 
   // No-loss guard: the requested order must be exactly the existing goal set.
-  const have = blocks.map((b) => b.text);
+  const have = parsed.blocks.map((b) => b.text);
   const want = orderedTexts.map(String);
   if (want.length !== have.length || new Set(want).size !== want.length
       || !want.every((t) => have.includes(t))) {
     return { ok: false, error: 'order must be a permutation of the existing goals' };
   }
 
-  const byText = new Map(blocks.map((b) => [b.text, b]));
-  const newRegion = [];
-  for (const t of want) newRegion.push(...byText.get(t).lines);
+  const byText = new Map(parsed.blocks.map((b) => [b.text, b]));
+  writeSteps(pl, parsed, want.map((t) => byText.get(t)));
+  return { ok: true };
+}
 
-  const newBody = [...lines.slice(0, si + 1), ...preamble, ...newRegion, ...suffix, ...lines.slice(end)].join('\n');
-  upsertNote('Plans', pl.name, pl.data, newBody);
+/**
+ * Delete one roadmap goal from a project (the ✕ in the goals board). Removes the `## Steps`
+ * goal-BLOCK whose top-level text matches `text` — taking its indented sub-lines (Delivered note,
+ * meta) with it — and leaves the rest untouched. Refuses (no write) if the goal isn't found. Plan
+ * notes are git-tracked, so a delete is recoverable. Returns { ok, error? }.
+ */
+export function deleteProjectGoal(project, text) {
+  const want = String(text || '').trim();
+  if (!want) return { ok: false, error: 'no goal given' };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+  const parsed = parseSteps(pl);
+  if (!parsed) return { ok: false, error: 'no Steps section' };
+
+  const idx = parsed.blocks.findIndex((b) => b.text === want);
+  if (idx === -1) return { ok: false, error: `goal not found: ${want}` };
+  writeSteps(pl, parsed, parsed.blocks.filter((_, i) => i !== idx));
   return { ok: true };
 }
 

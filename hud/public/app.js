@@ -103,7 +103,7 @@ async function loadCycles() {
     ? active.map(cycleCard).join('')
     : '<p class="dim">No active cycle. Pick a target (or leave auto) and SELECT the next task.</p>';
   $('cycles-list').innerHTML = done.length
-    ? done.map((c) => `<div class="proj-row loop-row"><span class="name">${esc(c.task || c.project)}</span><span class="dim">${esc(c.project)}</span><span class="dim">✓ ${esc(c.status)}</span><span class="cyc-del-cell"><span class="dim">${c.branch ? esc(c.branch) : ''}</span><button class="note-del" title="Delete this cycle note + report (git-recoverable)" data-base="${escAttr(c.base)}" data-report="${escAttr(c.report || '')}">✕</button></span></div>`).join('')
+    ? done.map((c) => `<div class="proj-row loop-row"><span class="name">${esc(c.task || c.project)}</span><span class="dim">${esc(c.project)}</span><span class="dim">✓ ${esc(c.status)}</span><span class="dim">${c.branch ? esc(c.branch) : ''}</span></div>`).join('')
     : '<p class="dim">none yet</p>';
 }
 
@@ -116,11 +116,13 @@ async function loadGoals() {
     const items = p.goals.length ? p.goals.map((g) => {
       const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
       const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
-      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}</li>`;
+      // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
+      const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
+      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${del}</li>`;
       const ctrl = p.hasOpenCycle
         ? `<span class="pill inflight">in flight</span>`
         : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
+      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${del}</li>`;
     }).join('') : '<li class="dim">no roadmap goals yet</li>';
     const add = `<div class="goal-add">
       <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
@@ -267,40 +269,17 @@ $('loop-active').addEventListener('click', async (e) => {
   else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
 });
 
-// Delete a completed cycle's note (+ its report) from the vault — guarded server-side, confirm here.
-async function deleteNoteReq(folder, name) {
-  return fetch('/api/note/delete', {
-    method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ folder, name }),
-  }).then((r) => r.json());
-}
-$('cycles-list').addEventListener('click', async (e) => {
-  const b = e.target.closest('button.note-del');
-  if (!b) return;
-  if (!confirm("Delete this completed cycle's note (and its report)? Recoverable via git.")) return;
-  b.disabled = true;
-  const log = $('loop-log');
-  log.textContent = '▶ deleting note…';
-  try {
-    const parts = [];
-    let ok = true;
-    if (b.dataset.report) { // delete the linked report first, if present
-      const r1 = await deleteNoteReq('Reports', b.dataset.report);
-      ok = ok && r1.ok; parts.push(`report ${r1.ok ? '✓' : '✗ ' + (r1.output || '')}`);
-    }
-    const r2 = await deleteNoteReq('Cycles', b.dataset.base);
-    ok = ok && r2.ok; parts.push(`cycle ${r2.ok ? '✓' : '✗ ' + (r2.output || '')}`);
-    log.textContent = `${ok ? '✓ deleted' : '✗ delete failed'} — ${parts.join(' · ')}`;
-  } catch (err) {
-    log.textContent = `✗ ${err}`;
-  }
-  await Promise.all([loadCycles(), loadOverview()]);
-});
-
-// Goals board: run a goal through the loop, or add a new goal to a project.
+// Goals board: run a goal through the loop, add a new goal, or delete a goal from the roadmap.
 $('goals-board').addEventListener('click', async (e) => {
   const run = e.target.closest('button.goal-run');
   if (run) { run.disabled = true; await loopPost('/api/loop/select-goal', { project: run.dataset.project, goal: run.dataset.goal }, `run goal`); return; }
+  const del = e.target.closest('button.goal-del');
+  if (del) {
+    if (!confirm(`Delete the goal “${del.dataset.goal}” from ${del.dataset.project}? Recoverable via git.`)) return;
+    del.disabled = true;
+    await loopPost('/api/project/delete-goal', { project: del.dataset.project, goal: del.dataset.goal }, 'delete goal');
+    return;
+  }
   const add = e.target.closest('button.goal-add-btn');
   if (add) { await addGoal(add.dataset.project, add.closest('.goal-group').querySelector('.goal-input')); }
 });
