@@ -116,11 +116,13 @@ async function loadGoals() {
     const items = p.goals.length ? p.goals.map((g) => {
       const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
       const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
-      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}</li>`;
+      // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
+      const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
+      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${del}</li>`;
       const ctrl = p.hasOpenCycle
         ? `<span class="pill inflight">in flight</span>`
         : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}</li>`;
+      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${del}</li>`;
     }).join('') : '<li class="dim">no roadmap goals yet</li>';
     const add = `<div class="goal-add">
       <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
@@ -267,10 +269,17 @@ $('loop-active').addEventListener('click', async (e) => {
   else await loopPost('/api/loop/run', { stage: b.dataset.stage, project: b.dataset.project || '' }, b.dataset.stage);
 });
 
-// Goals board: run a goal through the loop, or add a new goal to a project.
+// Goals board: run a goal through the loop, add a new goal, or delete a goal from the roadmap.
 $('goals-board').addEventListener('click', async (e) => {
   const run = e.target.closest('button.goal-run');
   if (run) { run.disabled = true; await loopPost('/api/loop/select-goal', { project: run.dataset.project, goal: run.dataset.goal }, `run goal`); return; }
+  const del = e.target.closest('button.goal-del');
+  if (del) {
+    if (!confirm(`Delete the goal “${del.dataset.goal}” from ${del.dataset.project}? Recoverable via git.`)) return;
+    del.disabled = true;
+    await loopPost('/api/project/delete-goal', { project: del.dataset.project, goal: del.dataset.goal }, 'delete goal');
+    return;
+  }
   const add = e.target.closest('button.goal-add-btn');
   if (add) { await addGoal(add.dataset.project, add.closest('.goal-group').querySelector('.goal-input')); }
 });
