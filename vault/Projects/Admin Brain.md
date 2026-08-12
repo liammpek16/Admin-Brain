@@ -4,9 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: >-
-  add function to manually drag goals to determine which is at the top of the
-  order
+next: "fix latency issue with writing new project goals in the admin brain"
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-08-12'
 tags:
