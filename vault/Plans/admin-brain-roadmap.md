@@ -18,7 +18,6 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #1): PROJECT GOALS panel — per-goal Run buttons + add-goals-from-the-HUD; one-open-cycle-per-project enforced._
 - [x] Add the ability to navigate to each project's webapp when applicable (e.g. the Dota coaching webapp) — near · high
   - _Delivered (PR #2): ⧉ webapp button launches + opens the project's server (Dota wired to live mode on :8080). Follow-up: per-project in-flight lock (verify finding — double-launch race)._
-- [ ] Add the ability to capture notes into the vault from within the Admin Brain (quick-note in the HUD) — near · high
 - [ ] Improve the HUD for aesthetic reasons — mid · low (longer-term)
 - [x] Voice-activation module for the Admin Brain and all commands — long · low (stretch goal)
   - _Delivered (PR #5): push-to-talk voice command bar (🎤) — browser Web Speech, deterministic keyword grammar → clicks the matching HUD button; no deps/LLM. Live mic to be confirmed by the user; future: wake-word, TTS._
@@ -28,6 +27,7 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #6): a hover-reveal ✕ on every goal in the PROJECT GOALS panel → confirm → removes that goal's `## Steps` block (checkbox + Delivered/meta sub-lines) via `deleteProjectGoal`; git-recoverable. Shared `parseSteps`/`writeSteps` now back both reorder and delete._
 - [x] fix latency issue with writing new project goals in the admin brain
   - _Delivered (PR #4): TTL promise-cache + parallelized git-recency in getProjects — add-goal 1788ms→171ms, warm reads ~800ms→6ms._
+- [ ] audio break down of goals for the day. Make the voice sound like Jarvis from Iron Man
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
