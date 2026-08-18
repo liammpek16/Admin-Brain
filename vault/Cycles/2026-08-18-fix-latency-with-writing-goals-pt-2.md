@@ -1,13 +1,14 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: Fix latency with writing goals pt.2
 started: '2026-08-18'
 readme_source: 'https://github.com/liammpek16/Admin-Brain'
 branch: auto/fix-latency-with-writing-goals-pt-2
 target_path: 'C:/Users/liamm/Admin-Brain'
+report: 2026-08-18-fix-latency-with-writing-goals-pt-2
 ---
 
 ## Task (from SELECT)
@@ -209,3 +210,14 @@ Adapter-only change in `adapters/obsidian/index.js`; no API change to `getProjec
 
 **Implement complete.** Ready for Phase D (verify).
 
+## Verify (Phase D)
+Independent pass: **pass** (15/15 against the REAL adapter + a real GitHub repo, TTL forced to 50ms).
+The measured bug is gone: `getProjects()` after TTL expiry **17.7ms vs ~430ms**; stale `lastGitActivity`
+**6.4ms vs 422ms** cold — reads never await the network. Correctness holds: stale value == cold value;
+**sticky** against a transient null (a failed background refresh keeps the known Date); 4 concurrent cold
+callers share ONE compute (436ms, no stampede); `clearRecencyCache` forces a fresh cold; falsy repo →
+null; `getProjects` fields unchanged. Non-blocking notes: one-time ~430ms cold cost still at server boot
+(persist-to-disk is a logged follow-up); the O(N²) `projectGoals` re-reads in `goalsBoard` (~4ms) left as
+noted out-of-scope. Report: [[2026-08-18-fix-latency-with-writing-goals-pt-2]].
+
+_Cycle complete (Admin-Brain PR #8 draft, awaiting your review/merge)._
