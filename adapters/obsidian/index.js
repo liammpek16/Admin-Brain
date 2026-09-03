@@ -98,28 +98,56 @@ async function _computeLastGitActivity(repoPath) {
 }
 
 // Git recency (a `gh api` network call for GitHub repos, or local `simple-git`) only moves on a new
-// commit, so cache it per-repo for a short TTL. Caching the PROMISE also de-dupes the concurrent
-// callers (e.g. the HUD's overview + goals fetches firing at once) into a single lookup. This is the
-// difference between the HUD phoning GitHub on every refresh vs. only once a minute per repo.
-const _recencyCache = new Map(); // key -> { at: ms, promise: Promise<Date|null> }
+// commit, so it's cached per-repo and served STALE-WHILE-REVALIDATE: a read returns the last known
+// value immediately and never awaits the network. Only the first-ever call per repo (server boot)
+// computes synchronously; after that, a stale entry is refreshed in the BACKGROUND so the value is
+// fresh next time. This keeps recency (a slow, external hint) off the critical path of a local write
+// like adding a goal — writing a goal no longer waits ~0.4s for `gh api`.
+const _recencyCache = new Map(); // key -> { at: ms, value: Date|null, refreshing: bool, promise }
 const RECENCY_TTL_MS = Number(process.env.ADMIN_BRAIN_RECENCY_TTL_MS) || 60_000;
+
+// Background refresh for one repo — updates the cached value in place; never awaited by callers, so
+// it adds no read latency. STICKY: a null result (e.g. a transient network miss) does NOT overwrite
+// a previously-known date, so recency never regresses to note-mtime on a blip.
+function _refreshRecency(key, entry) {
+  if (entry.refreshing) return; // at most one in-flight refresh per repo
+  entry.refreshing = true;
+  _computeLastGitActivity(key)
+    .then((value) => { if (value !== null || entry.value === null) entry.value = value; entry.at = Date.now(); })
+    .catch(() => {}) // _computeLastGitActivity never rejects, but stay safe
+    .finally(() => { entry.refreshing = false; });
+}
 
 /**
  * Last commit date driving a project's recency, or null (→ caller falls back to note mtime).
  * - GitHub URL / "owner/repo" → queried remotely via `gh` (needs network).
  * - Local filesystem path → read from the local clone via simple-git (offline).
- * Cached per-repo for RECENCY_TTL_MS; `_computeLastGitActivity` never rejects, so the cached
- * promise is always safe to reuse. Pass a falsy `repoPath` to skip the cache (returns null).
+ * Stale-while-revalidate per repo: only the first call per repo awaits the network; every later call
+ * returns the cached value immediately and refreshes in the background once past RECENCY_TTL_MS.
+ * Pass a falsy `repoPath` to skip the cache (returns null).
  */
 export function lastGitActivity(repoPath) {
   const key = (typeof repoPath === 'string' ? repoPath.trim() : '');
   if (!key) return Promise.resolve(null);
   const now = Date.now();
-  const hit = _recencyCache.get(key);
-  if (hit && (now - hit.at) < RECENCY_TTL_MS) return hit.promise;
-  const promise = _computeLastGitActivity(key);
-  _recencyCache.set(key, { at: now, promise });
-  return promise;
+  let hit = _recencyCache.get(key);
+
+  // Cold: never seen this repo — compute once (the only time a read awaits the network). Concurrent
+  // first-load callers (HUD overview + goals firing together) share this one in-flight compute.
+  if (!hit) {
+    hit = { at: 0, value: null, refreshing: true, promise: null };
+    hit.promise = _computeLastGitActivity(key)
+      .then((v) => { hit.value = v; hit.at = Date.now(); return v; })
+      .catch(() => null)
+      .finally(() => { hit.refreshing = false; hit.promise = null; });
+    _recencyCache.set(key, hit);
+    return hit.promise;
+  }
+  if (hit.at === 0 && hit.promise) return hit.promise; // cold compute still in flight → share it
+
+  // Warm: serve the cached value NOW; if it's stale, kick a background refresh for next time.
+  if ((now - hit.at) >= RECENCY_TTL_MS) _refreshRecency(key, hit);
+  return Promise.resolve(hit.value);
 }
 
 /** Drop cached git-recency (all repos, or one) — e.g. after a commit you want reflected now. */
