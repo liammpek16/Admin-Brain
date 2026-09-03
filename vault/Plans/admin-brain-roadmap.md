@@ -29,6 +29,11 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #4): TTL promise-cache + parallelized git-recency in getProjects — add-goal 1788ms→171ms, warm reads ~800ms→6ms._
 - [x] audio break down of goals for the day. Make the voice sound like Jarvis from Iron Man
   - _Delivered (PR #7): 🔊 AGENDA button speaks today's focus/attention via browser Web Speech synthesis — the best available British male voice (Jarvis approximation), rate/pitch tuned, toggle to stop; also a "read my goals" voice command. Front-end only, $0/no-deps/local. A true neural clone was declined at the refine gate (would need an external paid TTS service). User to confirm the audio on their machine._
+- [ ] Voice commands auto prompt audio response
+- [x] Fix latency with writing goals pt.2
+  - _Delivered (PR #8): git recency served stale-while-revalidate in the obsidian adapter — the network is off the read/write path, so getProjects() after TTL expiry is ~18ms (was ~430ms). Sticky against a transient null; no API change._
+  - _Delivered (PR #9): the real "typed goal disappears" bug — the 20s poll's `loadGoals()` innerHTML rebuild was destroying the input mid-type. Fixed A (poll skips re-render while a goal field is focused) + B (snapshot/restore drafts + caret across any re-render) + D (drafts mirrored to localStorage, survive a reload). Verified live in the browser._
+- [ ] add new project button
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
