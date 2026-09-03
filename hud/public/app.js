@@ -112,8 +112,43 @@ async function loadCycles() {
     : '<p class="dim">none yet</p>';
 }
 
-async function loadGoals() {
+// A new goal you're typing lives only in the <input>'s value — and loadGoals() rebuilds the whole
+// board via innerHTML, which destroys that input. To stop an in-progress goal from vanishing:
+//   (A) the 20s background poll skips the re-render while a goal field is focused;
+//   (B) any re-render snapshots the current draft values (+ caret) and restores them afterward;
+//   (D) drafts are mirrored to localStorage, so they even survive a full reload.
+const GOAL_DRAFT_KEY = (project) => `admin-brain:goal-draft:${project}`;
+function readGoalDraft(project) {
+  try { return localStorage.getItem(GOAL_DRAFT_KEY(project)) || ''; } catch { return ''; }
+}
+function writeGoalDraft(project, text) {
+  try {
+    if (text) localStorage.setItem(GOAL_DRAFT_KEY(project), text);
+    else localStorage.removeItem(GOAL_DRAFT_KEY(project));
+  } catch { /* private mode / storage disabled — drafts just won't persist across reloads */ }
+}
+// The goal-input the user is currently editing, or null.
+function focusedGoalInput() {
+  const a = document.activeElement;
+  return a && a.classList && a.classList.contains('goal-input') ? a : null;
+}
+
+async function loadGoals(opts = {}) {
   const board = await fetch('/api/goals').then((r) => r.json());
+
+  // (A) Never yank the field out from under an active typist on the background poll. Drafts are
+  // safe in localStorage regardless; this just avoids disturbing the caret while they type.
+  const editing = focusedGoalInput();
+  if (opts.background && editing) return;
+
+  // (B) Snapshot in-progress drafts (in-memory, so it works even if localStorage is blocked) and
+  // the caret of the focused field, to restore across the innerHTML rebuild below.
+  const drafts = {};
+  for (const inp of $('goals-board').querySelectorAll('.goal-input')) {
+    if (inp.value) drafts[inp.dataset.project] = inp.value;
+  }
+  const caret = editing ? { project: editing.dataset.project, start: editing.selectionStart, end: editing.selectionEnd } : null;
+
   const total = board.reduce((n, p) => n + p.goals.length, 0);
   const open = board.reduce((n, p) => n + p.goals.filter((g) => !g.done).length, 0);
   $('goals-sub').textContent = `· ${open} open / ${total} across ${board.length} projects`;
@@ -135,6 +170,22 @@ async function loadGoals() {
     </div>`;
     return `<div class="goal-group" data-project="${escAttr(p.name)}"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul>${add}</div>`;
   }).join('');
+
+  // (B + D) Restore each project's unsent draft — the in-memory snapshot first, else the persisted
+  // localStorage copy — then re-focus the field the user was in and put the caret back.
+  for (const inp of $('goals-board').querySelectorAll('.goal-input')) {
+    const d = drafts[inp.dataset.project] || readGoalDraft(inp.dataset.project);
+    if (d) inp.value = d;
+  }
+  if (caret) {
+    const inp = [...$('goals-board').querySelectorAll('.goal-input')].find((x) => x.dataset.project === caret.project);
+    if (inp) {
+      inp.focus();
+      const start = caret.start == null ? inp.value.length : Math.min(caret.start, inp.value.length);
+      const end = caret.end == null ? start : Math.min(caret.end, inp.value.length);
+      try { inp.setSelectionRange(start, end); } catch { /* setSelectionRange unsupported on some inputs */ }
+    }
+  }
 }
 
 async function addGoal(project, input) {
@@ -148,7 +199,7 @@ async function addGoal(project, input) {
       body: JSON.stringify({ project, text }),
     }).then((r) => r.json());
     log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
-    if (r.ok) { if (input) input.value = ''; await Promise.all([loadOverview(), loadGoals()]); }
+    if (r.ok) { writeGoalDraft(project, ''); if (input) input.value = ''; await Promise.all([loadOverview(), loadGoals()]); }
     // on failure, leave the board (and the typed text) as-is
   } catch (e) {
     log.textContent = `✗ ${e}`;
@@ -290,6 +341,12 @@ $('goals-board').addEventListener('click', async (e) => {
 });
 $('goals-board').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.target.classList.contains('goal-input')) { e.preventDefault(); addGoal(e.target.dataset.project, e.target); }
+});
+// (D) Persist the in-progress goal to localStorage on every keystroke, so it survives a re-render
+// or even a full page reload. Delegated on #goals-board, so it keeps working after each rebuild.
+$('goals-board').addEventListener('input', (e) => {
+  const inp = e.target.closest && e.target.closest('.goal-input');
+  if (inp) writeGoalDraft(inp.dataset.project, inp.value);
 });
 
 // Drag to reorder goals within a project; persisted to the roadmap on drop.
@@ -513,4 +570,4 @@ loadOverview();
 loadTrend();
 loadCycles();
 loadGoals();
-setInterval(() => { loadOverview(); loadCycles(); loadGoals(); }, 20000); // cheap local poll
+setInterval(() => { loadOverview(); loadCycles(); loadGoals({ background: true }); }, 20000); // cheap local poll
