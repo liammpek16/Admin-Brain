@@ -158,23 +158,43 @@ export function createProject(input = {}) {
   return { ok: true, project: name };
 }
 
+// A goal's optional inline "kind" — a trailing `#checkpoint` / `#improvement` tag (case-insensitive)
+// on the checkbox line. Untagged goals are CHECKPOINTS (existing roadmap goals are milestone-style),
+// so only improvements carry a tag. The tag sits at the END of the line and is stripped BEFORE the
+// ` — meta` split, so the derived `text` is always tag-free — which is what keeps text-matching
+// (delete / reorder / run) working the same for a tagged or untagged goal.
+export const GOAL_KINDS = ['checkpoint', 'improvement'];
+const KIND_TAG_RX = /\s*#(checkpoint|improvement)\s*$/i;
+
+/** Parse one plan-note line into { done, text, meta, kind }, or null if it isn't a top-level goal. */
+function parseGoalLine(line) {
+  const m = line.match(/^[-*]\s+\[([ xX])\]\s+(.+?)\s*$/); // top-level checkbox only
+  if (!m) return null;
+  let rest = m[2].trim();
+  let kind = 'checkpoint';
+  const km = rest.match(KIND_TAG_RX);
+  if (km) { kind = km[1].toLowerCase(); rest = rest.slice(0, km.index).trim(); }
+  let text = rest;
+  let meta = '';
+  const i = text.lastIndexOf(' — '); // " — " em-dash separator (ASCII-safe in source)
+  if (i !== -1) { meta = text.slice(i + 3).trim(); text = text.slice(0, i).trim(); }
+  return { done: m[1].toLowerCase() === 'x', text, meta, kind };
+}
+
 /**
  * A project's roadmap goals — the top-level checkbox lines in its plan notes (the same lines
- * that drive milestone %). Returns { text, done, meta } per goal, with the trailing
- * " — horizon · priority" split off into `meta`. This is the source for the manual goals board.
+ * that drive milestone %). Returns { text, done, meta, kind } per goal, with the trailing
+ * " — horizon · priority" split off into `meta` and the `#checkpoint`/`#improvement` tag into
+ * `kind`. This is the source for the manual goals board.
  */
 export function projectGoals(name) {
   const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === name);
   const goals = [];
   for (const pl of plans) {
     for (const line of pl.body.split(/\r?\n/)) {
-      const m = line.match(/^[-*]\s+\[([ xX])\]\s+(.+?)\s*$/); // top-level checkbox only
-      if (!m) continue;
-      let text = m[2].trim();
-      let meta = '';
-      const i = text.lastIndexOf(' — '); // " — " em-dash separator (ASCII-safe in source)
-      if (i !== -1) { meta = text.slice(i + 3).trim(); text = text.slice(0, i).trim(); }
-      goals.push({ text, done: m[1].toLowerCase() === 'x', meta, plan: pl.name });
+      const g = parseGoalLine(line);
+      if (!g) continue;
+      goals.push({ text: g.text, done: g.done, meta: g.meta, kind: g.kind, plan: pl.name });
     }
   }
   return goals;
@@ -195,12 +215,15 @@ const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 /**
  * Add a new roadmap goal (an unchecked checkbox line) to a project from the HUD. Appends under
  * the plan note's `## Steps`; if the project has no roadmap plan yet, creates a minimal one.
- * Returns { ok, error? }. Rejects empty/multi-line/duplicate goals and unknown projects.
+ * `kind` ('checkpoint' default | 'improvement') decides the group — only improvements get a tag.
+ * Returns { ok, error? }. Rejects empty/multi-line/duplicate goals, bad kinds, and unknown projects.
  */
-export function addProjectGoal(project, text) {
+export function addProjectGoal(project, text, kind = 'checkpoint') {
   const goal = String(text || '').trim();
   if (!goal) return { ok: false, error: 'goal text is empty' };
   if (/[\r\n]/.test(goal)) return { ok: false, error: 'goal must be a single line' };
+  const k = String(kind || 'checkpoint').toLowerCase();
+  if (!GOAL_KINDS.includes(k)) return { ok: false, error: `invalid kind: ${kind}` };
   const projNote = listMarkdown('Projects')
     .map(readNote)
     .find((n) => n.data.type === 'project' && (n.data.name || n.name) === project);
@@ -209,7 +232,7 @@ export function addProjectGoal(project, text) {
     return { ok: false, error: 'that goal already exists' };
   }
 
-  const line = `- [ ] ${goal}`;
+  const line = `- [ ] ${goal}${k === 'improvement' ? ' #improvement' : ''}`;
   const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === project);
   if (plans.length) {
     const pl = plans[0];
@@ -235,13 +258,7 @@ export function addProjectGoal(project, text) {
   return { ok: true };
 }
 
-const goalTextOf = (line) => {
-  const m = line.match(/^[-*]\s+\[[ xX]\]\s+(.+?)\s*$/);
-  if (!m) return null;
-  let text = m[1].trim();
-  const i = text.lastIndexOf(' — ');
-  return i !== -1 ? text.slice(0, i).trim() : text;
-};
+const goalTextOf = (line) => { const g = parseGoalLine(line); return g ? g.text : null; };
 
 /**
  * Parse a plan note's `## Steps` section into goal-BLOCKS — each a top-level checkbox line PLUS
@@ -324,6 +341,31 @@ export function deleteProjectGoal(project, text) {
   const idx = parsed.blocks.findIndex((b) => b.text === want);
   if (idx === -1) return { ok: false, error: `goal not found: ${want}` };
   writeSteps(pl, parsed, parsed.blocks.filter((_, i) => i !== idx));
+  return { ok: true };
+}
+
+/**
+ * Re-classify one roadmap goal as a 'checkpoint' or 'improvement' (the kind toggle in the goals
+ * board). Rewrites just that goal's checkbox line — strips any existing `#checkpoint`/`#improvement`
+ * tag and re-adds one only for an improvement (checkpoint is the tagless default) — while leaving the
+ * goal's meta, Delivered sub-lines, done state, and position untouched. Refuses (no write) on an
+ * unknown goal or an invalid kind. Returns { ok, error? }.
+ */
+export function setProjectGoalKind(project, text, kind) {
+  const want = String(text || '').trim();
+  const k = String(kind || '').toLowerCase();
+  if (!want) return { ok: false, error: 'no goal given' };
+  if (!GOAL_KINDS.includes(k)) return { ok: false, error: `invalid kind: ${kind}` };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+  const parsed = parseSteps(pl);
+  if (!parsed) return { ok: false, error: 'no Steps section' };
+
+  const block = parsed.blocks.find((b) => b.text === want);
+  if (!block) return { ok: false, error: `goal not found: ${want}` };
+  const base = block.lines[0].replace(KIND_TAG_RX, '').replace(/\s+$/, '');
+  block.lines[0] = k === 'improvement' ? `${base} #improvement` : base;
+  writeSteps(pl, parsed, parsed.blocks);
   return { ok: true };
 }
 

@@ -4,9 +4,9 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: adjust the goals section. Instead there should be a split between improvements versus checkpoints for each project
+next: pull usage limit reset times from claude. provide a notification for when this happens
 started: 2026-08-07T00:00:00.000Z
-updated: '2026-09-03'
+updated: '2026-09-04'
 tags:
   - meta
   - tooling
@@ -23,9 +23,9 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 
 ## Now
 - Batch of 4 roadmap goals running through the loop (stacked draft PRs). Shipped: **add-new-project
-  button** — a `＋ NEW PROJECT` form in the PROJECTS panel creates a validated project note via the
-  vault adapter. Next in the stack: split the goals section into improvements vs checkpoints, then
-  hide/auto-sort completed goals, then pull Claude usage-limit reset times + notify.
+  button** (validated create form) + **goals split into checkpoints vs improvements** (derived kind
+  tag + per-group board + ⇄ reclassify) + **hide/auto-sort completed goals** (done-to-bottom display
+  sort + persistent hide toggle). Last in the stack: pull Claude usage-limit reset times + notify.
 
 ## Blockers
 - none
@@ -49,5 +49,15 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   /api/project/create` (201/400). Rejects empty/multiline/unsafe/duplicate names without touching
   an existing note; defaults planned·gray·med. Independent verify: 2/2 unit + 13/13 adversarial +
   live browser, verdict pass. First of a stacked batch of 4 goals.
+- 2026-09-04 — "split the goals section (improvements vs checkpoints)" delivered (draft PR, stacked).
+  Every goal gets a derived `kind` from a trailing `#improvement`/`#checkpoint` tag (untagged →
+  checkpoint, nothing moved); shared `parseGoalLine`; `setProjectGoalKind` + `POST
+  /api/project/goal-kind`; the board renders two labeled groups with a ⇄ reclassify button and a
+  kind selector on the add-row. 6/6 tests + live browser, verdict pass.
+- 2026-09-04 — "hide + auto-sort completed goals" delivered (draft PR, stacked). Completed goals
+  render below open ones (display-only stable sort — no plan-note rewrite on load) and a persistent
+  "hide completed" header toggle removes them while each group keeps a `+N done` indicator. Front-end
+  only: pure `goals-view.js` helper (vm-sandbox unit test) + localStorage pref. 11/11 tests + live
+  browser (order, hide, reload-persistence), verdict pass.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.
