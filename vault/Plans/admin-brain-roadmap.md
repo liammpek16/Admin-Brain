@@ -34,6 +34,10 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR #8): git recency served stale-while-revalidate in the obsidian adapter — the network is off the read/write path, so getProjects() after TTL expiry is ~18ms (was ~430ms). Sticky against a transient null; no API change._
   - _Delivered (PR #9): the real "typed goal disappears" bug — the 20s poll's `loadGoals()` innerHTML rebuild was destroying the input mid-type. Fixed A (poll skips re-render while a goal field is focused) + B (snapshot/restore drafts + caret across any re-render) + D (drafts mirrored to localStorage, survive a reload). Verified live in the browser._
 - [ ] add new project button
+- [ ] adjust the goals section. Instead there should be a split between improvements versus checkpoints for each project
+- [ ] allow for hiding of completed goals. All completed goals should automatically sort to the bottom of the goals list.
+- [ ] connect to phone.
+- [ ] pull usage limit reset times from claude. provide a notification for when this happens
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web

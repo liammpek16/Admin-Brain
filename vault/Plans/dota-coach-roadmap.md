@@ -11,6 +11,10 @@ status: active
 Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platform.
 
 ## Steps
+- [ ] create a new button for the parser to occur before the coaching analysis
+- [ ] allow coaching agent and research agent to be called through claude code to not use API credits
+- [ ] Add security to the webapp before launching live
+- [ ] create a user privacy agreement
 - [x] Reduce error in the information shared in the coaching interface — near · high
 - [x] Real-time per-fight coaching feedback: target prioritization, missed spells, positioning — mid · high
   - _Delivered (PR #4): deterministic "Coaching read" per fight in the webapp (target priority / missed spells / positioning), no LLM. Live in-game version remains a separate future goal._
@@ -18,10 +22,9 @@ Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platfo
 - [ ] Determine feasibility of moving API calls to a known script — mid · med
 - [ ] Land the first paying subscription (first revenue) — mid · high
 - [ ] Per-fight video playback — long · low (stretch goal)
-- [ ] Add security to the webapp before launching live
 - [x] Harden heroes.json hand-corrections so a constants refresh can't silently revert them — near · high
   - _Delivered (PR #5): id-keyed canonical overlay re-applied on every hero-constants refresh (fetch + offline-fallback); a stale upstream can no longer revert Outworld Destroyer / Ringmaster. Validator stays the net._
-- [ ] create a new button for the parser to occur before the coaching analysis
+- [ ] research all available outputs from the dota download.
 
 ## Risks
 - Real-time accuracy is hard, and errors erode coaching trust — milestone 1 de-risks everything after it.

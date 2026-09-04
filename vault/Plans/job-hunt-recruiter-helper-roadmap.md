@@ -1,8 +1,8 @@
 ---
 type: plan
 kind: roadmap
-created: 2026-08-07
-project: "Job Hunt / Recruiter Helper"
+created: 2026-08-07T00:00:00.000Z
+project: Job Hunt / Recruiter Helper
 horizon: quarter
 status: active
 ---
@@ -17,6 +17,7 @@ vs Google XYZ, job search, resume tailoring, and an ATS pre-screen.
 - [ ] Build the resume customizer skill (tailor to a job description, XYZ) — mid · med
 - [ ] Build the ATS scanner skill (flag rejection risks) — mid · med
 - [ ] Test the full pipeline on my current resume — mid · high
+- [ ] build a dashboard for jobs applied to/interviews completed
 
 ## Risks
 - Job-board access (LinkedIn/Indeed) may hit anti-bot / ToS limits — reliably surfacing
