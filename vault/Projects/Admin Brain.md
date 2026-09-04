@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: pull usage limit reset times from claude. provide a notification for when this happens
+next: connect to phone.
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-09-04'
 tags:
@@ -22,10 +22,11 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Batch of 4 roadmap goals running through the loop (stacked draft PRs). Shipped: **add-new-project
-  button** (validated create form) + **goals split into checkpoints vs improvements** (derived kind
-  tag + per-group board + ⇄ reclassify) + **hide/auto-sort completed goals** (done-to-bottom display
-  sort + persistent hide toggle). Last in the stack: pull Claude usage-limit reset times + notify.
+- Batch of 4 roadmap goals shipped through the loop as a **stack of 4 draft PRs** (#10→#11→#12→#13,
+  merge in order): **add-new-project button** (validated create form) · **goals split into checkpoints
+  vs improvements** (derived kind tag + per-group board + ⇄ reclassify) · **hide/auto-sort completed
+  goals** (done-to-bottom display sort + persistent hide toggle) · **Claude usage-limit reset notifier**
+  (new `usage` skill + USAGE LIMITS panel + one-shot browser notification). Next: connect to phone.
 
 ## Blockers
 - none
@@ -59,5 +60,11 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   "hide completed" header toggle removes them while each group keeps a `+N done` indicator. Front-end
   only: pure `goals-view.js` helper (vm-sandbox unit test) + localStorage pref. 11/11 tests + live
   browser (order, hide, reload-persistence), verdict pass.
+- 2026-09-04 — "pull Claude usage-limit reset times + notify" delivered (draft PR, stacked). New
+  `usage` skill: pure `normalizeUsage` (native + Anthropic-header shapes → status/countdown) reading a
+  declared source (`ADMIN_BRAIN_CLAUDE_USAGE` / `vault/State/claude-usage.json`); `GET /api/usage`; a
+  USAGE LIMITS panel with live countdowns + a one-shot, deduped browser notification per reset.
+  Honest not-configured state; $0/no-network. 16/16 tests + live browser, verdict pass. NB: no free
+  stable local reset source exists, so the file is the honest ingest point. Closes the 4-goal batch.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.

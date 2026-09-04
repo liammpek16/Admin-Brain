@@ -12,6 +12,7 @@ import { spawn } from 'node:child_process';
 import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, setProjectGoalKind, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
+import { normalizeUsage, readUsageResets } from '../skills/usage/usage.js';
 import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -286,6 +287,7 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, trendSeries(url.searchParams.get('metric') || 'projects_active'));
     if (req.method === 'POST' && url.pathname.startsWith('/api/run/'))
       return sendJson(res, 200, await runSkill(url.pathname.slice('/api/run/'.length)));
+    if (req.method === 'GET' && url.pathname === '/api/usage') return sendJson(res, 200, normalizeUsage(readUsageResets(), Date.now()));
     if (req.method === 'GET' && url.pathname === '/api/cycles') return sendJson(res, 200, listCycles());
     if (req.method === 'GET' && url.pathname === '/api/goals') return sendJson(res, 200, await goalsBoard());
     if (req.method === 'POST' && url.pathname === '/api/project/add-goal') {

@@ -18,3 +18,6 @@ vault/.obsidian/workspace.json
 vault/.obsidian/workspace-mobile.json
 vault/.obsidian/cache/
 vault/.trash/
+
+# Personal, volatile Claude usage-limit reset times (keep the .example, ignore the real one)
+vault/State/claude-usage.json

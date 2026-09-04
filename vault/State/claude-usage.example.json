@@ -1,0 +1,11 @@
+{
+  "_comment": "Copy to claude-usage.json (gitignored) and keep the resetsAt times current — or point ADMIN_BRAIN_CLAUDE_USAGE at your own file. Two shapes are accepted; this is the native one.",
+  "limits": [
+    { "name": "5h",     "resetsAt": "2026-09-04T21:00:00Z", "used": 120, "limit": 200 },
+    { "name": "weekly", "resetsAt": "2026-09-08T00:00:00Z" }
+  ],
+  "_alt_anthropic_header_shape": {
+    "anthropic-ratelimit-5h-reset": "2026-09-04T21:00:00Z",
+    "anthropic-ratelimit-weekly-reset": "2026-09-08T00:00:00Z"
+  }
+}

@@ -234,6 +234,20 @@ li { margin: 5px 0; }
 .goal-input::placeholder { color: var(--dim); }
 .goal-add-btn { flex: 0 0 auto; font-size: 9px; padding: 2px 8px; }
 
+/* Usage limits panel */
+#usage-alerts { margin-left: auto; font-size: 9px; padding: 3px 8px; }
+#usage-alerts.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(92,240,255,0.3); }
+#usage-list code { font-size: 10px; color: var(--cyan); background: rgba(92,240,255,0.08); padding: 0 3px; border-radius: 2px; }
+.usage-row { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(92,240,255,0.05); }
+.usage-row:last-child { border-bottom: none; }
+.usage-row .udot { flex: 0 0 auto; font-size: 9px; }
+.usage-row .uname { flex: 1 1 auto; color: var(--fg); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+.usage-row .ucount { flex: 0 0 auto; color: var(--cyan); font-variant-numeric: tabular-nums; }
+.usage-row .uwhen { flex: 0 0 auto; font-size: 9px; white-space: nowrap; }
+.usage-row.status-soon .ucount { color: var(--gold); }
+.usage-row.status-reset { background: rgba(92,240,255,0.06); }
+.usage-row.status-reset .ucount { color: #eaffff; text-shadow: var(--glow); text-transform: uppercase; }
+
 .deck-btns { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .log {
   margin: 0; background: rgba(2,8,16,0.6); border: 1px solid var(--edge-soft); border-radius: 4px;

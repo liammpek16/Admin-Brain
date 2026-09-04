@@ -407,7 +407,7 @@ $('project-create-form').addEventListener('submit', async (e) => {
   }
 });
 
-$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); });
+$('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); loadUsage(); });
 $('metric').addEventListener('change', loadTrend);
 
 // "Hide completed" toggle: reflect the persisted preference, and re-render the board on change.
@@ -681,8 +681,82 @@ function speakAgenda() {
   btn.addEventListener('click', speakAgenda);
 })();
 
+// ---- Usage limits (Claude usage-limit reset times + a browser notification on reset) ----
+// The reset times are ingested by the server from a declared local source (see skills/usage). The
+// front-end shows a live countdown and fires ONE browser notification per reset event. $0, no deps.
+const USAGE_DOT = { ok: '🟢', soon: '🟡', reset: '🔵' };
+function fmtCountdown(ms) {
+  if (ms <= 0) return 'reset';
+  const s = Math.floor(ms / 1000), m = Math.floor(s / 60), h = Math.floor(m / 60), d = Math.floor(h / 24);
+  if (d >= 1) return `${d}d ${h % 24}h`;
+  if (h >= 1) return `${h}h ${m % 60}m`;
+  if (m >= 1) return `${m}m ${s % 60}s`;
+  return `${s}s`;
+}
+
+// Which reset events we've already notified for (`name@resetsAt`), so a passed reset alerts once.
+const USAGE_NOTIFIED_KEY = 'admin-brain:usage-notified';
+function readNotified() { try { return new Set(JSON.parse(localStorage.getItem(USAGE_NOTIFIED_KEY) || '[]')); } catch { return new Set(); } }
+function writeNotified(set) { try { localStorage.setItem(USAGE_NOTIFIED_KEY, JSON.stringify([...set].slice(-50))); } catch { /* storage off — dedup is best-effort */ } }
+
+let lastUsage = null;
+async function loadUsage() {
+  let u;
+  try { u = await fetch('/api/usage').then((r) => r.json()); } catch { return; }
+  lastUsage = u;
+  const sub = $('usage-sub'), list = $('usage-list');
+  if (!u.configured) {
+    if (sub) sub.textContent = '· not configured';
+    if (list) list.innerHTML = `<p class="dim">No source configured. Set <code>ADMIN_BRAIN_CLAUDE_USAGE</code> to a JSON path, or add <code>vault/State/claude-usage.json</code> (see <code>claude-usage.example.json</code>).</p>`;
+    return;
+  }
+  const soonest = u.limits[0];
+  if (sub) sub.textContent = `· next ${soonest.status === 'reset' ? 'reset now' : `in ${fmtCountdown(soonest.msUntil)}`}`;
+  if (list) list.innerHTML = u.limits.map((l) => {
+    const when = new Date(l.resetsAt).toLocaleString();
+    const usage = (l.used != null && l.limit != null) ? ` <span class="dim">${esc(String(l.used))}/${esc(String(l.limit))}</span>` : '';
+    const count = l.status === 'reset' ? 'reset' : fmtCountdown(l.msUntil);
+    return `<div class="usage-row status-${l.status}"><span class="udot">${USAGE_DOT[l.status] || '⚪'}</span><span class="uname">${esc(l.name)}${usage}</span><span class="ucount">${count}</span><span class="dim uwhen" title="${escAttr(l.resetsAt)}">${esc(when)}</span></div>`;
+  }).join('');
+  maybeNotifyResets(u);
+}
+
+// Fire ONE browser notification per reset event (a limit whose resetsAt has passed), given permission.
+function maybeNotifyResets(u) {
+  if (!u || !u.configured || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const notified = readNotified();
+  let changed = false;
+  for (const l of u.limits) {
+    if (l.status !== 'reset') continue;
+    const key = `${l.name}@${l.resetsAt}`;
+    if (notified.has(key)) continue;
+    notified.add(key); changed = true;
+    try { new Notification('Claude usage limit reset', { body: `Your ${l.name} usage limit has reset.`, tag: key }); } catch { /* notification failed — non-fatal */ }
+  }
+  if (changed) writeNotified(notified);
+}
+
+// Enable-alerts button: request Notification permission (must run inside the click gesture).
+(() => {
+  const btn = $('usage-alerts');
+  if (!btn) return;
+  if (!('Notification' in window)) { btn.disabled = true; btn.title = 'Notifications not supported in this browser'; btn.textContent = '🔔 n/a'; return; }
+  const reflect = () => {
+    const p = Notification.permission;
+    btn.textContent = p === 'granted' ? '🔔 alerts on' : p === 'denied' ? '🔔 blocked' : '🔔 alerts';
+    btn.classList.toggle('on', p === 'granted');
+  };
+  reflect();
+  btn.addEventListener('click', async () => {
+    if (Notification.permission === 'default') { try { await Notification.requestPermission(); } catch { /* dismissed */ } }
+    reflect();
+    if (Notification.permission === 'granted') maybeNotifyResets(lastUsage);
+  });
+})();
+
 loadOverview();
 loadTrend();
 loadCycles();
 loadGoals();
-setInterval(() => { loadOverview(); loadCycles(); loadGoals({ background: true }); }, 20000); // cheap local poll
+loadUsage();
+setInterval(() => { loadOverview(); loadCycles(); loadGoals({ background: true }); loadUsage(); }, 20000); // cheap local poll

@@ -11,6 +11,7 @@
     "metrics": "node skills/metrics/metrics.js",
     "inbox": "node skills/inbox/inbox.js",
     "trends": "node skills/trends/trends.js",
+    "usage": "node skills/usage/usage.js",
     "select": "node skills/select/select.js",
     "refine": "node skills/refine/refine.js",
     "implement": "node skills/implement/implement.js",
