@@ -40,7 +40,8 @@ project from one place, capture notes without leaving it, and eventually drive i
 - [x] allow for hiding of completed goals. All completed goals should automatically sort to the bottom of the goals list.
   - _Delivered (PR pending): in every goal group, completed goals now render **below** all open ones (display-only stable sort — the roadmap file isn't rewritten on load), and a persistent **"hide completed"** toggle in the PROJECT GOALS header removes them from view while each group keeps a muted `+N done` indicator (hidden, not lost). Front-end only: a pure `goals-view.js` helper (unit-tested via a `vm` sandbox) + localStorage preference. 11/11 tests + live browser (order, hide, reload-persistence) pass._
 - [ ] connect to phone.
-- [ ] pull usage limit reset times from claude. provide a notification for when this happens
+- [x] pull usage limit reset times from claude. provide a notification for when this happens
+  - _Delivered (PR pending): a **USAGE LIMITS** panel + a new `usage` skill. `normalizeUsage` (pure, tested) ingests reset times from a declared source (`ADMIN_BRAIN_CLAUDE_USAGE` or `vault/State/claude-usage.json`) — accepting both the native shape and **Anthropic rate-limit headers** — derives per-limit `status`/countdown, and `GET /api/usage` serves them. The HUD shows each limit with a live countdown and fires **one browser notification per reset** (permission-gated, deduped). Degrades honestly to a "not configured" message; $0, no network, no deps. 16/16 tests + live browser pass. NB: Claude exposes no free/stable local reset source, so the file is the honest ingest point (hand-updated / pasted headers / a future updater)._
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
