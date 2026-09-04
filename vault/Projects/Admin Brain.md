@@ -4,9 +4,9 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: add new project button
+next: adjust the goals section. Instead there should be a split between improvements versus checkpoints for each project
 started: 2026-08-07T00:00:00.000Z
-updated: '2026-08-19'
+updated: '2026-09-03'
 tags:
   - meta
   - tooling
@@ -22,9 +22,10 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 [[admin-brain-roadmap]].
 
 ## Now
-- Goal-write pt.2 shipped: PR #8 (stale-while-revalidate recency, ~430ms→~18ms) + PR #9 (the real
-  "typed goal disappears" fix — poll no longer wipes an in-progress draft). Next: add-new-project
-  button — or pick any goal from the HUD goals board.
+- Batch of 4 roadmap goals running through the loop (stacked draft PRs). Shipped: **add-new-project
+  button** — a `＋ NEW PROJECT` form in the PROJECTS panel creates a validated project note via the
+  vault adapter. Next in the stack: split the goals section into improvements vs checkpoints, then
+  hide/auto-sort completed goals, then pull Claude usage-limit reset times + notify.
 
 ## Blockers
 - none
@@ -43,5 +44,10 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   stale-while-revalidate (~430ms→~18ms, network off the write path). PR #9: fixed the real
   disappearing-goal-draft bug — the 20s poll's board rebuild was destroying the input; A+B+D
   (skip-while-focused, snapshot/restore, localStorage). Both merged to main.
+- 2026-09-03 — "add new project button" delivered (draft PR). `＋ NEW PROJECT` in the PROJECTS
+  panel → accessible keyboard form → new validated `createProject` vault accessor + `POST
+  /api/project/create` (201/400). Rejects empty/multiline/unsafe/duplicate names without touching
+  an existing note; defaults planned·gray·med. Independent verify: 2/2 unit + 13/13 adversarial +
+  live browser, verdict pass. First of a stacked batch of 4 goals.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.

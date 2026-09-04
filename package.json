@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Personal second brain + command center — deterministic, $0 core over an Obsidian vault.",
   "scripts": {
+    "test": "node --test",
     "brief": "node brief.js",
     "projects": "node skills/vault/vault.js",
     "metrics": "node skills/metrics/metrics.js",
