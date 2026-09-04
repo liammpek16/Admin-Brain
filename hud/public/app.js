@@ -132,18 +132,25 @@ function focusedGoalInput() {
   const a = document.activeElement;
   return a && a.classList && a.classList.contains('goal-input') ? a : null;
 }
-
-// "Hide completed goals" — a per-viewer board preference, persisted like the goal drafts. Completed
-// goals stay in the roadmap; this only removes them from view. Defaults to showing them.
-const HIDE_COMPLETED_KEY = 'admin-brain:hide-completed';
-function readHideCompleted() {
-  try { return localStorage.getItem(HIDE_COMPLETED_KEY) === '1'; } catch { return false; }
+// True while the user is typing in EITHER a new-goal field or an inline goal-rename field — the
+// background poll must not yank the board out from under an active edit.
+function isEditingGoal() {
+  const a = document.activeElement;
+  return !!(a && a.classList && (a.classList.contains('goal-input') || a.classList.contains('goal-edit-input')));
 }
-function writeHideCompleted(on) {
+
+// Completed goals live in a collapsible "✓ N completed" dropdown inside EACH kind-group, collapsed
+// (hidden) by default. The open/closed choice persists per (project, kind) — like the goal drafts —
+// so a reload or the 20s poll keeps the view the user chose.
+const DONE_OPEN_KEY = (project, kind) => `admin-brain:done-open:${project}:${kind}`;
+function isDoneOpen(project, kind) {
+  try { return localStorage.getItem(DONE_OPEN_KEY(project, kind)) === '1'; } catch { return false; }
+}
+function writeDoneOpen(project, kind, open) {
   try {
-    if (on) localStorage.setItem(HIDE_COMPLETED_KEY, '1');
-    else localStorage.removeItem(HIDE_COMPLETED_KEY);
-  } catch { /* storage disabled — the toggle still works for this session, just won't persist */ }
+    if (open) localStorage.setItem(DONE_OPEN_KEY(project, kind), '1');
+    else localStorage.removeItem(DONE_OPEN_KEY(project, kind));
+  } catch { /* storage disabled — the dropdown still toggles for this session, just won't persist */ }
 }
 
 async function loadGoals(opts = {}) {
@@ -152,7 +159,7 @@ async function loadGoals(opts = {}) {
   // (A) Never yank the field out from under an active typist on the background poll. Drafts are
   // safe in localStorage regardless; this just avoids disturbing the caret while they type.
   const editing = focusedGoalInput();
-  if (opts.background && editing) return;
+  if (opts.background && isEditingGoal()) return;
 
   // (B) Snapshot in-progress drafts (in-memory, so it works even if localStorage is blocked) and
   // the caret of the focused field, to restore across the innerHTML rebuild below.
@@ -166,41 +173,43 @@ async function loadGoals(opts = {}) {
   const open = board.reduce((n, p) => n + p.goals.filter((g) => !g.done).length, 0);
   $('goals-sub').textContent = `· ${open} open / ${total} across ${board.length} projects`;
 
-  // Per-viewer "hide completed" preference (persisted in localStorage). When on, done goals are not
-  // rendered — but each group still advertises how many exist, so they read as hidden, not deleted.
-  const hideCompleted = readHideCompleted();
-
   // One goal <li>. `kind` is derived server-side (checkpoint | improvement); the ⇄ button flips it
-  // to the other group. Text is tag-stripped, so data-goal still matches for run/delete/reorder.
+  // to the other group, ✎ renames it in place. Text is tag-stripped, so data-goal still matches for
+  // run/delete/reorder/edit. Only the ⠿ grip is draggable (not the whole row), so the goal text
+  // stays selectable/highlightable while drag-to-reorder still works from the handle.
   const goalItem = (p, g) => {
     const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
-    const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
+    const grip = `<span class="grip" draggable="true" title="Drag to reorder">⠿</span>`;
     const otherKind = g.kind === 'improvement' ? 'checkpoint' : 'improvement';
+    const editBtn = `<button class="goal-edit" title="Edit this goal" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✎</button>`;
     const kindBtn = `<button class="goal-kind" title="Move to ${otherKind}s" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}" data-kind="${otherKind}">⇄</button>`;
     // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
     const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
-    if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${kindBtn}${del}</li>`;
+    if (g.done) return `<li class="goal done" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${editBtn}${kindBtn}${del}</li>`;
     const ctrl = p.hasOpenCycle
       ? `<span class="pill inflight">in flight</span>`
       : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-    return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${kindBtn}${del}</li>`;
+    return `<li class="goal" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${editBtn}${kindBtn}${del}</li>`;
   };
 
-  // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS) with its own drag list + count. Within the
-  // group, OPEN goals always render before COMPLETED ones (display-only sort — the roadmap file is
-  // never rewritten on load); when "hide completed" is on, done goals drop out but a `+N done`
-  // marker stays so nothing looks lost. An empty group still renders so both stay drop-targetable.
+  // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS). Open goals render in the group's main list;
+  // COMPLETED goals go into their own collapsible "✓ N completed" dropdown (isDoneOpen persists the
+  // open/closed choice), so each group hides its done goals by default without losing them. The done
+  // <li>s stay in the DOM even while collapsed, so drag-reorder still sees the full goal set.
   const kindGroup = (p, kind, label) => {
     const gs = p.goals.filter((g) => g.kind === kind);
     const { open: openGs, done: doneGs } = partitionCompleted(gs);
-    const visible = hideCompleted ? openGs : sortGoalsForDisplay(gs); // open first, done last
-    const doneNote = doneGs.length ? ` <span class="dim gdone-count">+${doneGs.length} done</span>` : '';
-    const items = visible.length
-      ? visible.map((g) => goalItem(p, g)).join('')
+    const openItems = openGs.length
+      ? openGs.map((g) => goalItem(p, g)).join('')
       : `<li class="dim goal-empty">${doneGs.length ? 'all done ✓' : 'none'}</li>`;
+    const doneSection = doneGs.length ? `
+      <details class="goal-done-section" data-project="${escAttr(p.name)}" data-kind="${kind}"${isDoneOpen(p.name, kind) ? ' open' : ''}>
+        <summary class="goal-done-summary">✓ ${doneGs.length} completed</summary>
+        <ul class="goal-list goal-done-list" data-project="${escAttr(p.name)}" data-kind="${kind}">${doneGs.map((g) => goalItem(p, g)).join('')}</ul>
+      </details>` : '';
     return `<div class="goal-kindgroup" data-kind="${kind}">
-      <div class="goal-kindhead">${label} <span class="dim">${openGs.length}</span>${doneNote}</div>
-      <ul class="goal-list" data-project="${escAttr(p.name)}" data-kind="${kind}">${items}</ul>
+      <div class="goal-kindhead">${label} <span class="dim">${openGs.length}</span></div>
+      <ul class="goal-list" data-project="${escAttr(p.name)}" data-kind="${kind}">${openItems}</ul>${doneSection}
     </div>`;
   };
 
@@ -211,8 +220,8 @@ async function loadGoals(opts = {}) {
     const add = `<div class="goal-add">
       <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
       <select class="sel goal-kind-select" data-project="${escAttr(p.name)}" title="Which group the new goal goes in">
-        <option value="checkpoint">checkpoint</option>
         <option value="improvement">improvement</option>
+        <option value="checkpoint">checkpoint</option>
       </select>
       <button class="btn goal-add-btn" data-project="${escAttr(p.name)}">+ Add</button>
     </div>`;
@@ -242,7 +251,7 @@ async function addGoal(project, input) {
   // Which group the new goal joins — read the kind selector in the same project's add-row.
   const group = input && input.closest && input.closest('.goal-group');
   const kindSel = group && group.querySelector('.goal-kind-select');
-  const kind = (kindSel && kindSel.value) || 'checkpoint';
+  const kind = (kindSel && kindSel.value) || 'improvement';
   const log = $('loop-log');
   log.textContent = `▶ adding ${kind} to ${project}…`;
   try {
@@ -256,6 +265,52 @@ async function addGoal(project, input) {
   } catch (e) {
     log.textContent = `✗ ${e}`;
   }
+}
+
+// Inline goal rename (the ✎ button): swap the goal's text span for an input, commit on Enter/blur,
+// cancel on Escape. The background poll skips re-render while this input is focused (isEditingGoal).
+function startGoalEdit(btn) {
+  const li = btn.closest('li.goal');
+  if (!li || li.querySelector('.goal-edit-input')) return; // already editing this row
+  const span = li.querySelector('.gtext');
+  if (!span) return;
+  const project = btn.dataset.project;
+  const oldText = btn.dataset.goal;
+  const input = document.createElement('input');
+  input.className = 'goal-edit-input';
+  input.value = oldText;
+  input.maxLength = 200;
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+  let settled = false;
+  const finish = (save) => {
+    if (settled) return;
+    settled = true;
+    const next = input.value.trim();
+    if (save && next && next !== oldText) commitGoalEdit(project, oldText, next);
+    else loadGoals(); // cancel or no-op → re-render restores the original row
+  };
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+    else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+  });
+  input.addEventListener('blur', () => finish(true));
+}
+
+async function commitGoalEdit(project, goal, text) {
+  const log = $('loop-log');
+  log.textContent = `▶ editing goal in ${project}…`;
+  try {
+    const r = await fetch('/api/project/edit-goal', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project, goal, text }),
+    }).then((r) => r.json());
+    log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
+  } catch (e) {
+    log.textContent = `✗ ${e}`;
+  }
+  await Promise.all([loadGoals(), loadOverview()]);
 }
 
 async function loopPost(url, payload, running) {
@@ -410,13 +465,12 @@ $('project-create-form').addEventListener('submit', async (e) => {
 $('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); loadUsage(); });
 $('metric').addEventListener('change', loadTrend);
 
-// "Hide completed" toggle: reflect the persisted preference, and re-render the board on change.
-(() => {
-  const cb = $('hide-completed');
-  if (!cb) return;
-  cb.checked = readHideCompleted();
-  cb.addEventListener('change', () => { writeHideCompleted(cb.checked); loadGoals(); });
-})();
+// Completed-goals dropdown: persist each group's open/closed choice so a reload/poll keeps it. The
+// `toggle` event doesn't bubble, so listen in the capture phase on the board.
+$('goals-board').addEventListener('toggle', (e) => {
+  const d = e.target.closest && e.target.closest('details.goal-done-section');
+  if (d) writeDoneOpen(d.dataset.project, d.dataset.kind, d.open);
+}, true);
 document.querySelectorAll('.run').forEach((b) => b.addEventListener('click', () => runSkill(b.dataset.skill, b)));
 
 // Feature loop: SELECT next task, and delegated stage/approve actions on the cycle cards.
@@ -437,6 +491,8 @@ $('loop-active').addEventListener('click', async (e) => {
 $('goals-board').addEventListener('click', async (e) => {
   const run = e.target.closest('button.goal-run');
   if (run) { run.disabled = true; await loopPost('/api/loop/select-goal', { project: run.dataset.project, goal: run.dataset.goal }, `run goal`); return; }
+  const editBtn = e.target.closest('button.goal-edit');
+  if (editBtn) { startGoalEdit(editBtn); return; }
   const del = e.target.closest('button.goal-del');
   if (del) {
     if (!confirm(`Delete the goal “${del.dataset.goal}” from ${del.dataset.project}? Recoverable via git.`)) return;
