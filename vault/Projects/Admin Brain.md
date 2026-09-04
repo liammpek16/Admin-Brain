@@ -4,9 +4,9 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: adjust the goals section. Instead there should be a split between improvements versus checkpoints for each project
+next: allow for hiding of completed goals. All completed goals should automatically sort to the bottom of the goals list.
 started: 2026-08-07T00:00:00.000Z
-updated: '2026-09-03'
+updated: '2026-09-04'
 tags:
   - meta
   - tooling
@@ -23,9 +23,9 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 
 ## Now
 - Batch of 4 roadmap goals running through the loop (stacked draft PRs). Shipped: **add-new-project
-  button** — a `＋ NEW PROJECT` form in the PROJECTS panel creates a validated project note via the
-  vault adapter. Next in the stack: split the goals section into improvements vs checkpoints, then
-  hide/auto-sort completed goals, then pull Claude usage-limit reset times + notify.
+  button** (validated create form) + **goals split into checkpoints vs improvements** (derived kind
+  tag + per-group board + ⇄ reclassify). Next in the stack: hide/auto-sort completed goals, then
+  pull Claude usage-limit reset times + notify.
 
 ## Blockers
 - none
@@ -49,5 +49,10 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   /api/project/create` (201/400). Rejects empty/multiline/unsafe/duplicate names without touching
   an existing note; defaults planned·gray·med. Independent verify: 2/2 unit + 13/13 adversarial +
   live browser, verdict pass. First of a stacked batch of 4 goals.
+- 2026-09-04 — "split the goals section (improvements vs checkpoints)" delivered (draft PR, stacked).
+  Every goal gets a derived `kind` from a trailing `#improvement`/`#checkpoint` tag (untagged →
+  checkpoint, nothing moved); shared `parseGoalLine`; `setProjectGoalKind` + `POST
+  /api/project/goal-kind`; the board renders two labeled groups with a ⇄ reclassify button and a
+  kind selector on the add-row. 6/6 tests + live browser, verdict pass.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.

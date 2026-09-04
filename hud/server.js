@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, setProjectGoalKind, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
@@ -291,8 +291,8 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/api/project/add-goal') {
       let r = { ok: false, output: 'Bad request.' };
       try {
-        const { project, text } = JSON.parse((await readBody(req)) || '{}');
-        const res2 = addProjectGoal(String(project || ''), String(text || ''));
+        const { project, text, kind } = JSON.parse((await readBody(req)) || '{}');
+        const res2 = addProjectGoal(String(project || ''), String(text || ''), kind ? String(kind) : 'checkpoint');
         r = res2.ok ? { ok: true, output: `Added goal to ${project}.` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
@@ -311,6 +311,15 @@ const server = http.createServer(async (req, res) => {
         const { project, goal } = JSON.parse((await readBody(req)) || '{}');
         const res2 = deleteProjectGoal(String(project || ''), String(goal || ''));
         r = res2.ok ? { ok: true, output: `Deleted goal from ${project}.` } : { ok: false, output: res2.error || 'failed' };
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/project/goal-kind') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { project, goal, kind } = JSON.parse((await readBody(req)) || '{}');
+        const res2 = setProjectGoalKind(String(project || ''), String(goal || ''), String(kind || ''));
+        r = res2.ok ? { ok: true, output: `Set ${goal} → ${kind}.` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
     }

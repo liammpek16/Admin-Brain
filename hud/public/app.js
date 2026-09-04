@@ -152,23 +152,47 @@ async function loadGoals(opts = {}) {
   const total = board.reduce((n, p) => n + p.goals.length, 0);
   const open = board.reduce((n, p) => n + p.goals.filter((g) => !g.done).length, 0);
   $('goals-sub').textContent = `· ${open} open / ${total} across ${board.length} projects`;
+
+  // One goal <li>. `kind` is derived server-side (checkpoint | improvement); the ⇄ button flips it
+  // to the other group. Text is tag-stripped, so data-goal still matches for run/delete/reorder.
+  const goalItem = (p, g) => {
+    const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
+    const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
+    const otherKind = g.kind === 'improvement' ? 'checkpoint' : 'improvement';
+    const kindBtn = `<button class="goal-kind" title="Move to ${otherKind}s" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}" data-kind="${otherKind}">⇄</button>`;
+    // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
+    const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
+    if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${kindBtn}${del}</li>`;
+    const ctrl = p.hasOpenCycle
+      ? `<span class="pill inflight">in flight</span>`
+      : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
+    return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${kindBtn}${del}</li>`;
+  };
+
+  // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS) with its own drag list + count. An empty
+  // group still renders (with a placeholder) so both groups are always visible and drop-targetable.
+  const kindGroup = (p, kind, label) => {
+    const gs = p.goals.filter((g) => g.kind === kind);
+    const items = gs.length ? gs.map((g) => goalItem(p, g)).join('') : `<li class="dim goal-empty">none</li>`;
+    return `<div class="goal-kindgroup" data-kind="${kind}">
+      <div class="goal-kindhead">${label} <span class="dim">${gs.length}</span></div>
+      <ul class="goal-list" data-project="${escAttr(p.name)}" data-kind="${kind}">${items}</ul>
+    </div>`;
+  };
+
   $('goals-board').innerHTML = board.map((p) => {
-    const items = p.goals.length ? p.goals.map((g) => {
-      const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
-      const grip = `<span class="grip" title="Drag to reorder">⠿</span>`;
-      // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
-      const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
-      if (g.done) return `<li class="goal done" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${del}</li>`;
-      const ctrl = p.hasOpenCycle
-        ? `<span class="pill inflight">in flight</span>`
-        : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-      return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${del}</li>`;
-    }).join('') : '<li class="dim">no roadmap goals yet</li>';
+    const groups = p.goals.length
+      ? kindGroup(p, 'checkpoint', 'CHECKPOINTS') + kindGroup(p, 'improvement', 'IMPROVEMENTS')
+      : '<p class="dim">no roadmap goals yet</p>';
     const add = `<div class="goal-add">
       <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
+      <select class="sel goal-kind-select" data-project="${escAttr(p.name)}" title="Which group the new goal goes in">
+        <option value="checkpoint">checkpoint</option>
+        <option value="improvement">improvement</option>
+      </select>
       <button class="btn goal-add-btn" data-project="${escAttr(p.name)}">+ Add</button>
     </div>`;
-    return `<div class="goal-group" data-project="${escAttr(p.name)}"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div><ul class="goal-list">${items}</ul>${add}</div>`;
+    return `<div class="goal-group" data-project="${escAttr(p.name)}"><div class="goal-proj">${esc(p.name)} <span class="dim">${esc(p.status)}${p.hasOpenCycle ? ' · cycle in flight' : ''}</span></div>${groups}${add}</div>`;
   }).join('');
 
   // (B + D) Restore each project's unsent draft — the in-memory snapshot first, else the persisted
@@ -191,12 +215,16 @@ async function loadGoals(opts = {}) {
 async function addGoal(project, input) {
   const text = ((input && input.value) || '').trim();
   if (!text) return;
+  // Which group the new goal joins — read the kind selector in the same project's add-row.
+  const group = input && input.closest && input.closest('.goal-group');
+  const kindSel = group && group.querySelector('.goal-kind-select');
+  const kind = (kindSel && kindSel.value) || 'checkpoint';
   const log = $('loop-log');
-  log.textContent = `▶ adding goal to ${project}…`;
+  log.textContent = `▶ adding ${kind} to ${project}…`;
   try {
     const r = await fetch('/api/project/add-goal', {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ project, text }),
+      body: JSON.stringify({ project, text, kind }),
     }).then((r) => r.json());
     log.textContent = `${r.ok ? '✓' : '✗'} ${r.output || ''}`;
     if (r.ok) { writeGoalDraft(project, ''); if (input) input.value = ''; await Promise.all([loadOverview(), loadGoals()]); }
@@ -384,6 +412,13 @@ $('goals-board').addEventListener('click', async (e) => {
     await loopPost('/api/project/delete-goal', { project: del.dataset.project, goal: del.dataset.goal }, 'delete goal');
     return;
   }
+  // Re-classify: flip a goal between the checkpoint and improvement groups.
+  const kind = e.target.closest('button.goal-kind');
+  if (kind) {
+    kind.disabled = true;
+    await loopPost('/api/project/goal-kind', { project: kind.dataset.project, goal: kind.dataset.goal, kind: kind.dataset.kind }, `move to ${kind.dataset.kind}s`);
+    return;
+  }
   const add = e.target.closest('button.goal-add-btn');
   if (add) { await addGoal(add.dataset.project, add.closest('.goal-group').querySelector('.goal-input')); }
 });
@@ -409,8 +444,8 @@ $('goals-board').addEventListener('dragstart', (e) => {
 });
 $('goals-board').addEventListener('dragover', (e) => {
   if (!dragEl) return;
-  const group = e.target.closest('.goal-group');
-  if (!group || group !== dragEl.closest('.goal-group')) return; // same project only
+  const list = e.target.closest('ul.goal-list');
+  if (!list || list !== dragEl.closest('ul.goal-list')) return; // same project AND same kind-group
   e.preventDefault();
   const over = e.target.closest('li.goal');
   if (!over || over === dragEl) return;
