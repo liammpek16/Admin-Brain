@@ -4,7 +4,7 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: allow for hiding of completed goals. All completed goals should automatically sort to the bottom of the goals list.
+next: pull usage limit reset times from claude. provide a notification for when this happens
 started: 2026-08-07T00:00:00.000Z
 updated: '2026-09-04'
 tags:
@@ -24,8 +24,8 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
 ## Now
 - Batch of 4 roadmap goals running through the loop (stacked draft PRs). Shipped: **add-new-project
   button** (validated create form) + **goals split into checkpoints vs improvements** (derived kind
-  tag + per-group board + ⇄ reclassify). Next in the stack: hide/auto-sort completed goals, then
-  pull Claude usage-limit reset times + notify.
+  tag + per-group board + ⇄ reclassify) + **hide/auto-sort completed goals** (done-to-bottom display
+  sort + persistent hide toggle). Last in the stack: pull Claude usage-limit reset times + notify.
 
 ## Blockers
 - none
@@ -54,5 +54,10 @@ project. See `README.md` and `plan_2.md` for the design; roadmap at
   checkpoint, nothing moved); shared `parseGoalLine`; `setProjectGoalKind` + `POST
   /api/project/goal-kind`; the board renders two labeled groups with a ⇄ reclassify button and a
   kind selector on the add-row. 6/6 tests + live browser, verdict pass.
+- 2026-09-04 — "hide + auto-sort completed goals" delivered (draft PR, stacked). Completed goals
+  render below open ones (display-only stable sort — no plan-note rewrite on load) and a persistent
+  "hide completed" header toggle removes them while each group keeps a `+N done` indicator. Front-end
+  only: pure `goals-view.js` helper (vm-sandbox unit test) + localStorage pref. 11/11 tests + live
+  browser (order, hide, reload-persistence), verdict pass.
 
 > **You own three fields:** `health` · `priority` · `next`. Recency derives from `repo`.

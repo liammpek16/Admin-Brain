@@ -185,6 +185,9 @@ li { margin: 5px 0; }
 .loop-row { grid-template-columns: 1.8fr 1fr 0.8fr 1.4fr; }
 /* ---- goals board ---- */
 .goals-note { font-size: 10px; margin-left: auto; text-transform: none; letter-spacing: 0.5px; }
+.goals-toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--dim); text-transform: none; letter-spacing: 0.5px; cursor: pointer; user-select: none; }
+.goals-toggle input { accent-color: var(--cyan); cursor: pointer; margin: 0; }
+.gdone-count { font-size: 9px; opacity: 0.7; }
 #goals-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
 .goal-group { border: 1px solid var(--edge-soft); border-radius: 4px; padding: 10px 12px; background: rgba(4,12,22,0.4); }
 .goal-proj { color: #eaffff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-shadow: var(--glow); margin-bottom: 8px; border-bottom: 1px solid var(--edge-soft); padding-bottom: 6px; }

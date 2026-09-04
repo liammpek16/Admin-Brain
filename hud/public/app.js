@@ -133,6 +133,19 @@ function focusedGoalInput() {
   return a && a.classList && a.classList.contains('goal-input') ? a : null;
 }
 
+// "Hide completed goals" — a per-viewer board preference, persisted like the goal drafts. Completed
+// goals stay in the roadmap; this only removes them from view. Defaults to showing them.
+const HIDE_COMPLETED_KEY = 'admin-brain:hide-completed';
+function readHideCompleted() {
+  try { return localStorage.getItem(HIDE_COMPLETED_KEY) === '1'; } catch { return false; }
+}
+function writeHideCompleted(on) {
+  try {
+    if (on) localStorage.setItem(HIDE_COMPLETED_KEY, '1');
+    else localStorage.removeItem(HIDE_COMPLETED_KEY);
+  } catch { /* storage disabled — the toggle still works for this session, just won't persist */ }
+}
+
 async function loadGoals(opts = {}) {
   const board = await fetch('/api/goals').then((r) => r.json());
 
@@ -153,6 +166,10 @@ async function loadGoals(opts = {}) {
   const open = board.reduce((n, p) => n + p.goals.filter((g) => !g.done).length, 0);
   $('goals-sub').textContent = `· ${open} open / ${total} across ${board.length} projects`;
 
+  // Per-viewer "hide completed" preference (persisted in localStorage). When on, done goals are not
+  // rendered — but each group still advertises how many exist, so they read as hidden, not deleted.
+  const hideCompleted = readHideCompleted();
+
   // One goal <li>. `kind` is derived server-side (checkpoint | improvement); the ⇄ button flips it
   // to the other group. Text is tag-stripped, so data-goal still matches for run/delete/reorder.
   const goalItem = (p, g) => {
@@ -169,13 +186,20 @@ async function loadGoals(opts = {}) {
     return `<li class="goal" draggable="true" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${kindBtn}${del}</li>`;
   };
 
-  // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS) with its own drag list + count. An empty
-  // group still renders (with a placeholder) so both groups are always visible and drop-targetable.
+  // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS) with its own drag list + count. Within the
+  // group, OPEN goals always render before COMPLETED ones (display-only sort — the roadmap file is
+  // never rewritten on load); when "hide completed" is on, done goals drop out but a `+N done`
+  // marker stays so nothing looks lost. An empty group still renders so both stay drop-targetable.
   const kindGroup = (p, kind, label) => {
     const gs = p.goals.filter((g) => g.kind === kind);
-    const items = gs.length ? gs.map((g) => goalItem(p, g)).join('') : `<li class="dim goal-empty">none</li>`;
+    const { open: openGs, done: doneGs } = partitionCompleted(gs);
+    const visible = hideCompleted ? openGs : sortGoalsForDisplay(gs); // open first, done last
+    const doneNote = doneGs.length ? ` <span class="dim gdone-count">+${doneGs.length} done</span>` : '';
+    const items = visible.length
+      ? visible.map((g) => goalItem(p, g)).join('')
+      : `<li class="dim goal-empty">${doneGs.length ? 'all done ✓' : 'none'}</li>`;
     return `<div class="goal-kindgroup" data-kind="${kind}">
-      <div class="goal-kindhead">${label} <span class="dim">${gs.length}</span></div>
+      <div class="goal-kindhead">${label} <span class="dim">${openGs.length}</span>${doneNote}</div>
       <ul class="goal-list" data-project="${escAttr(p.name)}" data-kind="${kind}">${items}</ul>
     </div>`;
   };
@@ -385,6 +409,14 @@ $('project-create-form').addEventListener('submit', async (e) => {
 
 $('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); });
 $('metric').addEventListener('change', loadTrend);
+
+// "Hide completed" toggle: reflect the persisted preference, and re-render the board on change.
+(() => {
+  const cb = $('hide-completed');
+  if (!cb) return;
+  cb.checked = readHideCompleted();
+  cb.addEventListener('change', () => { writeHideCompleted(cb.checked); loadGoals(); });
+})();
 document.querySelectorAll('.run').forEach((b) => b.addEventListener('click', () => runSkill(b.dataset.skill, b)));
 
 // Feature loop: SELECT next task, and delegated stage/approve actions on the cycle cards.
