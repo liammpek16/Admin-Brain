@@ -369,6 +369,46 @@ export function setProjectGoalKind(project, text, kind) {
   return { ok: true };
 }
 
+/**
+ * Rename one roadmap goal in place (the ✎ inline edit in the goals board). Rewrites just the text
+ * portion of the matching `## Steps` checkbox line — preserving its bullet marker, done state, meta
+ * (` — horizon · priority`), `#improvement`/`#checkpoint` kind tag, and indented Delivered sub-lines.
+ * Refuses (no write) on an unknown goal, an empty/multi-line new text, or a collision with a DIFFERENT
+ * existing goal (a same-text/-case no-op is allowed). Plan notes are git-tracked, so an edit is
+ * recoverable. Returns { ok, error? }.
+ */
+export function editProjectGoal(project, oldText, newText) {
+  const from = String(oldText || '').trim();
+  const to = String(newText || '').trim();
+  if (!from) return { ok: false, error: 'no goal given' };
+  if (!to) return { ok: false, error: 'goal text is empty' };
+  if (/[\r\n]/.test(to)) return { ok: false, error: 'goal must be a single line' };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+  const parsed = parseSteps(pl);
+  if (!parsed) return { ok: false, error: 'no Steps section' };
+
+  const block = parsed.blocks.find((b) => b.text === from);
+  if (!block) return { ok: false, error: `goal not found: ${from}` };
+  // A different goal can't already own the new text (case-insensitive); a no-op rename is fine.
+  if (to.toLowerCase() !== from.toLowerCase()
+      && parsed.blocks.some((b) => b !== block && b.text.toLowerCase() === to.toLowerCase())) {
+    return { ok: false, error: 'that goal already exists' };
+  }
+
+  // Rebuild line 0 from its parts, keeping the original bullet marker + checkbox char and re-attaching
+  // the meta and kind tag so done-state, group, and horizon travel with the rename.
+  const g = parseGoalLine(block.lines[0]);
+  const prefix = block.lines[0].match(/^([-*])\s+\[([ xX])\]/);
+  const marker = prefix ? prefix[1] : '-';
+  const check = prefix ? prefix[2] : ' ';
+  const meta = g && g.meta ? ` — ${g.meta}` : '';
+  const tag = g && g.kind === 'improvement' ? ' #improvement' : '';
+  block.lines[0] = `${marker} [${check}] ${to}${meta}${tag}`;
+  writeSteps(pl, parsed, parsed.blocks);
+  return { ok: true };
+}
+
 // CLI: `node skills/vault/vault.js` → prints the normalized projects as JSON.
 if (isMain(import.meta.url)) {
   getProjects().then((p) => console.log(JSON.stringify(p, null, 2)));
