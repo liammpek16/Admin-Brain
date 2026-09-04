@@ -110,6 +110,7 @@ export function sessionsWithin(days, project = null) {
 
 // Human-owned fields that may be edited from the HUD, with their allowed values.
 const EDITABLE = { priority: ['high', 'med', 'low'], health: ['green', 'yellow', 'red', 'gray'] };
+const PROJECT_STATUSES = ['active', 'planned', 'paused', 'blocked', 'done', 'archived'];
 
 /** Update one human-owned field (priority|health) on a project note. Returns true on success. */
 export function updateProjectField(project, field, value) {
@@ -120,6 +121,41 @@ export function updateProjectField(project, field, value) {
   if (!note) return false;
   upsertNote('Projects', path.basename(note.path), { ...note.data, [field]: value, updated: today() }, note.body);
   return true;
+}
+
+/** Create one validated project note using the vault as the sole source of truth. */
+export function createProject(input = {}) {
+  const name = String(input.name || '').trim();
+  if (!name) return { ok: false, error: 'project name is required' };
+  if (/[\r\n]/.test(name)) return { ok: false, error: 'project name must be a single line' };
+  if (name.length > 120) return { ok: false, error: 'project name is too long' };
+  const slug = slugify(name);
+  if (!slug) return { ok: false, error: 'project name must include letters or numbers' };
+
+  const projects = listMarkdown('Projects').map(readNote).filter((n) => n.data.type === 'project');
+  if (projects.some((n) => String(n.data.name || n.name).trim().toLowerCase() === name.toLowerCase())) {
+    return { ok: false, error: 'a project with that name already exists' };
+  }
+  if (projects.some((n) => n.name.toLowerCase() === slug)) {
+    return { ok: false, error: 'a project with that name already exists' };
+  }
+
+  const status = String(input.status || 'planned');
+  const health = String(input.health || 'gray');
+  const priority = String(input.priority || 'med');
+  if (!PROJECT_STATUSES.includes(status)) return { ok: false, error: 'invalid project status' };
+  if (!EDITABLE.health.includes(health)) return { ok: false, error: 'invalid project health' };
+  if (!EDITABLE.priority.includes(priority)) return { ok: false, error: 'invalid project priority' };
+
+  const optional = ['next', 'repo', 'local_path', 'webapp_url', 'webapp_cmd', 'webapp_cwd'];
+  const data = { type: 'project', name, status, health, priority, updated: today() };
+  for (const field of optional) {
+    const value = String(input[field] || '').trim();
+    if (/[\r\n]/.test(value)) return { ok: false, error: `${field} must be a single line` };
+    if (value) data[field] = value;
+  }
+  upsertNote('Projects', slug, data, '## Summary\n\n## Now\n\n## Blockers\n- none');
+  return { ok: true, project: name };
 }
 
 /**

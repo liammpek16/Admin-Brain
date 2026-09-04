@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { readFolder, readNote, upsertNote, vaultPath } from '../adapters/obsidian/index.js';
@@ -296,6 +296,14 @@ const server = http.createServer(async (req, res) => {
         r = res2.ok ? { ok: true, output: `Added goal to ${project}.` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/project/create') {
+      let r = { ok: false, error: 'Bad request.' };
+      try {
+        const input = JSON.parse((await readBody(req)) || '{}');
+        r = createProject(input && typeof input === 'object' ? input : {});
+      } catch (e) { r = { ok: false, error: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 201 : 400, r);
     }
     if (req.method === 'POST' && url.pathname === '/api/project/delete-goal') {
       let r = { ok: false, output: 'Bad request.' };

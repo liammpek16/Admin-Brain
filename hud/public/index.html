@@ -47,9 +47,19 @@
       <ol id="focus-list"><li class="dim">…</li></ol>
     </section>
 
-    <section class="panel wide" data-tag="DB.PROJECTS"><h2>PROJECTS</h2>
+    <section class="panel wide" data-tag="DB.PROJECTS"><h2>PROJECTS <button id="new-project" class="btn project-create-toggle" type="button" aria-expanded="false" aria-controls="project-create-form">+ NEW PROJECT</button></h2>
       <div class="proj-head"><span>project</span><span>health</span><span>pri</span><span>next</span><span>activity</span></div>
       <div id="projects-list"></div>
+      <form id="project-create-form" class="project-create" hidden novalidate>
+        <div class="project-create-fields">
+          <label>Project name <input id="project-name" name="name" required maxlength="120" autocomplete="off" placeholder="e.g. Research Lab" /></label>
+          <label>Next action <input id="project-next" name="next" maxlength="200" placeholder="Optional first action" /></label>
+          <label>Status <select id="project-status" name="status" class="sel"><option value="planned">planned</option><option value="active">active</option><option value="paused">paused</option></select></label>
+          <label>Health <select id="project-health" name="health" class="sel"><option value="gray">⚪ gray</option><option value="green">🟢 green</option><option value="yellow">🟡 yellow</option><option value="red">🔴 red</option></select></label>
+          <label>Priority <select id="project-priority" name="priority" class="sel"><option value="med">med</option><option value="high">high</option><option value="low">low</option></select></label>
+        </div>
+        <div class="project-create-actions"><button class="btn" type="submit">Create project</button><button id="cancel-project" class="btn" type="button">Cancel</button><span id="project-create-status" class="dim" role="status" aria-live="polite"></span></div>
+      </form>
     </section>
 
     <section class="panel wide loop" data-tag="LOOP"><h2>FEATURE LOOP <span class="dim" id="loop-sub"></span></h2>

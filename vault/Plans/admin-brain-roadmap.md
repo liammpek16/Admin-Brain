@@ -33,7 +33,8 @@ project from one place, capture notes without leaving it, and eventually drive i
 - [x] Fix latency with writing goals pt.2
   - _Delivered (PR #8): git recency served stale-while-revalidate in the obsidian adapter — the network is off the read/write path, so getProjects() after TTL expiry is ~18ms (was ~430ms). Sticky against a transient null; no API change._
   - _Delivered (PR #9): the real "typed goal disappears" bug — the 20s poll's `loadGoals()` innerHTML rebuild was destroying the input mid-type. Fixed A (poll skips re-render while a goal field is focused) + B (snapshot/restore drafts + caret across any re-render) + D (drafts mirrored to localStorage, survive a reload). Verified live in the browser._
-- [ ] add new project button
+- [x] add new project button
+  - _Delivered (PR pending): a `＋ NEW PROJECT` control in the PROJECTS panel opens an accessible, keyboard-operable form that creates a project note via a new validated `createProject` vault accessor + a narrow `POST /api/project/create` route (201/400). Rejects empty/multiline/unsafe/duplicate names without touching an existing note; defaults to planned·gray·med; refreshes the Projects + Goals panels on success. Vault-adapter-only, no new deps. `node --test` + 13 adversarial checks + a live browser pass — all green._
 - [ ] adjust the goals section. Instead there should be a split between improvements versus checkpoints for each project
 - [ ] allow for hiding of completed goals. All completed goals should automatically sort to the bottom of the goals list.
 - [ ] connect to phone.

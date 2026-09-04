@@ -100,6 +100,7 @@ h2 {
   text-shadow: var(--glow); border-bottom: 1px solid var(--edge-soft); padding-bottom: 9px;
   display: flex; align-items: center; gap: 10px;
 }
+.project-create-toggle { margin-left: auto; font-size: 9px; padding: 3px 8px; }
 
 .glance-nums { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
 .glance-nums b { display: block; font-size: 28px; color: #eaffff; text-shadow: var(--glow); }
@@ -131,6 +132,14 @@ li { margin: 5px 0; }
 .webapp-btn:hover { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,207,107,0.4); color: #fff3d6; }
 .webapp-btn:disabled { opacity: 0.5; cursor: wait; }
 .proj-row .next { color: var(--dim); }
+.project-create { margin-top: 12px; padding: 12px; border: 1px solid var(--edge-soft); background: rgba(4,12,22,0.48); }
+.project-create-fields { display: grid; grid-template-columns: minmax(180px, 1.5fr) minmax(180px, 1.5fr) repeat(3, minmax(90px, 0.6fr)); gap: 10px; }
+.project-create label { display: grid; gap: 4px; color: var(--cyan-dim); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.project-create input { min-width: 0; width: 100%; background: rgba(2,8,16,0.7); color: var(--fg); border: 1px solid var(--edge-soft); border-radius: 3px; font: inherit; font-size: 11px; padding: 5px 7px; }
+.project-create input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px rgba(92,240,255,0.3); }
+.project-create .sel { margin-left: 0; width: 100%; }
+.project-create-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+#project-create-status { min-height: 1.5em; }
 .pill { font-size: 10px; padding: 1px 8px; border: 1px solid var(--edge); border-radius: 10px; color: var(--cyan); text-transform: uppercase; }
 
 .sel { background: rgba(4,12,22,0.9); color: var(--cyan); border: 1px solid var(--edge); border-radius: 3px; font: inherit; margin-left: auto; padding: 2px 6px; }
@@ -223,3 +232,7 @@ li { margin: 5px 0; }
 .live { color: var(--cyan); display: flex; align-items: center; gap: 7px; text-transform: uppercase; }
 .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: pulse 2s ease-in-out infinite; }
 .foot .dim { margin-left: auto; }
+@media (max-width: 760px) {
+  .project-create-fields { grid-template-columns: 1fr 1fr; }
+  .project-create-fields label:first-child, .project-create-fields label:nth-child(2) { grid-column: 1 / -1; }
+}

@@ -307,6 +307,54 @@ $('projects-list').addEventListener('click', async (e) => {
   }
 });
 
+// New project: keep the form small, accessible, and server-authoritative. The vault API owns
+// validation; the HUD only presents its response and then refreshes from the persisted vault.
+function setProjectFormOpen(open) {
+  const form = $('project-create-form');
+  $('new-project').setAttribute('aria-expanded', String(open));
+  form.hidden = !open;
+  if (open) $('project-name').focus();
+}
+$('new-project').addEventListener('click', () => setProjectFormOpen($('project-create-form').hidden));
+$('cancel-project').addEventListener('click', () => {
+  $('project-create-form').reset();
+  $('project-create-status').textContent = '';
+  setProjectFormOpen(false);
+});
+$('project-create-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const submit = form.querySelector('button[type="submit"]');
+  const status = $('project-create-status');
+  const input = {
+    name: $('project-name').value,
+    next: $('project-next').value,
+    status: $('project-status').value,
+    health: $('project-health').value,
+    priority: $('project-priority').value,
+  };
+  submit.disabled = true;
+  status.textContent = 'creating project…';
+  try {
+    const response = await fetch('/api/project/create', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input),
+    });
+    const result = await response.json();
+    if (!result.ok) {
+      status.textContent = `✗ ${result.error || 'could not create project'}`;
+      return;
+    }
+    form.reset();
+    setProjectFormOpen(false);
+    status.textContent = `✓ created ${result.project}`;
+    await Promise.all([loadOverview(), loadGoals(), loadCycles()]);
+  } catch (err) {
+    status.textContent = `✗ ${err}`;
+  } finally {
+    submit.disabled = false;
+  }
+});
+
 $('refresh').addEventListener('click', () => { loadOverview(); loadTrend(); loadCycles(); loadGoals(); });
 $('metric').addEventListener('change', loadTrend);
 document.querySelectorAll('.run').forEach((b) => b.addEventListener('click', () => runSkill(b.dataset.skill, b)));
