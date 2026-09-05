@@ -1,11 +1,15 @@
 ---
 type: cycle
 project: Job Hunt / Recruiter Helper
-stage: refine
-status: awaiting-approval
+stage: done
+status: done
 task: Build the resume reviewer skill
 started: '2026-08-07'
-readme_source: 'C:/Users/liamm/job-hunt'
+approved: '2026-09-05'
+readme_source: 'https://github.com/liammpek16/job-hunt'
+repo: 'https://github.com/liammpek16/job-hunt'
+local_path: 'C:/Users/liamm/job-hunt'
+pr: 'https://github.com/liammpek16/job-hunt/pull/1'
 ---
 
 ## Task (from SELECT)
@@ -102,3 +106,28 @@ rubric and suggests rewrites.**
   correctly flagged and strong ones pass.
 - Output is structured (JSON/Markdown) for downstream reuse.
 - **Requires a real resume to validate** — sample needed (ties to initial goal 5).
+
+## Implementation (2026-09-05)
+Approved via the user's go-ahead to run all 5 job-hunt goals through the loop.
+Branch `auto/resume-reviewer-xyz-scorer` in `C:/Users/liamm/job-hunt`; draft PR #1.
+
+- `lib/xyz.js` — the **shared XYZ scorer** (the reusable contract). Per-bullet
+  `{text,hasX,hasY,hasZ,score,missing[],rewrite}`; deterministic/$0 (action-verb list +
+  quantifier/method regex). Goals 3/4/6 inherit this shape.
+- `skills/reviewer/reviewer.js` + `SKILL.md` — CLI over the scorer (MD/text/stdin →
+  scorecard or `--json`); suggestions only, never edits the resume.
+- `test/xyz.test.js` — 8 unit tests; `samples/sample-resume.md` for testing.
+- `package.json` — `npm run review`, `npm test`.
+
+## Verify (2026-09-05) — verdict pass-with-notes
+Report: `vault/Reports/2026-09-05-resume-reviewer-verify.md`. **18/18** (8 unit + 10
+adversarial). One open DoD gate: **not yet validated on the user's real resume** (awaiting the
+file). Roadmap goal 1 stays UNTICKED until that validation lands.
+
+## Follow-up (2026-09-05, user request): .docx export
+Reviewer now also emits a NEW improved-resume .docx (--docx): weak bullets replaced by their
+XYZ rewrite scaffold, original untouched. New shared lib/docx.js (writeResumeDocx) reused by
+goals 3+4. Added docx npm dep (free/offline, stays $0). Also VALIDATED ON THE USER'S REAL
+RESUME (Pek_Liam_Resume, extracted via pdftotext): 15 bullets, 1 full XYZ after a detector fix
+(the Y-detector missed plain counts like "5 proof of concepts"/"18 deflectors" -- widened +
+regression test). 13/13 reviewer+docx tests. PR #1 updated.
