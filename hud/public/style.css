@@ -220,9 +220,11 @@ li { margin: 5px 0; }
 .gtext { flex: 1 1 auto; color: var(--fg); line-height: 1.35; user-select: text; cursor: text; }
 /* Inline goal rename: an input sized to the row, replacing the .gtext span while editing. */
 .goal-edit-input {
-  flex: 1 1 auto; min-width: 0; background: rgba(2,8,16,0.85); color: var(--fg);
+  flex: 1 1 auto; min-width: 0; align-self: center; background: rgba(2,8,16,0.85); color: var(--fg);
   border: 1px solid var(--cyan); border-radius: 3px; font: inherit; line-height: 1.35;
   padding: 1px 6px; box-shadow: 0 0 8px rgba(92,240,255,0.3);
+  /* wrap long goal text instead of scrolling it out of a one-line field */
+  resize: none; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere;
 }
 .goal-edit-input:focus { outline: none; }
 .goal-edit {
@@ -244,10 +246,12 @@ li { margin: 5px 0; }
 .goal-del:hover { color: var(--red); border-color: var(--red); box-shadow: 0 0 8px rgba(255,107,107,0.35); }
 .goal-del:disabled { opacity: 0.4; cursor: wait; }
 .pill.inflight { flex: 0 0 auto; font-size: 9px; color: var(--gold); border-color: rgba(255,207,107,0.4); text-transform: none; }
-.goal-add { display: flex; gap: 6px; margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--edge-soft); }
+.goal-add { display: flex; align-items: flex-start; gap: 6px; margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--edge-soft); }
 .goal-input {
   flex: 1 1 auto; min-width: 0; background: rgba(2,8,16,0.7); color: var(--fg);
   border: 1px solid var(--edge-soft); border-radius: 3px; font: inherit; font-size: 11px; padding: 3px 7px;
+  /* wrap long goal text instead of scrolling it out of a one-line field */
+  resize: none; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.35;
 }
 .goal-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px rgba(92,240,255,0.3); }
 .goal-input::placeholder { color: var(--dim); }
