@@ -139,6 +139,14 @@ function isEditingGoal() {
   return !!(a && a.classList && (a.classList.contains('goal-input') || a.classList.contains('goal-edit-input')));
 }
 
+// Both goal fields are <textarea>s so long goal text wraps (soft-wrap, no newline) instead of
+// scrolling off in a one-line input. Grow the box to fit its content so all wrapped lines show.
+function autoGrowGoalField(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = `${el.scrollHeight}px`;
+}
+
 // Completed goals live in a collapsible "✓ N completed" dropdown inside EACH kind-group, collapsed
 // (hidden) by default. The open/closed choice persists per (project, kind) — like the goal drafts —
 // so a reload or the 20s poll keeps the view the user chose.
@@ -218,7 +226,7 @@ async function loadGoals(opts = {}) {
       ? kindGroup(p, 'checkpoint', 'CHECKPOINTS') + kindGroup(p, 'improvement', 'IMPROVEMENTS')
       : '<p class="dim">no roadmap goals yet</p>';
     const add = `<div class="goal-add">
-      <input class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" />
+      <textarea class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" rows="1"></textarea>
       <select class="sel goal-kind-select" data-project="${escAttr(p.name)}" title="Which group the new goal goes in">
         <option value="improvement">improvement</option>
         <option value="checkpoint">checkpoint</option>
@@ -233,6 +241,7 @@ async function loadGoals(opts = {}) {
   for (const inp of $('goals-board').querySelectorAll('.goal-input')) {
     const d = drafts[inp.dataset.project] || readGoalDraft(inp.dataset.project);
     if (d) inp.value = d;
+    autoGrowGoalField(inp); // fit a restored draft (or reset to one row when empty)
   }
   if (caret) {
     const inp = [...$('goals-board').querySelectorAll('.goal-input')].find((x) => x.dataset.project === caret.project);
@@ -276,13 +285,15 @@ function startGoalEdit(btn) {
   if (!span) return;
   const project = btn.dataset.project;
   const oldText = btn.dataset.goal;
-  const input = document.createElement('input');
+  const input = document.createElement('textarea');
   input.className = 'goal-edit-input';
+  input.rows = 1;
   input.value = oldText;
   input.maxLength = 200;
   span.replaceWith(input);
   input.focus();
   input.select();
+  autoGrowGoalField(input); // size the box to the (possibly long, wrapped) text
   let settled = false;
   const finish = (save) => {
     if (settled) return;
@@ -516,6 +527,8 @@ $('goals-board').addEventListener('keydown', (e) => {
 // (D) Persist the in-progress goal to localStorage on every keystroke, so it survives a re-render
 // or even a full page reload. Delegated on #goals-board, so it keeps working after each rebuild.
 $('goals-board').addEventListener('input', (e) => {
+  const field = e.target.closest && e.target.closest('.goal-input, .goal-edit-input');
+  if (field) autoGrowGoalField(field); // re-fit the box as it wraps
   const inp = e.target.closest && e.target.closest('.goal-input');
   if (inp) writeGoalDraft(inp.dataset.project, inp.value);
 });
