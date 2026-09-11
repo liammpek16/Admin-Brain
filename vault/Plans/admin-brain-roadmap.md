@@ -57,6 +57,8 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR pending): replaced the single global "hide completed" toggle with a collapsible **"✓ N completed"** `<details>` dropdown inside EACH checkpoint/improvement group (collapsed = hidden by default); the open/closed choice persists per (project, kind) in localStorage. Done `<li>`s stay in the DOM while collapsed so drag-reorder still sees the full set._
 - [x] make editing and writing goals have wrapped text in the text box #improvement
   - _Delivered (PR pending): both goal fields (the add-a-goal box and the inline ✎ rename box) are now auto-growing `<textarea>`s that soft-wrap long goal text (`white-space: pre-wrap; overflow-wrap: anywhere`) instead of scrolling it off a one-line `<input>`. `autoGrowGoalField` sizes each box to its content on type/restore; Enter still submits (no newline), the draft-persist/caret-restore and background-poll guards carry over unchanged. Front-end only, no deps. 20/20 tests + live browser (wrap + auto-grow, no h-scroll, no console errors)._
+- [x] allow unlimited text limits for goal writing #improvement
+  - _Delivered (PR #17): removed the two front-end `maxlength="200"` caps on the goal-writing fields (the add-a-goal box and the inline ✎ rename box). The vault/server never limited goal length, so the cap was purely cosmetic and truncated longer goals as typed. Goal text is now unlimited; goals stay single-line data and the auto-grow textareas wrap it. Front-end only, no deps. 20/20 tests + live browser (300-char goal stored untruncated in both fields)._
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
