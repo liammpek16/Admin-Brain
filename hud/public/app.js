@@ -226,7 +226,7 @@ async function loadGoals(opts = {}) {
       ? kindGroup(p, 'checkpoint', 'CHECKPOINTS') + kindGroup(p, 'improvement', 'IMPROVEMENTS')
       : '<p class="dim">no roadmap goals yet</p>';
     const add = `<div class="goal-add">
-      <textarea class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" maxlength="200" rows="1"></textarea>
+      <textarea class="goal-input" data-project="${escAttr(p.name)}" placeholder="+ write a new goal…" rows="1"></textarea>
       <select class="sel goal-kind-select" data-project="${escAttr(p.name)}" title="Which group the new goal goes in">
         <option value="improvement">improvement</option>
         <option value="checkpoint">checkpoint</option>
@@ -289,7 +289,6 @@ function startGoalEdit(btn) {
   input.className = 'goal-edit-input';
   input.rows = 1;
   input.value = oldText;
-  input.maxLength = 200;
   span.replaceWith(input);
   input.focus();
   input.select();
