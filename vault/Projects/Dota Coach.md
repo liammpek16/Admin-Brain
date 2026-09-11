@@ -6,7 +6,7 @@ health: green
 priority: high
 next: "Clean up the interface"
 started: 2026-08-06
-updated: 2026-08-06
+updated: 2026-09-09
 tags: [gaming, coaching]
 repo: "https://github.com/liammpek16/dota-projects"
 local_path: "C:/Users/liamm/Scripts"

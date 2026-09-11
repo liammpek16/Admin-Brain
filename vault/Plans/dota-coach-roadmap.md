@@ -11,19 +11,30 @@ status: active
 Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platform.
 
 ## Steps
+- [ ] Add security to the webapp before launching live
+- [ ] create a user privacy agreement
+- [ ] Land the first paying subscription (first revenue) — mid · high
+- [ ] Clean up the interface — mid · med #improvement
+- [ ] Determine feasibility of moving API calls to a known script — mid · med #improvement
+- [x] Per-fight video playback — long · low (stretch goal) #improvement
+  - _Delivered (PR #22, follow-ups #23/#24): time-driven per-fight playback shipped in the webapp — interpolated hero motion, scroll zoom / pan, cast + damage overlays, minimap background._
+- [x] fix hero position loading. Error is "positions failed: Failed to fetch" #improvement
+  - _Delivered (PR #20 + #21): replay parse now runs as a background job (#20) and the non-serialisable elevation grid was dropped from `replay_status` (#21), fixing the "Failed to fetch"._
+- [x] fix bug of damage numbers and ability usage in the video playback occuring once a player has died #improvement
+  - _Delivered (PR #24): overlays (damage numbers, cast rings, disable badges) are gated to heroes alive at time t, so a dead hero shows only its ✕ — no lingering post-death artifacts._
+- [x] player icon size should scale with zoom ratio #improvement
+  - _Delivered (PR #24): hero icons clamp to a screen-consistent size across zoom (grows 8.8%→26.4% of the box from zoom 1→5×) so distancing reads clearly._
+- [x] playback video background should be the dota minimap #improvement
+  - _Delivered (PR #22/#23/#24): procedural Dota-style minimap (river, tinted halves/bases, lanes+towers, Roshan), with an optional real `/static/dota_map.png` overlay behind a one-time probe._
+- [x] animate abilities used (physical icon animation when an ability is used) #improvement
+  - _Delivered (PR #22/#24): each cast pops an expanding, fading ring; when an ability icon is available it renders as an animated `<image>`, else falls back to a text label._
 - [x] create a new button for the parser to occur before the coaching analysis #improvement
   - _Delivered: explicit "Parse replay" button in the webapp coach panel. New `POST/GET /api/parse` (kick off / poll the OpenDota replay parse) backed by `tools.request_parse` / `tools.parse_status`; "Start coaching analysis" stays disabled until the replay is parsed, so coaching always runs on complete data._
 - [x] allow coaching agent and research agent to be called through claude code to not use API credits #improvement
   - _Delivered: new `dota_coach/llm.py` provider seam. Set `DOTA_COACH_LLM=claude_code` (or `--llm claude_code` on the agents / webapp) to route coaching + research through the local `claude` CLI in headless mode — uses the Claude subscription, no API key and no API credits. Default stays `anthropic`._
-- [ ] Add security to the webapp before launching live
-- [ ] create a user privacy agreement
 - [x] Reduce error in the information shared in the coaching interface — near · high #improvement
 - [x] Real-time per-fight coaching feedback: target prioritization, missed spells, positioning — mid · high #improvement
   - _Delivered (PR #4): deterministic "Coaching read" per fight in the webapp (target priority / missed spells / positioning), no LLM. Live in-game version remains a separate future goal._
-- [ ] Clean up the interface — mid · med #improvement
-- [ ] Determine feasibility of moving API calls to a known script — mid · med #improvement
-- [ ] Land the first paying subscription (first revenue) — mid · high
-- [ ] Per-fight video playback — long · low (stretch goal) #improvement
 - [x] Harden heroes.json hand-corrections so a constants refresh can't silently revert them — near · high #improvement
   - _Delivered (PR #5): id-keyed canonical overlay re-applied on every hero-constants refresh (fetch + offline-fallback); a stale upstream can no longer revert Outworld Destroyer / Ringmaster. Validator stays the net._
 - [x] research all available outputs from the dota download. for context, this would be the .dem files that are downloaded from steam servers for each match. #improvement
@@ -49,6 +60,21 @@ Grow Dota Coach into a reliable, trustworthy, revenue-generating coaching platfo
   - _Delivered (PR #17, scope A): the neutral now carries its tier ("(neutral, tier N)" via `_item_tier_by_id`), and the coach prompt judges it against same-tier neutrals only — never purchased items. Deterministic best-in-tier grading (scope B, curated table) deferred. 10/10 adversarial._
 - [x] fix bug where running coaching analysis prevents user from clicking the load hero positions button #improvement
   - _Delivered (PR #19): `#loadPosBtn` was revealed only after the slow coaching `await` resolved, so it stayed hidden for the whole analysis. `startCoaching` now reveals it up front, in parallel with the coaching call (the server is threaded and the two requests are independent), and fetches charts once so `loadPositions`' in-place hero merge isn't clobbered. Front-end only. Verified live: the button is clickable while coaching is in flight; positions load + merge; no console errors._
+- [x] improve the video playback for each fight. Change the start and end time for the fight playback to be 30 seconds before the start of the fight to exactly when the fight ends. #improvement
+  - _Delivered (PR #22, batched cycle): `attach_frames` samples `[fight start − 30s, fight end]` (pre_roll=30, tail=0) instead of a symmetric ±3s pad; combat-log parse window widened to cover the lead-in._
+- [x] improve the video playback for each fight. Smooth out the motion for each hero within the fight. Allow zooming in on the map to see the distancing between each hero. #improvement
+  - _Delivered (PR #22 + #23): the player is time-driven; `heroesAt()` linearly interpolates each hero between real samples for smooth motion. Scroll-to-zoom toward the cursor, +/−/reset, drag-to-pan; markers stay screen-size so hero distancing reads clearly._
+- [x] improve the video playback for each fight. add small animations for each ability case in the fight. #improvement
+  - _Delivered (PR #22): each cast pops a short expanding, fading ring + label over the caster; damage numbers drift up and fade._
+- [x] improve the video playback for each fight. add a background to the fight map that looks like the minimap from dota #improvement
+  - _Delivered (PR #22 + #23): `mapBackgroundSVG` redrawn Dota-minimap-style (river band, Radiant/Dire tinted halves + bases, three lanes with tower dots, Roshan); optional real /static/dota_map.png overlay kept behind a one-time probe._
+- [x] should be able to call coaching analysis on each specific fight analysis. #improvement
+  - _Delivered (PR #27): `coaching_agent.web_start_fight` + `_build_fight_prompt` scope the LLM review to one `key_fights[idx]` (with that fight's local vision); `POST /api/coach` takes a `fight_index`, persisted under a composite `<match>_f<idx>` key that resumes independently and is kept out of the durable player profile; a "💬 Coach this fight" button on each Fight Analysis card. Verified pass-with-notes (no cross-fight leak, isolated persistence + restart recovery, 409/no-spend on unparsed)._
+- [x] correct map scaling with new png background #improvement
+  - _Delivered (PR #26): `mapXY` world→minimap mapping extracted to a tunable `MAP_MIN`/`MAX` constant (default 64..192, byte-identical), and the fight-map SVGs + PNG `<image>` switched from `preserveAspectRatio="none"` to `xMidYMid meet` (stretch-proof). Calibration recipe added to `static/README.txt`. Verified pass-with-notes: mechanism + stretch-proofing confirmed; final numeric calibration to a supplied licensed minimap PNG is a user step (asset not bundled, per #24)._
+- [x] green and red hero outlines should also scale down with zoom like hero icons #improvement
+  - _Delivered (PR #25): `imgMarker` gains a `strokeWidth` param (default 1.1); hero and ward call sites pass `1.1*hs`/`1.1*k` so the team-colored ring tracks the icon under zoom instead of ballooning, and the dead-hero dashed ring scales too. `svgNum` keeps the 1× output byte-identical. Verified pass (constant stroke/radius ratio 1×→8×)._
+- [ ] determine feasibility of recreating video animations of fights with .dem data using real character models and animations. #improvement
 
 ## Risks
 - Real-time accuracy is hard, and errors erode coaching trust — milestone 1 de-risks everything after it.
