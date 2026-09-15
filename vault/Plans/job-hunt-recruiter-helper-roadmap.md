@@ -31,6 +31,7 @@ vs Google XYZ, job search, resume tailoring, and an ATS pre-screen.
 - [x] remove accents on resume #improvement _Delivered: PR #10 merged; lib/text.js folds diacritics + smart punctuation to ASCII in every generated .docx/.pdf (ATS-safe); original resume untouched._
 - [x] fix bug where it is surfacing non existent jobs #improvement _Delivered: PR #10 merged; claude source now drops roles with no valid http(s) posting URL on ingest._
 - [x] add new button to preview .pdf files for the newly generated resumes #improvement _Delivered: PR #10 merged; refine generates a tailored-resume PDF + per-row "Preview PDF ↗" button (GET /api/tailored/pdf)._
+- [x] new searches do not surface any new jobs. This should be adjusted to either find new job postings within the last week, or provide an error saying that there have been no new job postings within the last week and the search criteria should be expanded. #improvement _Delivered: PR #11 merged; 7-day recency window + results file consumed after ingest (fresh re-runs) + `no_new` "expand your criteria" message when nothing new comes back._
 
 ## Build order (from the 2026-09-04 scope-refinement council)
 See `Cycles/2026-09-04-job-hunt-scope-refinement.md`. The steps above are listed by feature;
