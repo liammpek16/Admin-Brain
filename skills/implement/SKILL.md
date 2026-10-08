@@ -5,6 +5,8 @@ description: Set up the supervised implement stage (Plan 2, ③) for an approved
 
 # implement
 
+Implementation work is run through the [`orchestrate`](../orchestrate/SKILL.md) skill: the harness scores feasibility and routes sub-agents by complexity tier (light/standard/heavy → haiku/sonnet/opus). Start there if you have an approved refined spec.
+
 Stage ③ setup. Requires the cycle note to be `status: approved`.
 
 ```bash

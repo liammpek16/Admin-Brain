@@ -14,6 +14,7 @@
     "usage": "node skills/usage/usage.js",
     "select": "node skills/select/select.js",
     "refine": "node skills/refine/refine.js",
+    "orchestrate": "node skills/orchestrate/orchestrate.js",
     "implement": "node skills/implement/implement.js",
     "verify": "node skills/verify/verify.js",
     "hud": "node hud/server.js"
