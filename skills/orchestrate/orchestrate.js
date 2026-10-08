@@ -48,6 +48,8 @@ const KIND_BASE = { mechanical: 0, feature: 1, design: 3, verify: 1 };
 const KIND_FLOOR = { design: 'heavy', verify: 'standard' };
 // Aliases, not pinned model IDs — routing keeps working as model versions move.
 export const TIER_MODELS = { light: 'haiku', standard: 'sonnet', heavy: 'opus' };
+const MODEL_RANK = { haiku: 0, sonnet: 1, opus: 2 }; // known aliases only; unknown IDs are not ranked
+const ALIAS_RE = /^[A-Za-z0-9._:[\]-]+$/; // model alias/ID charset — nothing that can break the note table
 
 const tierRank = (t) => TIERS.indexOf(t);
 const maxTier = (...ts) => ts.reduce((a, b) => (tierRank(b) > tierRank(a) ? b : a));
@@ -64,7 +66,7 @@ export function classifyTask(attrs) {
   if (!Number.isInteger(files) || files < 0) throw new Error(`files must be an integer ≥ 0 (got ${JSON.stringify(files)})`);
   if (typeof novel !== 'boolean') throw new Error(`novel_design must be true/false (got ${JSON.stringify(novel)})`);
   for (const [k, v] of [['ambiguity', ambiguity], ['risk', risk]]) {
-    if (!Object.hasOwn(LEVELS, String(v))) throw new Error(`${k} must be low|med|high (got ${JSON.stringify(v)})`);
+    if (typeof v !== 'string' || !Object.hasOwn(LEVELS, v)) throw new Error(`${k} must be low|med|high (got ${JSON.stringify(v)})`);
   }
   const breakdown = {
     kind: KIND_BASE[kind],
@@ -87,7 +89,7 @@ export function parseTierOverrides(raw) {
   if (!o || typeof o !== 'object' || Array.isArray(o)) throw new Error('ADMIN_BRAIN_TIER_MODELS must be a JSON object');
   for (const [k, v] of Object.entries(o)) {
     if (!TIERS.includes(k)) throw new Error(`ADMIN_BRAIN_TIER_MODELS: unknown tier "${k}"`);
-    if (typeof v !== 'string' || !v.trim()) throw new Error(`ADMIN_BRAIN_TIER_MODELS.${k} must be a non-empty string`);
+    if (typeof v !== 'string' || !ALIAS_RE.test(v.trim())) throw new Error(`ADMIN_BRAIN_TIER_MODELS.${k} must be a model alias/ID (letters, digits, . _ : - [ ])`);
   }
   return o;
 }
@@ -140,6 +142,16 @@ export function buildPlan(plan, overrides = {}) {
     }
     t.model = routeModel(t.tier, overrides);
   }
+  // Overrides map tiers → aliases, so they could undo the tier lift. Guard on the routed MODEL too:
+  // a verifier on a known alias must be ≥ sonnet and ≥ the strongest known implementer alias.
+  const rank = (m) => MODEL_RANK[m] ?? null;
+  const implTop = Math.max(-1, ...impl.map((t) => rank(t.model) ?? -1));
+  for (const t of tasks.filter((x) => x.kind === 'verify')) {
+    const r = rank(t.model);
+    if (r !== null && (r < MODEL_RANK.sonnet || r < implTop)) {
+      throw new Error(`verify task ${t.id} routes to "${t.model}", weaker than its implementer or below sonnet — check ADMIN_BRAIN_TIER_MODELS`);
+    }
+  }
   return { feasibility, tasks };
 }
 
@@ -159,17 +171,25 @@ export function renderPlan(tasks) {
   return ['| # | task | attributes | tier [score] | model | status | note |', '|---|---|---|---|---|---|---|', ...rows].join('\n');
 }
 
-/** Pure. Replace `## heading` (up to the next `## `) or insert it before `## Implementation` / at the end. */
+/**
+ * Pure. Replace `## heading` (up to the next `## `) or insert it before `## Implementation` / at the end.
+ * Fence-aware: headings inside ``` blocks (e.g. the README embedded by REFINE) are never matched.
+ */
 export function upsertSection(body, heading, content) {
   const block = `## ${heading}\n${content.trim()}\n`;
-  const lines = body.split('\n');
-  const start = lines.findIndex((l) => l.trim() === `## ${heading}`);
+  const lines = body.replace(/\r\n/g, '\n').split('\n');
+  let inFence = false;
+  const isHeading = lines.map((l) => {
+    if (/^\s*(```|~~~)/.test(l)) { inFence = !inFence; return false; }
+    return !inFence && /^## /.test(l);
+  });
+  const start = lines.findIndex((l, i) => isHeading[i] && l.trim() === `## ${heading}`);
   if (start >= 0) {
-    let end = lines.findIndex((l, i) => i > start && /^## /.test(l));
+    let end = lines.findIndex((l, i) => i > start && isHeading[i]);
     if (end < 0) end = lines.length;
     return [...lines.slice(0, start), ...block.split('\n'), ...lines.slice(end)].join('\n').replace(/\n{3,}/g, '\n\n');
   }
-  const impl = lines.findIndex((l) => l.trim() === '## Implementation');
+  const impl = lines.findIndex((l, i) => isHeading[i] && l.trim() === '## Implementation');
   if (impl >= 0) return [...lines.slice(0, impl), ...block.split('\n'), ...lines.slice(impl)].join('\n').replace(/\n{3,}/g, '\n\n');
   return `${body.trimEnd()}\n\n${block}`;
 }
@@ -181,8 +201,16 @@ const WRITABLE = (d) => (d.stage === 'refine' && d.status === 'approved') || (d.
 export function findCycle(project, base = null) {
   const dir = path.join(vaultPath(), 'Cycles');
   const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.md')).sort().reverse() : [];
-  const pick = base ? files.filter((f) => f === `${base.replace(/\.md$/, '')}.md`)
-    : files.filter((f) => { const d = readNote(path.join(dir, f)).data; return d.project === project && !['done', 'abandoned'].includes(String(d.status)); });
+  const data = (f) => { try { return readNote(path.join(dir, f)).data; } catch { return {}; } }; // skip unparseable siblings
+  let pick;
+  if (base) pick = files.filter((f) => f === `${base.replace(/\.md$/, '')}.md`);
+  else {
+    const mine = files.filter((f) => data(f).project === project);
+    // Prefer the newest WRITABLE cycle, so a newer done/awaiting note never hides an active one.
+    const writable = mine.filter((f) => WRITABLE(data(f)));
+    if (writable.length > 1) console.warn(`Warning: ${writable.length} writable cycles for "${project}" — using ${writable[0]} (pass --cycle to choose)`);
+    pick = writable.length ? writable : mine.filter((f) => !['done', 'abandoned'].includes(String(data(f).status)));
+  }
   if (!pick.length) return { error: base ? `No cycle note named ${base}` : `No open cycle for "${project}"` };
   const file = path.join(dir, pick[0]);
   const note = readNote(file);
@@ -204,7 +232,7 @@ if (isMain(import.meta.url)) {
   let result;
   try {
     const overrides = parseTierOverrides(process.env.ADMIN_BRAIN_TIER_MODELS);
-    result = buildPlan(JSON.parse(fs.readFileSync(planPath, 'utf8')), overrides);
+    result = buildPlan(JSON.parse(fs.readFileSync(planPath, 'utf8').replace(/^﻿/, '')), overrides); // tolerate a BOM (PowerShell 5.1)
   } catch (e) {
     console.error(`Plan rejected (nothing written): ${e.message}`);
     process.exit(3);
@@ -212,6 +240,7 @@ if (isMain(import.meta.url)) {
   const feas = renderFeasibility(result.feasibility);
   const table = renderPlan(result.tasks);
   console.log(`Feasibility: ${result.feasibility.verdict} (${result.feasibility.total}/10)`);
+  if (result.feasibility.verdict !== 'go') console.warn(`⚠ ${result.feasibility.verdict}: ${result.feasibility.reasons.join('; ')} — needs a human decision before dispatch.`);
   for (const t of result.tasks) console.log(`  ${t.id.padEnd(4)} ${t.tier.padEnd(8)} → ${t.model.padEnd(7)} ${t.title}`);
   if (args.includes('--dry-run')) process.exit(0);
 

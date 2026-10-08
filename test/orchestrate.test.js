@@ -313,7 +313,7 @@ test('parseTierOverrides: unknown tier throws', () => {
 });
 
 test('parseTierOverrides: empty-string value throws', () => {
-  assert.throws(() => parseTierOverrides('{"heavy": ""}'), /must be a non-empty string/);
+  assert.throws(() => parseTierOverrides('{"heavy": ""}'), /must be a model alias/);
 });
 
 // ---- buildPlan tests ----

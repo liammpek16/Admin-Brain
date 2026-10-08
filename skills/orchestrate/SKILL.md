@@ -68,7 +68,7 @@ Harness computes **tier** (light/standard/heavy) by complexity score:
 
 Override via `ADMIN_BRAIN_TIER_MODELS` environment variable (JSON `{ tier: alias }`):
 ```bash
-export ADMIN_BRAIN_TIER_MODELS='{"light":"sonnet","heavy":"opus"}'
+$env:ADMIN_BRAIN_TIER_MODELS = '{"light":"sonnet","heavy":"opus"}'   # PowerShell
 node skills/orchestrate/orchestrate.js --project "..." --plan plan.json
 ```
 
@@ -79,7 +79,7 @@ The plan must have:
 - ≥ 1 verify task (kind: verify)
 - Every verify task routed to a tier ≥ the max implement task tier (at least standard)
 
-The verifier is a separate sub-agent, never the implementer.
+The verifier is a separate sub-agent, never the implementer. Because overrides map tiers → models, the harness also checks the routed **model**: a verify task on a known alias (haiku < sonnet < opus) below sonnet or below the strongest implementer is rejected. Override values must be plain alias/ID strings (letters, digits, `. _ : - [ ]`).
 
 ## CLI and plan.json
 
