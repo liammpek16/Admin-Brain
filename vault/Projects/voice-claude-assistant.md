@@ -6,6 +6,8 @@ health: green
 priority: med
 updated: '2026-10-08'
 next: 'Phase 0: desk prototype (PC mic -> faster-whisper -> Agent SDK -> Piper)'
+local_path: 'C:/Users/liamm/voice-claude'
+repo: 'https://github.com/liammpek16/voice-claude'
 tags:
   - voice
   - raspberry-pi
