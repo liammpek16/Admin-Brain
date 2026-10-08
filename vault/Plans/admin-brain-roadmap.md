@@ -59,6 +59,10 @@ project from one place, capture notes without leaving it, and eventually drive i
   - _Delivered (PR pending): both goal fields (the add-a-goal box and the inline ✎ rename box) are now auto-growing `<textarea>`s that soft-wrap long goal text (`white-space: pre-wrap; overflow-wrap: anywhere`) instead of scrolling it off a one-line `<input>`. `autoGrowGoalField` sizes each box to its content on type/restore; Enter still submits (no newline), the draft-persist/caret-restore and background-poll guards carry over unchanged. Front-end only, no deps. 20/20 tests + live browser (wrap + auto-grow, no h-scroll, no console errors)._
 - [x] allow unlimited text limits for goal writing #improvement
   - _Delivered (PR #17): removed the two front-end `maxlength="200"` caps on the goal-writing fields (the add-a-goal box and the inline ✎ rename box). The vault/server never limited goal length, so the cap was purely cosmetic and truncated longer goals as typed. Goal text is now unlimited; goals stay single-line data and the auto-grow textareas wrap it. Front-end only, no deps. 20/20 tests + live browser (300-char goal stored untruncated in both fields)._
+- [x] Feature Loop model optimization #improvement
+  - _Goal: build a skill for the admin brain loop that generates a master agent to analyze the feasibility of every new feature running through the feature loop, then spins up sub-agents to perform each task, matching each sub-agent's model to the complexity the task requires._
+  - _Delivered (PR #18, merged): new `orchestrate` skill. The master agent runs a feasibility pass (5 dimensions → go / go-with-split / no-go, advisory) and splits the spec into sub-tasks. A deterministic harness routes each sub-task by complexity tier to haiku/sonnet/opus. The verifier can never be weaker than the implementer. Dogfooded on its own cycle; verify pass-with-notes, F1–F5 fixed; 95/95 tests._
+- [ ] add descriptions to feature goals #improvement
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web

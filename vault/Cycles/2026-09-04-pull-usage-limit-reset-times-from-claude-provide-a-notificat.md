@@ -1,8 +1,8 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: >-
   pull usage limit reset times from claude. provide a notification for when this
   happens

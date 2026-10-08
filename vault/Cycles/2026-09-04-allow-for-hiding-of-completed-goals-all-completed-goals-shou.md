@@ -1,8 +1,8 @@
 ---
 type: cycle
 project: Admin Brain
-stage: implement
-status: active
+stage: verify
+status: done
 task: >-
   allow for hiding of completed goals. All completed goals should automatically
   sort to the bottom of the goals list.
