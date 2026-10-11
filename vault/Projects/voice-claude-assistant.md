@@ -1,11 +1,11 @@
 ---
 type: project
 name: Voice Claude Assistant
-status: planned
+status: active
 health: green
 priority: med
 updated: '2026-10-08'
-next: 'Phase 0: desk prototype (PC mic -> faster-whisper -> Agent SDK -> Piper)'
+next: 'Train the "Novak" wake word, then Phase 1: Pi satellite'
 local_path: 'C:/Users/liamm/voice-claude'
 repo: 'https://github.com/liammpek16/voice-claude'
 tags:
@@ -34,9 +34,9 @@ questions/approvals). Claude Code stays on the PC with the existing login, vault
 - Start: **Phase 0 desk prototype** on the PC first (a Raspberry Pi is already on hand).
 
 ## Now
-Phase 0: desk prototype on the PC — mic → faster-whisper → Agent SDK session → Piper, with
-spoken clarifying questions. Gate: answer "what are my Dota Coach goals?" and one clarifying
-question entirely by voice.
+Phase 0 done 2026-10-08 (desk prototype works by voice, spoken questions/approvals verified).
+Now: train the custom "Novak" wake word with openWakeWord, wire it into the desk loop as a
+hands-free mode, then Phase 1 — move wake word, capture and TTS onto the Pi.
 
 ## Blockers
 - none
