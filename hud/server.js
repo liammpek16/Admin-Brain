@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
-import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, setProjectGoalKind, editProjectGoal, today } from '../skills/vault/vault.js';
+import { getProjects, healthCounts, needsAttention, getSessions, sessionsWithin, updateProjectField, createProject, projectGoals, setProjectNext, addProjectGoal, reorderProjectGoals, deleteProjectGoal, setProjectGoalKind, editProjectGoal, setProjectGoalDescription, today } from '../skills/vault/vault.js';
 import { openInbox, focusToday, summaryParagraph } from '../skills/inbox/inbox.js';
 import { trend } from '../skills/trends/trends.js';
 import { normalizeUsage, readUsageResets } from '../skills/usage/usage.js';
@@ -331,6 +331,15 @@ const server = http.createServer(async (req, res) => {
         const { project, goal, text } = JSON.parse((await readBody(req)) || '{}');
         const res2 = editProjectGoal(String(project || ''), String(goal || ''), String(text || ''));
         r = res2.ok ? { ok: true, output: `Edited goal in ${project}.` } : { ok: false, output: res2.error || 'failed' };
+      } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
+      return sendJson(res, r.ok ? 200 : 400, r);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/project/goal-description') {
+      let r = { ok: false, output: 'Bad request.' };
+      try {
+        const { project, goal, description } = JSON.parse((await readBody(req)) || '{}');
+        const res2 = setProjectGoalDescription(String(project || ''), String(goal || ''), String(description ?? ''));
+        r = res2.ok ? { ok: true, output: `${String(description ?? '').trim() ? 'Saved' : 'Cleared'} description for ${goal}.` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
     }

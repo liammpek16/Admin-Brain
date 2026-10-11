@@ -189,15 +189,18 @@ async function loadGoals(opts = {}) {
     const meta = g.meta ? ` <span class="gmeta dim">${esc(g.meta)}</span>` : '';
     const grip = `<span class="grip" draggable="true" title="Drag to reorder">⠿</span>`;
     const otherKind = g.kind === 'improvement' ? 'checkpoint' : 'improvement';
-    const editBtn = `<button class="goal-edit" title="Edit this goal" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✎</button>`;
+    const editBtn = `<button class="goal-edit" title="Edit this goal" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✎</button>`
+      + `<button class="goal-edit goal-desc-btn" title="${g.description ? 'Edit' : 'Add'} a description" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}" data-description="${escAttr(g.description || '')}">≡</button>`;
+    // The goal's description (if any) wraps onto its own full-width line under the row.
+    const desc = g.description ? `<span class="gdesc dim">${esc(g.description)}</span>` : '';
     const kindBtn = `<button class="goal-kind" title="Move to ${otherKind}s" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}" data-kind="${otherKind}">⇄</button>`;
     // Remove this goal from the roadmap (guarded server-side, confirmed on click; git-recoverable).
     const del = `<button class="goal-del" title="Delete this goal from the roadmap (git-recoverable)" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">✕</button>`;
-    if (g.done) return `<li class="goal done" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${editBtn}${kindBtn}${del}</li>`;
+    if (g.done) return `<li class="goal done" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck">✓</span><span class="gtext">${esc(g.text)}</span>${meta}${editBtn}${kindBtn}${del}${desc}</li>`;
     const ctrl = p.hasOpenCycle
       ? `<span class="pill inflight">in flight</span>`
       : `<button class="btn goal-run" data-project="${escAttr(p.name)}" data-goal="${escAttr(g.text)}">▸ Run</button>`;
-    return `<li class="goal" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${editBtn}${kindBtn}${del}</li>`;
+    return `<li class="goal" data-goal="${escAttr(g.text)}" data-kind="${g.kind}">${grip}<span class="gcheck dim">○</span><span class="gtext">${esc(g.text)}</span>${meta}${ctrl}${editBtn}${kindBtn}${del}${desc}</li>`;
   };
 
   // A labeled kind-group (CHECKPOINTS / IMPROVEMENTS). Open goals render in the group's main list;
@@ -299,6 +302,40 @@ function startGoalEdit(btn) {
     settled = true;
     const next = input.value.trim();
     if (save && next && next !== oldText) commitGoalEdit(project, oldText, next);
+    else loadGoals(); // cancel or no-op → re-render restores the original row
+  };
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+    else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+  });
+  input.addEventListener('blur', () => finish(true));
+}
+
+// Inline description editor (the ≡ button): a wrapped textarea on its own line under the goal row.
+// Enter/blur saves (empty clears), Escape cancels. It shares the .goal-edit-input class, so the
+// background poll skips re-render while it's focused and the box auto-grows as it wraps.
+function startDescEdit(btn) {
+  const li = btn.closest('li.goal');
+  if (!li || li.querySelector('.goal-edit-input')) return; // already editing this row
+  const project = btn.dataset.project;
+  const goal = btn.dataset.goal;
+  const oldDesc = btn.dataset.description || '';
+  const input = document.createElement('textarea');
+  input.className = 'goal-edit-input goal-desc-input';
+  input.rows = 1;
+  input.placeholder = 'describe this goal… (empty clears)';
+  input.value = oldDesc;
+  const shown = li.querySelector('.gdesc');
+  if (shown) shown.replaceWith(input); else li.appendChild(input);
+  input.focus();
+  input.select();
+  autoGrowGoalField(input);
+  let settled = false;
+  const finish = (save) => {
+    if (settled) return;
+    settled = true;
+    const next = input.value.replace(/\s+/g, ' ').trim(); // one line, like the vault stores it
+    if (save && next !== oldDesc) loopPost('/api/project/goal-description', { project, goal, description: next }, 'saving description');
     else loadGoals(); // cancel or no-op → re-render restores the original row
   };
   input.addEventListener('keydown', (e) => {
@@ -501,6 +538,8 @@ $('loop-active').addEventListener('click', async (e) => {
 $('goals-board').addEventListener('click', async (e) => {
   const run = e.target.closest('button.goal-run');
   if (run) { run.disabled = true; await loopPost('/api/loop/select-goal', { project: run.dataset.project, goal: run.dataset.goal }, `run goal`); return; }
+  const descBtn = e.target.closest('button.goal-desc-btn');
+  if (descBtn) { startDescEdit(descBtn); return; }
   const editBtn = e.target.closest('button.goal-edit');
   if (editBtn) { startGoalEdit(editBtn); return; }
   const del = e.target.closest('button.goal-del');

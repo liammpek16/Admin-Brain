@@ -181,20 +181,34 @@ function parseGoalLine(line) {
   return { done: m[1].toLowerCase() === 'x', text, meta, kind };
 }
 
+// A goal's optional description — an indented sub-line in its goal-block, `  - _Description: …_`.
+// The legacy hand-written `_Goal: …_` form is read too (and normalised to Description on write).
+// It has no checkbox, so it never counts as a goal or toward milestone %.
+const DESC_RX = /^\s+[-*]\s+_(?:Description|Goal):\s*(.*?)_\s*$/i;
+const descLine = (d) => `  - _Description: ${d}_`;
+
 /**
  * A project's roadmap goals — the top-level checkbox lines in its plan notes (the same lines
- * that drive milestone %). Returns { text, done, meta, kind } per goal, with the trailing
- * " — horizon · priority" split off into `meta` and the `#checkpoint`/`#improvement` tag into
- * `kind`. This is the source for the manual goals board.
+ * that drive milestone %). Returns { text, done, meta, kind, description } per goal, with the
+ * trailing " — horizon · priority" split off into `meta`, the `#checkpoint`/`#improvement` tag into
+ * `kind`, and the first `_Description:` sub-line into `description` ('' if none). This is the
+ * source for the manual goals board.
  */
 export function projectGoals(name) {
   const plans = readFolder('Plans', 'plan').filter((pl) => (pl.data.project || '') === name);
   const goals = [];
   for (const pl of plans) {
+    let cur = null;
     for (const line of pl.body.split(/\r?\n/)) {
       const g = parseGoalLine(line);
-      if (!g) continue;
-      goals.push({ text: g.text, done: g.done, meta: g.meta, kind: g.kind, plan: pl.name });
+      if (g) {
+        cur = { text: g.text, done: g.done, meta: g.meta, kind: g.kind, description: '', plan: pl.name };
+        goals.push(cur);
+        continue;
+      }
+      if (/^\S/.test(line)) { cur = null; continue; } // a heading/paragraph ends the goal-block
+      const dm = cur && !cur.description && line.match(DESC_RX);
+      if (dm) cur.description = dm[1].trim();
     }
   }
   return goals;
@@ -405,6 +419,33 @@ export function editProjectGoal(project, oldText, newText) {
   const meta = g && g.meta ? ` — ${g.meta}` : '';
   const tag = g && g.kind === 'improvement' ? ' #improvement' : '';
   block.lines[0] = `${marker} [${check}] ${to}${meta}${tag}`;
+  writeSteps(pl, parsed, parsed.blocks);
+  return { ok: true };
+}
+
+/**
+ * Set, replace, or clear one roadmap goal's description (the ≡ editor in the goals board). Writes a
+ * single `  - _Description: …_` sub-line directly under the goal's checkbox line — replacing an
+ * existing Description (or legacy `_Goal:`) line in place — and removes it when `description` is
+ * empty. Every other line (done state, meta, kind tag, Delivered notes) is untouched. Refuses (no
+ * write) on an unknown goal or multi-line text. Returns { ok, error? }.
+ */
+export function setProjectGoalDescription(project, text, description) {
+  const want = String(text || '').trim();
+  const d = String(description ?? '').trim();
+  if (!want) return { ok: false, error: 'no goal given' };
+  if (/[\r\n]/.test(d)) return { ok: false, error: 'description must be a single line' };
+  const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
+  if (!pl) return { ok: false, error: `no roadmap for ${project}` };
+  const parsed = parseSteps(pl);
+  if (!parsed) return { ok: false, error: 'no Steps section' };
+
+  const block = parsed.blocks.find((b) => b.text === want);
+  if (!block) return { ok: false, error: `goal not found: ${want}` };
+  const at = block.lines.findIndex((l, i) => i > 0 && DESC_RX.test(l));
+  if (at === -1) { if (d) block.lines.splice(1, 0, descLine(d)); }
+  else if (d) block.lines[at] = descLine(d);
+  else block.lines.splice(at, 1);
   writeSteps(pl, parsed, parsed.blocks);
   return { ok: true };
 }

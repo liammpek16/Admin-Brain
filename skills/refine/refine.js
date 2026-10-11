@@ -3,16 +3,18 @@
 // with empty sections for the council to fill. The council reasoning (5 personas) is done
 // by the agent; this harness gathers the inputs deterministically.
 
-import { getProjects, today } from '../vault/vault.js';
+import { getProjects, projectGoals, today } from '../vault/vault.js';
 import { readmeFor, upsertNote, isMain } from '../../adapters/obsidian/index.js';
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 
-/** Gather { project, task, repo, readme } for a project. */
+/** Gather { project, task, description, repo, readme } for a project. `description` is the
+ *  matching roadmap goal's `_Description:` sub-line ('' if none) so the council sees the intent. */
 export async function assembleRefineBrief(projectName) {
   const p = (await getProjects()).find((x) => x.name === projectName);
   if (!p) return null;
-  return { project: p.name, task: p.next, repo: p.repo, readme: readmeFor(p.repo) };
+  const goal = p.next ? projectGoals(p.name).find((g) => g.text === p.next) : null;
+  return { project: p.name, task: p.next, description: (goal && goal.description) || '', repo: p.repo, readme: readmeFor(p.repo) };
 }
 
 // CLI: `node skills/refine/refine.js --project "<name>"`
@@ -37,6 +39,7 @@ if (isMain(import.meta.url)) {
   const body = [
     '## Task (from SELECT)',
     brief.task || '(no next step set)',
+    ...(brief.description ? ['', `**Description:** ${brief.description}`] : []),
     '',
     `## Project goal — source: ${brief.repo || 'n/a'}`,
     '```',
