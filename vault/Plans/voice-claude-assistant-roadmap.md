@@ -27,6 +27,7 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
 - [ ] Phase 2: Admin Brain voice skills — local router (brief/stop/repeat), speak-short rules, long output written to the vault, voice turns logged
 - [ ] Phase 2: voice permission policy — repo code edits only after a spoken "yes"; push/delete/install always confirmed; never bypassPermissions
 - [ ] Phase 3: hardening — systemd + Windows service, auto-reconnect, "PC is offline" message, barge-in, announce when long tasks finish
+- [ ] Phase 5: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
 - [ ] Speaker verification so only your voice can approve actions #improvement
