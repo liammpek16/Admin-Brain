@@ -62,7 +62,8 @@ project from one place, capture notes without leaving it, and eventually drive i
 - [x] Feature Loop model optimization #improvement
   - _Goal: build a skill for the admin brain loop that generates a master agent to analyze the feasibility of every new feature running through the feature loop, then spins up sub-agents to perform each task, matching each sub-agent's model to the complexity the task requires._
   - _Delivered (PR #18, merged): new `orchestrate` skill. The master agent runs a feasibility pass (5 dimensions → go / go-with-split / no-go, advisory) and splits the spec into sub-tasks. A deterministic harness routes each sub-task by complexity tier to haiku/sonnet/opus. The verifier can never be weaker than the implementer. Dogfooded on its own cycle; verify pass-with-notes, F1–F5 fixed; 95/95 tests._
-- [ ] add descriptions to feature goals #improvement
+- [x] add descriptions to feature goals #improvement
+  - _Delivered (PR #19, merged): each goal can carry one `_Description:_` sub-line (legacy `_Goal:_` read too) — a ≡ inline editor on the goals board sets/clears it, `POST /api/project/goal-description`, and the REFINE brief now includes it so the council refines against the goal's intent. Verify pass-with-notes, F1–F3 fixed; 101/101 tests. Follow-up: description field on the add-goal row._
 
 ## Risks
 - Running the full loop from the HUD means long-running, token-spending stages behind a web
