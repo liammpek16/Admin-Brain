@@ -210,7 +210,7 @@ li { margin: 5px 0; }
 .goal-kind:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(92,240,255,0.3); }
 .goal-kind:disabled { opacity: 0.4; cursor: wait; }
 .goal-kind-select { flex: 0 0 auto; margin-left: 0; font-size: 9px; padding: 2px 4px; }
-.goal { display: flex; align-items: baseline; gap: 7px; padding: 4px 0; border-bottom: 1px solid rgba(92,240,255,0.05); }
+.goal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px; padding: 4px 0; border-bottom: 1px solid rgba(92,240,255,0.05); }
 .goal:last-child { border-bottom: none; }
 .goal .grip { flex: 0 0 auto; color: var(--dim); cursor: grab; font-size: 11px; line-height: 1; user-select: none; align-self: center; }
 .goal .grip:active { cursor: grabbing; }
@@ -236,6 +236,9 @@ li { margin: 5px 0; }
 .goal-edit:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(92,240,255,0.3); }
 .goal.done .gtext { color: var(--dim); text-decoration: line-through; text-decoration-color: var(--edge-soft); }
 .gmeta { flex: 0 0 auto; font-size: 9px; white-space: nowrap; }
+/* A goal's description: a full-width muted line under the row, indented past the grip + check. */
+.gdesc { flex: 1 0 100%; padding-left: 30px; font-size: 10px; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+.goal-desc-input { flex: 1 0 calc(100% - 30px); margin-left: 30px; font-size: 10px; }
 .goal-run { flex: 0 0 auto; font-size: 9px; padding: 2px 8px; }
 .goal-del {
   flex: 0 0 auto; align-self: center; background: transparent; border: 1px solid var(--edge-soft);
