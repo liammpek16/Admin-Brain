@@ -84,3 +84,12 @@ test('rejects multi-line text, unknown goals, and unknown projects without writi
   assert.equal(setProjectGoalDescription('Demo', '', 'x').ok, false);
   assert.equal(planText(), before);
 });
+
+test('clearing removes hand-edited duplicate descriptions; line/paragraph separators are rejected', () => {
+  seed(['- [ ] Dup', '  - _Description: one_', '  - _Goal: two_'].join('\n'));
+  assert.equal(setProjectGoalDescription('Demo', 'Dup', 'kept').ok, true);
+  assert.equal((planText().match(/_(Description|Goal):/g) || []).length, 1);
+  assert.equal(setProjectGoalDescription('Demo', 'Dup', '').ok, true);
+  assert.equal(goal('Dup').description, '');
+  assert.equal(setProjectGoalDescription('Demo', 'Dup', 'a\u2028b').ok, false);
+});

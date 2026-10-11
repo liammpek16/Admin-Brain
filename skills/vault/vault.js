@@ -184,7 +184,7 @@ function parseGoalLine(line) {
 // A goal's optional description — an indented sub-line in its goal-block, `  - _Description: …_`.
 // The legacy hand-written `_Goal: …_` form is read too (and normalised to Description on write).
 // It has no checkbox, so it never counts as a goal or toward milestone %.
-const DESC_RX = /^\s+[-*]\s+_(?:Description|Goal):\s*(.*?)_\s*$/i;
+const DESC_RX = /^\s+[-*]\s+_(?:Description|Goal):\s*([\s\S]*?)_\s*$/i;
 const descLine = (d) => `  - _Description: ${d}_`;
 
 /**
@@ -434,7 +434,7 @@ export function setProjectGoalDescription(project, text, description) {
   const want = String(text || '').trim();
   const d = String(description ?? '').trim();
   if (!want) return { ok: false, error: 'no goal given' };
-  if (/[\r\n]/.test(d)) return { ok: false, error: 'description must be a single line' };
+  if (/[\r\n\u2028\u2029]/.test(d)) return { ok: false, error: 'description must be a single line' };
   const pl = readFolder('Plans', 'plan').find((p) => (p.data.project || '') === project);
   if (!pl) return { ok: false, error: `no roadmap for ${project}` };
   const parsed = parseSteps(pl);
@@ -442,7 +442,9 @@ export function setProjectGoalDescription(project, text, description) {
 
   const block = parsed.blocks.find((b) => b.text === want);
   if (!block) return { ok: false, error: `goal not found: ${want}` };
+  // Keep at most one description: replace the first in place, drop any hand-edited duplicates.
   const at = block.lines.findIndex((l, i) => i > 0 && DESC_RX.test(l));
+  block.lines = block.lines.filter((l, i) => i === 0 || i === at || !DESC_RX.test(l));
   if (at === -1) { if (d) block.lines.splice(1, 0, descLine(d)); }
   else if (d) block.lines[at] = descLine(d);
   else block.lines.splice(at, 1);

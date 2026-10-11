@@ -338,7 +338,9 @@ const server = http.createServer(async (req, res) => {
       let r = { ok: false, output: 'Bad request.' };
       try {
         const { project, goal, description } = JSON.parse((await readBody(req)) || '{}');
-        const res2 = setProjectGoalDescription(String(project || ''), String(goal || ''), String(description ?? ''));
+        const res2 = description != null && typeof description !== 'string'
+          ? { ok: false, error: 'description must be a string' }
+          : setProjectGoalDescription(String(project || ''), String(goal || ''), description ?? '');
         r = res2.ok ? { ok: true, output: `${String(description ?? '').trim() ? 'Saved' : 'Cleared'} description for ${goal}.` } : { ok: false, output: res2.error || 'failed' };
       } catch (e) { r = { ok: false, output: String((e && e.message) || e) }; }
       return sendJson(res, r.ok ? 200 : 400, r);
