@@ -4,8 +4,10 @@ name: Voice Claude Assistant
 status: active
 health: green
 priority: med
-updated: '2026-10-08'
-next: 'Phase 3: hardening (Phase 1 Uno button box awaits the physical build)'
+updated: '2026-10-13'
+next: >-
+  Shorter spoken replies — Novak's answers should be brief and to the point,
+  with detail left to the vault
 local_path: 'C:/Users/liamm/voice-claude'
 repo: 'https://github.com/liammpek16/voice-claude'
 tags:

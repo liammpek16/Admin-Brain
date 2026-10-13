@@ -35,6 +35,7 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Built 2026-10-13 (branch phase4-extras): sentence-streamed speech (Piper first sound 0.11 s; Kokoro 0.9 s vs ~2 s); optional Kokoro-82M voice engine (NOVAK_TTS=kokoro). Measured: Claude default model 2–3 s per simple question, Sonnet/Haiku no faster, so the model stays. Voice picked 2026-10-13: Kokoro bm_george is now the default on the PC (falls back to Piper); Pi stays on Piper._
 - [ ] Shorter spoken replies — Novak's answers should be brief and to the point, with detail left to the vault #improvement
   - _Description: reduce how much Novak says out loud; give the short answer first and only expand when asked_
+  - _Merged 2026-10-13 (voice-claude#6, feature loop): replies are capped at about 30 words (`NOVAK_MAX_SPOKEN_WORDS`), cut at a sentence or clause break; the prompt asks for a one-sentence answer of at most 20 words; a local "more" command reads the rest at $0; project answers lead with "Next". Replaying the logs: median 46.5 → 22 words, p90 90 → 32. Verify: pass-with-notes, F1–F3 fixed. Tick after a real-world check by voice._
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
   - _Built in Phase 1 (Uno sketch + Pi GPIO): idle/listening/thinking/speaking/waiting/error colours; awaits the hardware build._
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
@@ -45,3 +46,5 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Delivered 2026-10-13: "how much have I used today?" answered locally from the voice log; NOVAK_DAILY_CLAUDE_TURNS (50) stops Claude-by-voice, local answers keep working. Tested._
 - [ ] Phone fallback via Claude Code Remote Control #improvement
   - _Built 2026-10-13: `install-autostart.ps1 -Mode phone` keeps a Remote Control session in the Admin Brain for the Claude app; needs a one-time manual `claude remote-control` to accept prompts. Not yet tried._
+- [ ] improve reliability of detecting my voice #improvement
+  - _Merged 2026-10-13 (voice-claude#5, feature loop): the speaker check refused the owner's own short "yes" (65% of 0.5 s clips score below 0.4). An unsure score (0.2–0.4) now gets one retry with a short sentence; every check is logged with its score and seconds of speech; new `enroll-live` and `calibrate` commands; silence cut-off raised from 0.8 to 1.2 s. Verify: pass-with-notes, no bypass found. Tick after a real-world check by voice._
