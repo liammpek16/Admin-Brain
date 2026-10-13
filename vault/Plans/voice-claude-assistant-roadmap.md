@@ -55,4 +55,6 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Done 2026-10-13: confirmed working in real use (by voice)._
 - [ ] improve reliability for one-word sentences #improvement
 - [ ] stop saying "On it" after every command; make it more conversational instead #improvement
+  - _Merged 2026-10-13 (voice-claude#7, feature loop): no fixed "On it." Quick Claude replies get no filler. Slower ones (over `NOVAK_ACK_AFTER_SECONDS`, 1.5 s) get one line saying what Claude is doing, or a varied "One sec." / "Let me check.". Verify: pass-with-notes, findings fixed, 148/148. Tick after a real-world check by voice._
 - [ ] Fewer voice approvals: give Novak read access to the project repos (add_dirs from project notes) and auto-allow read-only git/gh inspection commands in the voice policy hook; commit/push/delete/install still ask #improvement
+  - _Built 2026-10-13: [voice-claude#8](https://github.com/liammpek16/voice-claude/pull/8) (open, awaiting merge). Project repos readable without asking (add_dirs from local_path); read-only git/gh/node/Get-* inspection auto-allowed incl. pipes into filters and cd-chains; redirects, sub-expressions, script blocks and writes still ask; commit/push/delete/install still ask. 182 tests; live: branch/PR and repo-search questions ran with no prompt._
