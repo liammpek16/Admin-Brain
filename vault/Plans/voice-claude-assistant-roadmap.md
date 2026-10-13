@@ -32,8 +32,14 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Built 2026-10-13 (voice-claude branch phase3-hardening), awaiting real-world check: Windows logon task + crash-restart supervisor (restart/backoff tested); "Still working: <step>" + "Done." on long turns (live-verified); Claude session auto-restart; Uno button box replug recovery; wake-word barge-in on desk + Pi (unit-tested, not yet tried by voice). Pi systemd/reconnect/"can't reach your PC" from Phase 1. Tick after a day of real use._
 - [ ] Phase 4: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
   - _Description: make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)_
+  - _Built 2026-10-13 (branch phase4-extras): sentence-streamed speech (Piper first sound 0.11 s; Kokoro 0.9 s vs ~2 s); optional Kokoro-82M voice engine (NOVAK_TTS=kokoro). Measured: Claude default model 2–3 s per simple question, Sonnet/Haiku no faster, so the model stays. Waiting on the user's pick from the voice samples; Pi stays on Piper._
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
+  - _Built in Phase 1 (Uno sketch + Pi GPIO): idle/listening/thinking/speaking/waiting/error colours; awaits the hardware build._
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
+  - _Built 2026-10-13 (branch phase4-extras): desk + Pi, NOVAK_FOLLOW_UP_SECONDS; not yet tried by voice._
 - [ ] Speaker verification so only your voice can approve actions #improvement
-- [ ] Daily voice-turn cap + usage tracking against subscription limits #improvement
+  - _Built 2026-10-13: CAM++ voice embeddings (sherpa-onnx), profile from the wake-word recordings; held-out owner audio 0.48–0.79 vs other voices ≤0.20 (threshold 0.4). Live: another voice's "yes" over the bridge was refused. Owner acceptance not yet tried live._
+- [x] Daily voice-turn cap + usage tracking against subscription limits #improvement
+  - _Delivered 2026-10-13: "how much have I used today?" answered locally from the voice log; NOVAK_DAILY_CLAUDE_TURNS (50) stops Claude-by-voice, local answers keep working. Tested._
 - [ ] Phone fallback via Claude Code Remote Control #improvement
+  - _Built 2026-10-13: `install-autostart.ps1 -Mode phone` keeps a Remote Control session in the Admin Brain for the Claude app; needs a one-time manual `claude remote-control` to accept prompts. Not yet tried._
