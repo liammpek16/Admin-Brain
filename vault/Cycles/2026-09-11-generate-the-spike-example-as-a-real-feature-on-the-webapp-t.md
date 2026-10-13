@@ -2,7 +2,7 @@
 type: cycle
 project: Dota Coach
 stage: done
-status: merged
+status: done
 task: >-
   generate the spike example as a real feature on the webapp. This spike should
   be an additional loading option in the fight breakdown screen to replace the

@@ -4,15 +4,17 @@ name: Job Hunt / Recruiter Helper
 status: active
 health: green
 priority: high
-next: >-
-  Run the full pipeline on the real resume (goal 5) — set an Adzuna/LinkedIn key
-  + pick a JD
+next: output the tailored resumes as PDFs instead of only .docx
 started: '2026-09-05'
-updated: '2026-09-05'
+updated: '2026-09-14'
 tags:
   - career
   - tooling
 repo: 'https://github.com/liammpek16/job-hunt'
+local_path: 'C:/Users/liamm/job-hunt'
+webapp_url: 'http://127.0.0.1:4188'
+webapp_cmd: powershell -NoProfile -ExecutionPolicy Bypass -File run-dashboard.ps1
+webapp_cwd: 'C:/Users/liamm/job-hunt'
 ---
 
 ## Summary

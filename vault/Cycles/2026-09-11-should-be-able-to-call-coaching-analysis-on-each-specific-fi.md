@@ -2,7 +2,7 @@
 type: cycle
 project: Dota Coach
 stage: done
-status: merged
+status: done
 task: should be able to call coaching analysis on each specific fight analysis.
 started: '2026-09-11'
 readme_source: 'https://github.com/liammpek16/dota-projects'

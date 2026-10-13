@@ -2,7 +2,7 @@
 type: cycle
 project: Dota Coach
 stage: done
-status: complete
+status: done
 task: >-
   determine feasibility of recreating video animations of fights with .dem data
   using real character models and animations.

@@ -36,6 +36,7 @@ vs Google XYZ, job search, resume tailoring, and an ATS pre-screen.
 - [x] add Lever + Ashby board sources (more key-less/browser-free scraping coverage) #improvement _Delivered: PR #13 merged; `lever` + `ashby` sources on a shared board-common module (Greenhouse refactored onto it); 124 tests; live-verified real SE roles, no key/browser._
 - [x] wire the board sources into the webapp search panel (source dropdown + recency window) #improvement _Delivered: PR #14 merged; Source dropdown (Claude/Greenhouse/Lever/Ashby) + "Posted within" window; live board fetch + ingest; 132 tests, 48 live roles E2E._
 - [x] tighten remote-location matching so foreign-remote roles don't match a US search #improvement _Delivered: PR #15 merged; country-aware locationMatches drops clearly-foreign remote roles (UK/India/EMEA…) while keeping US/US-remote/agnostic; 139 tests; live Datadog NY 20→17, 0 foreign._
+- [ ] add a column for job posting source #improvement
 
 ## Build order (from the 2026-09-04 scope-refinement council)
 See `Cycles/2026-09-04-job-hunt-scope-refinement.md`. The steps above are listed by feature;

@@ -4,7 +4,7 @@ name: Dota Coach
 status: active
 health: green
 priority: high
-next: "Clean up the interface"
+next: "Add 3D map terrain (trees, elevation, river, towers, structures) and mouse camera control"
 started: 2026-08-06
 updated: 2026-09-09
 tags: [gaming, coaching]

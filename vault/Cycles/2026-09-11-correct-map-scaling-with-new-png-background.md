@@ -2,7 +2,7 @@
 type: cycle
 project: Dota Coach
 stage: done
-status: merged
+status: done
 task: correct map scaling with new png background
 started: '2026-09-11'
 readme_source: 'https://github.com/liammpek16/dota-projects'

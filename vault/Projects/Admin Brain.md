@@ -4,9 +4,9 @@ name: Admin Brain
 status: active
 health: green
 priority: high
-next: connect to phone.
+next: add descriptions to feature goals
 started: 2026-08-07T00:00:00.000Z
-updated: '2026-09-04'
+updated: '2026-10-11'
 tags:
   - meta
   - tooling
