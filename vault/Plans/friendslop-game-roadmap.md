@@ -22,6 +22,7 @@ continue / change / kill decision).
 ### M0 — Setup + netcode spike (2–3 weeks)
 - [ ] M0: install & configure Godot 4 + GodotSteam + Git LFS; two instances connect via Steam App 480
   - _Description: pin one Godot version; .gitignore the .godot cache and .blend1 autosaves; LFS for .glb/.png/.wav/.blend; lobby filtered by a custom key. Also do one Godot 3D beginner tutorial yourself (human)._
+  - _Built 2026-10-13 ([friendslop-game#1](https://github.com/liammpek16/friendslop-game/pull/1), draft): Godot 4.7.2 + Jolt, GodotSteam 4.23.1 in LFS, ENet + Steam lobby networking, `tools/smoke_test.ps1` passes at 4 and 8 players headless; Steam lobby created and found on this PC. Tick after a Steam join between two PCs/accounts._
 - [ ] M0: Blender MCP test: generate and import one prop
   - _Description: answers the old goal "can I use Blender with Claude to generate models?"_
 - [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
