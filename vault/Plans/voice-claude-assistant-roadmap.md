@@ -23,19 +23,23 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Passed 2026-10-08 by voice (session transcript): Dota Coach goals read back; "add a goal to Dota Coach, ask me which section" → spoken AskUserQuestion answered "Roadmap steps"; "never mind, cancel that" and a spoken "no" to a git commit were both honoured. Phase 0 complete._
 - [ ] Train the custom "Novak" wake word with openWakeWord (target ≤ 1 false trigger per evening of TV)
 - [ ] Buy a far-field mic array with echo cancellation (ReSpeaker XVF3800-class) + small speaker for the existing Pi
-- [ ] Phase 1: Pi satellite — wake word, capture + Silero VAD, Piper TTS, streaming to the PC bridge (WebSocket/Wyoming)
+- [x] Phase 1: Pi satellite — wake word, capture + Silero VAD, Piper TTS, streaming to the PC bridge (WebSocket/Wyoming)
+  - _Done 2026-10-13: circuit built and working (confirmed by voice)._
 - [x] Phase 2: Admin Brain voice skills — local router (brief/stop/repeat), speak-short rules, long output written to the vault, voice turns logged
   - _Delivered 2026-10-13 (voice-claude, branch phase2-voice-skills-and-policy): brief, "what's next for <project>", project count and time/date answered straight from the vault via skills/vault/vault.js — ~1 s, $0, no Claude call (brief was a ~$0.15 Claude call); fuzzy project names ("the job hunt", "voice project"); voice log now records mid-turn questions/answers and marks local turns; raw Claude errors spoken as actionable sentences; "project one" style answers. Verified live in text mode + 78 tests._
 - [x] Phase 2: voice permission policy — repo code edits only after a spoken "yes"; push/delete/install always confirmed; never bypassPermissions
   - _Delivered 2026-10-13: PreToolUse hook enforces the policy on every tool call regardless of settings — destructive git/rm commands denied outright, push/commit/delete/install and edits outside the vault force a spoken yes; sees through `git -C <path>` options; a yes/no answer longer than 6 words no longer counts. Live-verified on a throwaway repo: `reset --hard` blocked without a prompt, `commit` asked and a spoken "no" refused it._
-- [ ] Phase 3: hardening — systemd + Windows service, auto-reconnect, "PC is offline" message, barge-in, announce when long tasks finish
+- [x] Phase 3: hardening — systemd + Windows service, auto-reconnect, "PC is offline" message, barge-in, announce when long tasks finish
   - _Built 2026-10-13 (voice-claude branch phase3-hardening), awaiting real-world check: Windows logon task + crash-restart supervisor (restart/backoff tested); "Still working: <step>" + "Done." on long turns (live-verified); Claude session auto-restart; Uno button box replug recovery; wake-word barge-in on desk + Pi (unit-tested, not yet tried by voice). Pi systemd/reconnect/"can't reach your PC" from Phase 1. Tick after a day of real use._
-- [ ] Phase 4: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
+  - _Done 2026-10-13: working well in real use (confirmed by voice)._
+- [x] Phase 4: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
   - _Description: make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)_
   - _Built 2026-10-13 (branch phase4-extras): sentence-streamed speech (Piper first sound 0.11 s; Kokoro 0.9 s vs ~2 s); optional Kokoro-82M voice engine (NOVAK_TTS=kokoro). Measured: Claude default model 2–3 s per simple question, Sonnet/Haiku no faster, so the model stays. Voice picked 2026-10-13: Kokoro bm_george is now the default on the PC (falls back to Piper); Pi stays on Piper._
-- [ ] Shorter spoken replies — Novak's answers should be brief and to the point, with detail left to the vault #improvement
+  - _Done 2026-10-13: working well in real use (confirmed by voice)._
+- [x] Shorter spoken replies — Novak's answers should be brief and to the point, with detail left to the vault #improvement
   - _Description: reduce how much Novak says out loud; give the short answer first and only expand when asked_
   - _Merged 2026-10-13 (voice-claude#6, feature loop): replies are capped at about 30 words (`NOVAK_MAX_SPOKEN_WORDS`), cut at a sentence or clause break; the prompt asks for a one-sentence answer of at most 20 words; a local "more" command reads the rest at $0; project answers lead with "Next". Replaying the logs: median 46.5 → 22 words, p90 90 → 32. Verify: pass-with-notes, F1–F3 fixed. Tick after a real-world check by voice._
+  - _Done 2026-10-13: confirmed working in real use (by voice)._
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
   - _Built in Phase 1 (Uno sketch + Pi GPIO): idle/listening/thinking/speaking/waiting/error colours; awaits the hardware build._
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
@@ -46,5 +50,7 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Delivered 2026-10-13: "how much have I used today?" answered locally from the voice log; NOVAK_DAILY_CLAUDE_TURNS (50) stops Claude-by-voice, local answers keep working. Tested._
 - [ ] Phone fallback via Claude Code Remote Control #improvement
   - _Built 2026-10-13: `install-autostart.ps1 -Mode phone` keeps a Remote Control session in the Admin Brain for the Claude app; needs a one-time manual `claude remote-control` to accept prompts. Not yet tried._
-- [ ] improve reliability of detecting my voice #improvement
+- [x] improve reliability of detecting my voice #improvement
   - _Merged 2026-10-13 (voice-claude#5, feature loop): the speaker check refused the owner's own short "yes" (65% of 0.5 s clips score below 0.4). An unsure score (0.2–0.4) now gets one retry with a short sentence; every check is logged with its score and seconds of speech; new `enroll-live` and `calibrate` commands; silence cut-off raised from 0.8 to 1.2 s. Verify: pass-with-notes, no bypass found. Tick after a real-world check by voice._
+  - _Done 2026-10-13: confirmed working in real use (by voice)._
+- [ ] improve reliability for one-word sentences #improvement
