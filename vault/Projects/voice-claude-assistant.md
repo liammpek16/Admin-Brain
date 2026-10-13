@@ -5,9 +5,7 @@ status: active
 health: green
 priority: med
 updated: '2026-10-13'
-next: >-
-  Shorter spoken replies — Novak's answers should be brief and to the point,
-  with detail left to the vault
+next: 'improve reliability for one-word sentences'
 local_path: 'C:/Users/liamm/voice-claude'
 repo: 'https://github.com/liammpek16/voice-claude'
 tags:

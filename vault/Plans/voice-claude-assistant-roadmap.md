@@ -42,10 +42,12 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Done 2026-10-13: confirmed working in real use (by voice)._
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
   - _Built in Phase 1 (Uno sketch + Pi GPIO): idle/listening/thinking/speaking/waiting/error colours; awaits the hardware build._
-- [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
+- [x] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
   - _Built 2026-10-13 (branch phase4-extras): desk + Pi, NOVAK_FOLLOW_UP_SECONDS; not yet tried by voice._
-- [ ] Speaker verification so only your voice can approve actions #improvement
+  - _Done 2026-10-13: ticked by voice._
+- [x] Speaker verification so only your voice can approve actions #improvement
   - _Built 2026-10-13: CAM++ voice embeddings (sherpa-onnx), profile from the wake-word recordings; held-out owner audio 0.48–0.79 vs other voices ≤0.20 (threshold 0.4). Live: another voice's "yes" over the bridge was refused. Owner acceptance not yet tried live._
+  - _Done 2026-10-13: ticked by voice._
 - [x] Daily voice-turn cap + usage tracking against subscription limits #improvement
   - _Delivered 2026-10-13: "how much have I used today?" answered locally from the voice log; NOVAK_DAILY_CLAUDE_TURNS (50) stops Claude-by-voice, local answers keep working. Tested._
 - [ ] Phone fallback via Claude Code Remote Control #improvement
@@ -54,7 +56,8 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Merged 2026-10-13 (voice-claude#5, feature loop): the speaker check refused the owner's own short "yes" (65% of 0.5 s clips score below 0.4). An unsure score (0.2–0.4) now gets one retry with a short sentence; every check is logged with its score and seconds of speech; new `enroll-live` and `calibrate` commands; silence cut-off raised from 0.8 to 1.2 s. Verify: pass-with-notes, no bypass found. Tick after a real-world check by voice._
   - _Done 2026-10-13: confirmed working in real use (by voice)._
 - [ ] improve reliability for one-word sentences #improvement
-- [ ] stop saying "On it" after every command; make it more conversational instead #improvement
+- [x] stop saying "On it" after every command; make it more conversational instead #improvement
   - _Merged 2026-10-13 (voice-claude#7, feature loop): no fixed "On it." Quick Claude replies get no filler. Slower ones (over `NOVAK_ACK_AFTER_SECONDS`, 1.5 s) get one line saying what Claude is doing, or a varied "One sec." / "Let me check.". Verify: pass-with-notes, findings fixed, 148/148. Tick after a real-world check by voice._
+  - _Done 2026-10-13: ticked by voice._
 - [x] Fewer voice approvals: give Novak read access to the project repos (add_dirs from project notes) and auto-allow read-only git/gh inspection commands in the voice policy hook; commit/push/delete/install still ask #improvement
   - _Built 2026-10-13: [voice-claude#8](https://github.com/liammpek16/voice-claude/pull/8) (merged 2026-10-13, 86a76c1). Project repos readable without asking (add_dirs from local_path); read-only git/gh/node/Get-* inspection auto-allowed incl. pipes into filters and cd-chains; redirects, sub-expressions, script blocks and writes still ask; commit/push/delete/install still ask. 182 tests; live: branch/PR and repo-search questions ran with no prompt._
