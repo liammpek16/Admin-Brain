@@ -54,3 +54,5 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Merged 2026-10-13 (voice-claude#5, feature loop): the speaker check refused the owner's own short "yes" (65% of 0.5 s clips score below 0.4). An unsure score (0.2–0.4) now gets one retry with a short sentence; every check is logged with its score and seconds of speech; new `enroll-live` and `calibrate` commands; silence cut-off raised from 0.8 to 1.2 s. Verify: pass-with-notes, no bypass found. Tick after a real-world check by voice._
   - _Done 2026-10-13: confirmed working in real use (by voice)._
 - [ ] improve reliability for one-word sentences #improvement
+- [ ] stop saying "On it" after every command; make it more conversational instead #improvement
+- [ ] Fewer voice approvals: give Novak read access to the project repos (add_dirs from project notes) and auto-allow read-only git/gh inspection commands in the voice policy hook; commit/push/delete/install still ask #improvement
