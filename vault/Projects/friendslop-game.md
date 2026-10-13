@@ -4,7 +4,7 @@ name: friendslop game
 status: planned
 health: yellow
 priority: med
-updated: '2026-09-04'
+updated: '2026-10-13'
 repo: 'https://github.com/liammpek16/friendslop-game'
 ---
 
@@ -16,7 +16,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-determine theme and main mechanics of the game
+M0: install & configure Godot 4 + GodotSteam + Git LFS; two instances connect via Steam App 480 — plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none
