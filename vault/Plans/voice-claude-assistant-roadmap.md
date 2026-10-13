@@ -32,7 +32,9 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
   - _Built 2026-10-13 (voice-claude branch phase3-hardening), awaiting real-world check: Windows logon task + crash-restart supervisor (restart/backoff tested); "Still working: <step>" + "Done." on long turns (live-verified); Claude session auto-restart; Uno button box replug recovery; wake-word barge-in on desk + Pi (unit-tested, not yet tried by voice). Pi systemd/reconnect/"can't reach your PC" from Phase 1. Tick after a day of real use._
 - [ ] Phase 4: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
   - _Description: make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)_
-  - _Built 2026-10-13 (branch phase4-extras): sentence-streamed speech (Piper first sound 0.11 s; Kokoro 0.9 s vs ~2 s); optional Kokoro-82M voice engine (NOVAK_TTS=kokoro). Measured: Claude default model 2–3 s per simple question, Sonnet/Haiku no faster, so the model stays. Waiting on the user's pick from the voice samples; Pi stays on Piper._
+  - _Built 2026-10-13 (branch phase4-extras): sentence-streamed speech (Piper first sound 0.11 s; Kokoro 0.9 s vs ~2 s); optional Kokoro-82M voice engine (NOVAK_TTS=kokoro). Measured: Claude default model 2–3 s per simple question, Sonnet/Haiku no faster, so the model stays. Voice picked 2026-10-13: Kokoro bm_george is now the default on the PC (falls back to Piper); Pi stays on Piper._
+- [ ] Shorter spoken replies — Novak's answers should be brief and to the point, with detail left to the vault #improvement
+  - _Description: reduce how much Novak says out loud; give the short answer first and only expand when asked_
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
   - _Built in Phase 1 (Uno sketch + Pi GPIO): idle/listening/thinking/speaking/waiting/error colours; awaits the hardware build._
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
