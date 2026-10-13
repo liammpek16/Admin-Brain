@@ -24,10 +24,13 @@ Design and rationale: [[voice-claude-assistant-feasibility]].
 - [ ] Train the custom "Novak" wake word with openWakeWord (target ≤ 1 false trigger per evening of TV)
 - [ ] Buy a far-field mic array with echo cancellation (ReSpeaker XVF3800-class) + small speaker for the existing Pi
 - [ ] Phase 1: Pi satellite — wake word, capture + Silero VAD, Piper TTS, streaming to the PC bridge (WebSocket/Wyoming)
-- [ ] Phase 2: Admin Brain voice skills — local router (brief/stop/repeat), speak-short rules, long output written to the vault, voice turns logged
-- [ ] Phase 2: voice permission policy — repo code edits only after a spoken "yes"; push/delete/install always confirmed; never bypassPermissions
+- [x] Phase 2: Admin Brain voice skills — local router (brief/stop/repeat), speak-short rules, long output written to the vault, voice turns logged
+  - _Delivered 2026-10-13 (voice-claude, branch phase2-voice-skills-and-policy): brief, "what's next for <project>", project count and time/date answered straight from the vault via skills/vault/vault.js — ~1 s, $0, no Claude call (brief was a ~$0.15 Claude call); fuzzy project names ("the job hunt", "voice project"); voice log now records mid-turn questions/answers and marks local turns; raw Claude errors spoken as actionable sentences; "project one" style answers. Verified live in text mode + 78 tests._
+- [x] Phase 2: voice permission policy — repo code edits only after a spoken "yes"; push/delete/install always confirmed; never bypassPermissions
+  - _Delivered 2026-10-13: PreToolUse hook enforces the policy on every tool call regardless of settings — destructive git/rm commands denied outright, push/commit/delete/install and edits outside the vault force a spoken yes; sees through `git -C <path>` options; a yes/no answer longer than 6 words no longer counts. Live-verified on a throwaway repo: `reset --hard` blocked without a prompt, `commit` asked and a spoken "no" refused it._
 - [ ] Phase 3: hardening — systemd + Windows service, auto-reconnect, "PC is offline" message, barge-in, announce when long tasks finish
-- [ ] Phase 5: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
+- [ ] Phase 4: voice quality — make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)
+  - _Description: make Novak respond faster (lower wake-to-first-word latency, streamed TTS) and sound more natural/human (better or custom voice model)_
 - [ ] LED ring states (listening / thinking / waiting for you) #improvement
 - [ ] Follow-up window: reply without the wake word for ~8 s after Novak speaks #improvement
 - [ ] Speaker verification so only your voice can approve actions #improvement

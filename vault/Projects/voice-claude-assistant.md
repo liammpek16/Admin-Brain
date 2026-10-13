@@ -5,7 +5,7 @@ status: active
 health: green
 priority: med
 updated: '2026-10-08'
-next: 'Train the "Novak" wake word, then Phase 1: Pi satellite'
+next: 'Phase 3: hardening (Phase 1 Uno button box awaits the physical build)'
 local_path: 'C:/Users/liamm/voice-claude'
 repo: 'https://github.com/liammpek16/voice-claude'
 tags:
