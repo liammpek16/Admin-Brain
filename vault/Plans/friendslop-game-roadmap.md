@@ -20,11 +20,15 @@ continue / change / kill decision).
   - _Done 2026-10-13: v2 approved → [[friendslop-game-gameplan]]. Drafts in `friendslop-game/docs/`._
 
 ### M0 — Setup + netcode spike (2–3 weeks)
-- [ ] M0: install & configure Godot 4 + GodotSteam + Git LFS; two instances connect via Steam App 480
+- [x] M0: install & configure Godot 4 + GodotSteam + Git LFS; two instances connect via Steam App 480
   - _Description: pin one Godot version; .gitignore the .godot cache and .blend1 autosaves; LFS for .glb/.png/.wav/.blend; lobby filtered by a custom key. Also do one Godot 3D beginner tutorial yourself (human)._
-  - _Built 2026-10-13 ([friendslop-game#1](https://github.com/liammpek16/friendslop-game/pull/1), draft): Godot 4.7.2 + Jolt, GodotSteam 4.23.1 in LFS, ENet + Steam lobby networking, `tools/smoke_test.ps1` passes at 4 and 8 players headless; Steam lobby created and found on this PC. Tick after a Steam join between two PCs/accounts._
+  - _Built 2026-10-13 ([friendslop-game#1](https://github.com/liammpek16/friendslop-game/pull/1), draft): Godot 4.7.2 + Jolt, GodotSteam 4.23.1 in LFS, ENet + Steam lobby networking, `tools/smoke_test.ps1` passes at 4 and 8 players headless; Steam lobby created and found on this PC._
+  - _Ticked 2026-10-13 on request. The Steam join between two PCs is not yet tested; tracked as its own goal below._
+- [ ] M0: verify a Steam join between two PCs/accounts (human + a friend)
+  - _Description: unzip `build/friendslop-test.zip` (made by `tools/package_test.ps1`) on both PCs, host → Find Steam lobbies → join; both see 2 moving players; leave/host-left handled. Steps in the session guide / PR #1._
 - [ ] M0: Blender MCP test: generate and import one prop
   - _Description: answers the old goal "can I use Blender with Claude to generate models?"_
+  - _Built 2026-10-13 ([friendslop-game#2](https://github.com/liammpek16/friendslop-game/pull/2), draft, stacked on #1): yes, headless. Blender 5.2.2 installed; `tools/blender/make_sled.py` builds a low-poly sled with no Blender window, exports .glb; `scenes/props/sled.tscn` physics prop; `tools/checks/check_props.gd` passes. Interactive Blender MCP not set up (optional)._
 - [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
   - _Description: throwaway code. Each player owns their movement, host owns shared objects; compare two players roped together vs one host-owned sled with clumsy at 150 ms / 2% loss._
 - [ ] M0: headless host + 3 bot clients test harness for VERIFY
