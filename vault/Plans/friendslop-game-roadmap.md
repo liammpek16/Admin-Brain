@@ -61,6 +61,7 @@ continue / change / kill decision).
   - _Revised 2026-10-14 (playtest feedback: a fleeing goblin ran through the side wall to infinity): goblins now live in 4 nests beside the course, wake when the eggs come within 35 m, carry stolen eggs back to their nest and eat them there until the crew fights them; give up beyond 70 m; movement clamped to the course. Also fixed eggs being re-strapped the instant a goblin grabbed them. verify 11/11; steal test: stolen twice, taken home twice, tackled, recovered, delivered._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: basic proximity voice via Steam Voice + per-player mute
+  - _Built 2026-10-14 ([friendslop-game#10](https://github.com/liammpek16/friendslop-game/pull/10), draft): Steam Voice when Steam runs, else microphone PCM (LAN), test tone for bots; sent only within 45 m; 3D positional from the speaker, muffled while tumbling; hats bob when talking; open mic / push-to-talk (T, V), Tab + 1-8 mutes. `tools/voice_test.ps1`: in-range players hear each other, a player 250 m away hears/is heard by nobody, mute works (0 and 150 ms). Mic capture checked locally. Steam Voice path untested (needs two Steam accounts/PCs)._
 - [ ] M1: Steam invite/join flow under 60 s
 - [ ] M1 gate: fun playtest with 2–3 friends (go / re-theme / kill)
   - _Description: human-only. Pass = ≥ 2 of 3 friends ask to play again within a week and ≥ 5 laugh moments in the recording. No money spent before this passes. Then start Discord + devlog + clips._
