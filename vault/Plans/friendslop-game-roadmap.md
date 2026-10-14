@@ -51,6 +51,7 @@ continue / change / kill decision).
   - _Built 2026-10-13 (#6): pilot seat 0 steers/brakes/pushes off; E boards nearest free seat, Space bails, hard hits throw riders off, re-board while moving, empty-pilot sled slows to a stop, >150 m behind → respawn ahead with a cone of shame. `tools/run_test.ps1`: 4 bots, forced crash at 200 m, everyone re-boards and delivers (78 s at 0 ms, 93 s at 150 ms). Bail + respawn not bot-tested yet. Tick after you've played it._
 - [ ] M1: character controller with ski movement, ragdoll + get-up, floppy camera
 - [ ] M1: interaction system: pick up / hold / throw / drop with ownership transfer
+  - _Built 2026-10-13 ([friendslop-game#7](https://github.com/liammpek16/friendslop-game/pull/7), draft): LMB grab (host grants, first valid request wins), held at your hand on every machine, RMB charge + throw / Q drop, thrower simulates then hands back to the host when it settles; mouse-look aiming. 6 test items at the top lodge. `tools/item_test.ps1` passes at 0 and 150 ms (contested grab granted once, all machines agree). Tick after you've played it._
 - [ ] M1: egg-crate cargo with one care need (re-pad after big bumps) + trackside pickups (~5 items)
   - _Description: cargo can fall off, be carried and thrown back; condition drops from crashes and neglect; pickups grabbed at speed: padding, snowball, flare, frying pan, repair plank._
 - [ ] M1: one monster: snow goblin (chases, boards, tries to steal cargo; knocked off with snowballs / frying pan)

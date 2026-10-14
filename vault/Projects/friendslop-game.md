@@ -18,7 +18,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M1: grey-box course + toboggan built (friendslop-game#6, awaiting your playtest via `tools/run_local.ps1`). Next: interaction system (grab/hold/throw), egg-crate cargo + pickups, snow goblin, proximity voice, invites → fun gate. Plan: [[friendslop-game-gameplan]]
+M1: course + toboggan merged (#6); interaction system built (friendslop-game#7, awaiting review/playtest). Next: egg-crate cargo + trackside pickups, snow goblin, proximity voice, invites → fun gate. Plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none
