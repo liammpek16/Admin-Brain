@@ -26,7 +26,7 @@ continue / change / kill decision).
   - _Ticked 2026-10-13 on request. The Steam join between two PCs is not yet tested; tracked as its own goal below._
 - [ ] M0: verify a Steam join between two PCs/accounts (human + a friend)
   - _Description: unzip `build/friendslop-test.zip` (made by `tools/package_test.ps1`) on both PCs, host → Find Steam lobbies → join; both see 2 moving players; leave/host-left handled. Steps in the session guide / PR #1._
-- [ ] M0: Blender MCP test: generate and import one prop
+- [x] M0: Blender MCP test: generate and import one prop
   - _Description: answers the old goal "can I use Blender with Claude to generate models?"_
   - _Built 2026-10-13 ([friendslop-game#2](https://github.com/liammpek16/friendslop-game/pull/2), draft, stacked on #1): yes, headless. Blender 5.2.2 installed; `tools/blender/make_sled.py` builds a low-poly sled with no Blender window, exports .glb; `scenes/props/sled.tscn` physics prop; `tools/checks/check_props.gd` passes. Interactive Blender MCP not set up (optional)._
 - [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
