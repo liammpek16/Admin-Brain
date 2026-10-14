@@ -18,7 +18,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M1: snow goblin with nests merged (#9); proximity voice built (friendslop-game#10, awaiting review). Next: Steam invite/join flow, then a two-PC Steam test (join + voice) and the fun gate playtest. Plan: [[friendslop-game-gameplan]]
+M1: 8 of 11 goals done (all gameplay merged through friendslop-game#10). Left: rebindable input + controller mapping, Steam invite/join flow, then the fun gate playtest. Also pending from M0: two-PC Steam join test (now also covers Steam Voice). Plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none
