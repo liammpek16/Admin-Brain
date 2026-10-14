@@ -31,8 +31,10 @@ continue / change / kill decision).
   - _Built 2026-10-13 ([friendslop-game#2](https://github.com/liammpek16/friendslop-game/pull/2), draft, stacked on #1): yes, headless. Blender 5.2.2 installed; `tools/blender/make_sled.py` builds a low-poly sled with no Blender window, exports .glb; `scenes/props/sled.tscn` physics prop; `tools/checks/check_props.gd` passes. Interactive Blender MCP not set up (optional)._
 - [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
   - _Description: throwaway code. Each player owns their movement, host owns shared objects; compare two players roped together vs one host-owned sled with clumsy at 150 ms / 2% loss._
+  - _Built 2026-10-13 ([friendslop-game#3](https://github.com/liammpek16/friendslop-game/pull/3), draft, stacked on #2). Results in `docs/spike/m0-netcode-spike.md`: at ~20 m/s and 150 ms + jitter + 2% loss, others drawn up to 4.4 m behind; rope toward the displayed partner is stable but brakes pairs to 10–12 m/s; rope with prediction yanks (tug ~4×, yank ~6× at 150 ms); host-owned sled is consistent (p95 1.3 m), rider steering +240 ms after the host's. Recommendation: shared sled, rope only soft/cosmetic, stay on Godot. Built-in lag simulator used instead of clumsy._
 - [ ] M0: headless host + 3 bot clients test harness for VERIFY
   - _Description: scripted inputs + fake lag, assert positions converge; becomes the feature loop's netcode check._
+  - _Mostly built 2026-10-13: `tools/smoke_test.ps1` (host + N bots, pass/fail, 4 and 8 players) in #1, and `tools/spike/run_spike.ps1` + `analyze.py` (fake lag, true-vs-shown errors) in #3. Remaining: pass/fail thresholds on the lag run and wiring it into the loop's VERIFY stage._
 - [ ] M0 gate: decide co-op dependency + confirm engine
   - _Description: rope / shared sled / other; Godot confirmed or switch to Unity now. Write the decision here._
 
