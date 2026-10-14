@@ -16,7 +16,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M0: install & configure Godot 4 + GodotSteam + Git LFS; two instances connect via Steam App 480 — plan: [[friendslop-game-gameplan]]
+M0 gate decided 2026-10-13: shared host-owned sled, Godot 4.7. Next: finish the bot test harness (pass/fail thresholds + VERIFY), verify a Steam join between two PCs, then M1 — plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none

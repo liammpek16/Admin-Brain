@@ -35,8 +35,9 @@ continue / change / kill decision).
 - [ ] M0: headless host + 3 bot clients test harness for VERIFY
   - _Description: scripted inputs + fake lag, assert positions converge; becomes the feature loop's netcode check._
   - _Mostly built 2026-10-13: `tools/smoke_test.ps1` (host + N bots, pass/fail, 4 and 8 players) in #1, and `tools/spike/run_spike.ps1` + `analyze.py` (fake lag, true-vs-shown errors) in #3. Remaining: pass/fail thresholds on the lag run and wiring it into the loop's VERIFY stage._
-- [ ] M0 gate: decide co-op dependency + confirm engine
+- [x] M0 gate: decide co-op dependency + confirm engine
   - _Description: rope / shared sled / other; Godot confirmed or switch to Unity now. Write the decision here._
+  - _Decided 2026-10-13: **co-op dependency = the shared, host-owned sled** (for now and for testing). **Rope comes back later as a separate item** (soft/cosmetic, or tied to the sled, not a hard link between two players; see the M3 rope goal). **Engine: stay on Godot 4.7** (+ Jolt, GodotSteam). Based on the spike results in friendslop-game `docs/spike/m0-netcode-spike.md` (#3)._
 
 ### M1 — Prototype + fun gate (5–8 weeks)
 - [ ] M1: one-page design doc (pillars, core loop, run shape) + council review
@@ -60,6 +61,8 @@ continue / change / kill decision).
 
 ### M3 — Content, hardening + Next Fest demo (10–14 weeks)
 - [ ] M3: content to launch cap + clip machine + seed codes/daily mountain
+- [ ] M3: rope item: soft/cosmetic rope or a rope tied to the host-owned sled/cargo #item
+  - _Description: from the M0 gate. A hard rope between two independently simulated players braked pairs to 10–12 m/s (or yanked them with prediction) at 150 ms in the spike, so build it as a loose, mostly visual link or anchor one end to a host-owned object._
 - [ ] M3: online hardening: lobby flow, disconnects, version check, bandwidth test, soak test
 - [ ] M3: polish: menus, settings, game feel, controller support
 - [ ] M3: security & legal checklist complete
