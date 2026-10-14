@@ -18,7 +18,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M1: interaction merged (#7); egg-crate cargo + pickups built (friendslop-game#8, awaiting review/playtest). Next: snow goblin, proximity voice, invites → fun gate. Plan: [[friendslop-game-gameplan]]
+M1: cargo + pickups merged (#8); snow goblin built (friendslop-game#9, awaiting review/playtest). Next: proximity voice, Steam invites, then the fun gate playtest. Plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none

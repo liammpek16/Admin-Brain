@@ -57,6 +57,7 @@ continue / change / kill decision).
   - _Built 2026-10-13 ([friendslop-game#8](https://github.com/liammpek16/friendslop-game/pull/8), draft): eggs strapped on the sled; bumps crack eggs + use padding, unpadded eggs rattle at speed; hard crash knocks the crate loose, carry/throw it back and it straps on; can't finish without the eggs; all broken = FAILED; score = condition + speed bonus. 10 trackside stands (padding, snowball, flare, pan, plank) grabbable from the sled; F pads the eggs; Q stashes on the sled. Bot run: eggs knocked loose at 200 m, rescued, delivered at 83%, 5 pickups taken (0 and 150 ms). Tick after you've played it._
 - [ ] M1: one monster: snow goblin (chases, boards, tries to steal cargo; knocked off with snowballs / frying pan)
   - _Description: host-owned AI like the sled; the crew's combat job._
+  - _Built 2026-10-13 ([friendslop-game#9](https://github.com/liammpek16/friendslop-game/pull/9), draft): wild goblins at 130/270/410/520 m chase the sled, cling on (slowing it), steal the eggs after 3 s and flee; escaping with them fails the run. Crew: thrown items hit, pan + F whacks (2), skiing into a thief tackles (1, drops the eggs); 2 damage defeats. Bot tests: goblin dealt with + delivered at 0/150 ms; steal → tackle → recover path passes. Bots' throws mostly miss at 150 ms (tackles win), so hit feel under lag needs a human playtest. Tick after you've played it._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: basic proximity voice via Steam Voice + per-player mute
 - [ ] M1: Steam invite/join flow under 60 s
