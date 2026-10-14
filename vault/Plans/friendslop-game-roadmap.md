@@ -45,8 +45,10 @@ continue / change / kill decision).
   - _Description: replaces "determine theme and main mechanics". 3 pillars, one-sentence core loop, co-op dependency from M0, 10–25 min runs, win/lose; test the one-line pitch on 3 non-friends._
   - _Done 2026-10-13 ([friendslop-game#5](https://github.com/liammpek16/friendslop-game/pull/5), `docs/design.md`): **Downhill Delivery Co.** A crew rides one sled down a random mountain delivering fragile cargo to the lodge before dark. One pilot; crew grabs trackside pickups, cares for the cargo and fights monsters; 4-seat toboggan (8 seats for 5–8 players). Council-reviewed. Pitch test on 3 non-friends still to do (human)._
 - [ ] M1: hand-built 600 m grey-box slope with one checkpoint hut and the bottom lodge
+  - _Built 2026-10-13 ([friendslop-game#6](https://github.com/liammpek16/friendslop-game/pull/6), draft): 600 m / 97 m drop from tables (pitch 0–17°, banks, bumps), snaking racing line with gates, trees, 2 jumps, checkpoint at 300 m, both lodges. Collision matches heights to 3 mm. Tick after you've played it._
 - [ ] M1: toboggan: pilot seat + crew seats, throw-off / bail / re-board, catch-up on skis
   - _Description: host-owned sled from the M0 spike; pilot steers + brakes, instant local lean animation hides the input delay; sled slows with no pilot; respawn at checkpoint after ~150 m behind._
+  - _Built 2026-10-13 (#6): pilot seat 0 steers/brakes/pushes off; E boards nearest free seat, Space bails, hard hits throw riders off, re-board while moving, empty-pilot sled slows to a stop, >150 m behind → respawn ahead with a cone of shame. `tools/run_test.ps1`: 4 bots, forced crash at 200 m, everyone re-boards and delivers (78 s at 0 ms, 93 s at 150 ms). Bail + respawn not bot-tested yet. Tick after you've played it._
 - [ ] M1: character controller with ski movement, ragdoll + get-up, floppy camera
 - [ ] M1: interaction system: pick up / hold / throw / drop with ownership transfer
 - [ ] M1: egg-crate cargo with one care need (re-pad after big bumps) + trackside pickups (~5 items)

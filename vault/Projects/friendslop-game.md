@@ -18,7 +18,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M1 started 2026-10-13: design approved (Downhill Delivery Co., docs/design.md). Next: grey-box slope + toboggan with pilot/crew, then interactions, cargo, goblin, voice, invites → fun gate. Still open from M0: Steam join between two PCs. Plan: [[friendslop-game-gameplan]]
+M1: grey-box course + toboggan built (friendslop-game#6, awaiting your playtest via `tools/run_local.ps1`). Next: interaction system (grab/hold/throw), egg-crate cargo + pickups, snow goblin, proximity voice, invites → fun gate. Plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none
