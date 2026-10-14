@@ -18,6 +18,8 @@ started: 2026-08-06       # optional
 updated: 2026-08-06       # bumped on edit; also derivable
 tags: [gaming]            # freeform
 repo: ""                  # optional git path/URL → enables git-derived recency
+local_path: ""            # optional local clone (IMPLEMENT branches here; checks run here)
+verify_cmd: ""            # optional: automated checks VERIFY runs in local_path (exit 0 = pass)
 ---
 ```
 
