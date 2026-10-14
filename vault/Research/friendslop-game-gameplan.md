@@ -101,6 +101,7 @@ rightly avoided.
 | Engine | **Godot 4** (+ Jolt physics, GodotSteam, netfox if useful). Unity is the fallback; **Unreal ruled out** (Blueprints are binary, so Claude can't edit them). **Confirmed at the M0 gate 2026-10-13 (Godot 4.7.2).** | Decided |
 | Networking | Listen-server (one player hosts), Steam lobbies + Steam relay; no rented servers | Never needs to change for co-op |
 | Authority | Each player owns their own movement; host owns shared objects, hazards, seed, score | End of M0 spike |
+| Game concept | **Downhill Delivery Co.** (working title): crew sleds fragile cargo down a random mountain; one pilot, crew does pickups / cargo care / monsters; 4- or 8-seat toboggan. See friendslop-game `docs/design.md` (2026-10-13) | Fun gate (end of M1) |
 | Co-op dependency | **Shared, host-owned sled** (decided at the M0 gate 2026-10-13, from the netcode spike); rope returns later as an item | Revisit after the M1 fun gate |
 | Character physics | Animated controller + ragdoll on big hits (not active ragdoll) | End of M1 |
 | Player count | Designed for 4, supports up to 8 | End of M2 |

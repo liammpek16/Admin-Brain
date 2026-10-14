@@ -41,10 +41,18 @@ continue / change / kill decision).
   - _Decided 2026-10-13: **co-op dependency = the shared, host-owned sled** (for now and for testing). **Rope comes back later as a separate item** (soft/cosmetic, or tied to the sled, not a hard link between two players; see the M3 rope goal). **Engine: stay on Godot 4.7** (+ Jolt, GodotSteam). Based on the spike results in friendslop-game `docs/spike/m0-netcode-spike.md` (#3)._
 
 ### M1 — Prototype + fun gate (5–8 weeks)
-- [ ] M1: one-page design doc (pillars, core loop, run shape) + council review
+- [x] M1: one-page design doc (pillars, core loop, run shape) + council review
   - _Description: replaces "determine theme and main mechanics". 3 pillars, one-sentence core loop, co-op dependency from M0, 10–25 min runs, win/lose; test the one-line pitch on 3 non-friends._
+  - _Done 2026-10-13 ([friendslop-game#5](https://github.com/liammpek16/friendslop-game/pull/5), `docs/design.md`): **Downhill Delivery Co.** A crew rides one sled down a random mountain delivering fragile cargo to the lodge before dark. One pilot; crew grabs trackside pickups, cares for the cargo and fights monsters; 4-seat toboggan (8 seats for 5–8 players). Council-reviewed. Pitch test on 3 non-friends still to do (human)._
+- [ ] M1: hand-built 600 m grey-box slope with one checkpoint hut and the bottom lodge
+- [ ] M1: toboggan: pilot seat + crew seats, throw-off / bail / re-board, catch-up on skis
+  - _Description: host-owned sled from the M0 spike; pilot steers + brakes, instant local lean animation hides the input delay; sled slows with no pilot; respawn at checkpoint after ~150 m behind._
 - [ ] M1: character controller with ski movement, ragdoll + get-up, floppy camera
 - [ ] M1: interaction system: pick up / hold / throw / drop with ownership transfer
+- [ ] M1: egg-crate cargo with one care need (re-pad after big bumps) + trackside pickups (~5 items)
+  - _Description: cargo can fall off, be carried and thrown back; condition drops from crashes and neglect; pickups grabbed at speed: padding, snowball, flare, frying pan, repair plank._
+- [ ] M1: one monster: snow goblin (chases, boards, tries to steal cargo; knocked off with snowballs / frying pan)
+  - _Description: host-owned AI like the sled; the crew's combat job._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: basic proximity voice via Steam Voice + per-player mute
 - [ ] M1: Steam invite/join flow under 60 s

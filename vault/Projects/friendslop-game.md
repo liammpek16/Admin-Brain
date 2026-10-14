@@ -18,7 +18,7 @@ Go-gate to build: a throwaway prototype that's fun with 2–3 friends in one sit
 repo README for the full verdict.
 
 ## Now
-M0 nearly done: shared sled + Godot 4.7 decided, automated checks in place (`tools/verify.ps1`). Left: verify a Steam join between two PCs, then M1 — plan: [[friendslop-game-gameplan]]
+M1 started 2026-10-13: design approved (Downhill Delivery Co., docs/design.md). Next: grey-box slope + toboggan with pilot/crew, then interactions, cargo, goblin, voice, invites → fun gate. Still open from M0: Steam join between two PCs. Plan: [[friendslop-game-gameplan]]
 
 ## Blockers
 - none
