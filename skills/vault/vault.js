@@ -46,6 +46,7 @@ export async function getProjects() {
       webappUrl: typeof d.webapp_url === 'string' ? d.webapp_url.trim() : '',
       webappCmd: typeof d.webapp_cmd === 'string' ? d.webapp_cmd.trim() : '',
       webappCwd: typeof d.webapp_cwd === 'string' ? d.webapp_cwd.trim() : '',
+      verifyCmd: typeof d.verify_cmd === 'string' ? d.verify_cmd.trim() : '',
       activitySource: gitDate ? 'git' : 'note',
       lastActivity: lastActivity.toISOString().slice(0, 10),
       daysSince: Math.max(0, Math.floor((Date.now() - lastActivity.getTime()) / DAY)),
@@ -147,7 +148,7 @@ export function createProject(input = {}) {
   if (!EDITABLE.health.includes(health)) return { ok: false, error: 'invalid project health' };
   if (!EDITABLE.priority.includes(priority)) return { ok: false, error: 'invalid project priority' };
 
-  const optional = ['next', 'repo', 'local_path', 'webapp_url', 'webapp_cmd', 'webapp_cwd'];
+  const optional = ['next', 'repo', 'local_path', 'webapp_url', 'webapp_cmd', 'webapp_cwd', 'verify_cmd'];
   const data = { type: 'project', name, status, health, priority, updated: today() };
   for (const field of optional) {
     const value = String(input[field] || '').trim();
