@@ -58,6 +58,7 @@ continue / change / kill decision).
 - [ ] M1: one monster: snow goblin (chases, boards, tries to steal cargo; knocked off with snowballs / frying pan)
   - _Description: host-owned AI like the sled; the crew's combat job._
   - _Built 2026-10-13 ([friendslop-game#9](https://github.com/liammpek16/friendslop-game/pull/9), draft): wild goblins at 130/270/410/520 m chase the sled, cling on (slowing it), steal the eggs after 3 s and flee; escaping with them fails the run. Crew: thrown items hit, pan + F whacks (2), skiing into a thief tackles (1, drops the eggs); 2 damage defeats. Bot tests: goblin dealt with + delivered at 0/150 ms; steal → tackle → recover path passes. Bots' throws mostly miss at 150 ms (tackles win), so hit feel under lag needs a human playtest. Tick after you've played it._
+  - _Revised 2026-10-14 (playtest feedback: a fleeing goblin ran through the side wall to infinity): goblins now live in 4 nests beside the course, wake when the eggs come within 35 m, carry stolen eggs back to their nest and eat them there until the crew fights them; give up beyond 70 m; movement clamped to the course. Also fixed eggs being re-strapped the instant a goblin grabbed them. verify 11/11; steal test: stolen twice, taken home twice, tackled, recovered, delivered._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: basic proximity voice via Steam Voice + per-player mute
 - [ ] M1: Steam invite/join flow under 60 s
