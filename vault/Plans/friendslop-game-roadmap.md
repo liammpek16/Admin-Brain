@@ -14,6 +14,47 @@ built in Godot 4 with Claude and launched on Steam in Early Access. Plan approve
 continue / change / kill decision).
 
 ## Steps
+- [ ] M0: verify a Steam join between two PCs/accounts (human + a friend)
+  - _Description: unzip `build/friendslop-test.zip` (made by `tools/package_test.ps1`) on both PCs, host → Find Steam lobbies → join; both see 2 moving players; leave/host-left handled. Steps in the session guide / PR #1._
+- [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
+  - _Description: throwaway code. Each player owns their movement, host owns shared objects; compare two players roped together vs one host-owned sled with clumsy at 150 ms / 2% loss._
+  - _Built 2026-10-13 ([friendslop-game#3](https://github.com/liammpek16/friendslop-game/pull/3), draft, stacked on #2). Results in `docs/spike/m0-netcode-spike.md`: at ~20 m/s and 150 ms + jitter + 2% loss, others drawn up to 4.4 m behind; rope toward the displayed partner is stable but brakes pairs to 10–12 m/s; rope with prediction yanks (tug ~4×, yank ~6× at 150 ms); host-owned sled is consistent (p95 1.3 m), rider steering +240 ms after the host's. Recommendation: shared sled, rope only soft/cosmetic, stay on Godot. Built-in lag simulator used instead of clumsy._
+- [ ] M1: Add in more monsters and monster environments: Yeti + a Yeti Cave, Saber tooth tigers + home tree, snow snakes + hole in the ground
+  - _Description: Each monster should have specific attributes and triggers for attacking. Yeti's should only attack based on close proximity, but their home caves should be far off the beaten path. Saber tooth tiger's should attack when players have lots of meat, or there are many players in a condensed area. Snow snake holes should be large burrows in the ground, that are close to the path, and trigger when players are in the line of sight._
+- [ ] M1: Add in more map features: Ridges/Ledges, Deep Forests vs. Open Clearings.
+  - _Description: Ridges/ledges should be narrow pathways that are difficult to cross with the whole sled, and players that fall off the edges should fall significant distances (after health is added, it should be close to death or actual death). Deep forests should have lots of trees that are impossible to navigate through with the sled, but have good rewards inside. Open clearings should be the fastest path, but most monsters hiding around._
+  - _Built 2026-10-14 ([friendslop-game#11](https://github.com/liammpek16/friendslop-game/pull/11), draft): course widened to 80 m; open clearings (40–125, 490–560 m, nests around them); deep forests (left 130–205, right 405–480 m) the sled can't pass, with golden eggs (+25 if stashed at delivery), padding and a pan inside; ledge (14 m cliff, 210–255 m); ridge (6 m spine, 12 m drops, 340–400 m); gullies rejoin. Big falls counted for future fall damage. verify 14/14. Golden-egg collection not bot-tested._
+- [ ] M1: Add in more items to collect and bring to the bottom. These items should all have a value associated with them, that will be added to the team's total once they reach the bottom. The items should be: eggs, golden eggs, yeti eggs, squirrel meat, yeti meat, and bird meat.
+  - _Description: In order of value, it should go in ascending order for this list: egg, squirrel meat, bird meat, golden eggs, yeti eggs, and yeti meat._
+- [ ] M1: Add in a second phase to the game. This will be the player vs. player aspect of the game. Once the team of players reaches the bottom of the slope, the total collected items will be added up and split evenly between the players. The players will then be transported to their ski lodges, and each player will have their own individual lodges. The players can then spend their money to upgrade their lodges to increase the lodges stats. We will add in customers later that will then go to each lodge.
+- [ ] M1: rebindable input map + controller mapping
+- [ ] M1: Steam invite/join flow under 60 s
+- [ ] M1 gate: fun playtest with 2–3 friends (go / re-theme / kill)
+  - _Description: human-only. Pass = ≥ 2 of 3 friends ask to play again within a week and ≥ 5 laugh moments in the recording. No money spent before this passes. Then start Discord + devlog + clips._
+
+### M2 — Vertical slice + Steam page (8–12 weeks)
+- [ ] M2: seeded procedural mountain from hand-made chunks + determinism test
+- [ ] M2: 4 characters on a shared rig + base & ski animations + hats + talking animation
+- [ ] M2: art style + first audio pass + 10 objects on the shared object system
+  - _Description: toon shader + outline; AI meshes only as cleaned-up starting points; keep an AI-content log for Steam's disclosure._
+- [ ] M2: Steamworks account, App ID, store page live as Coming Soon
+  - _Description: human-led. Name/trademark check, $100 fee, tax interview, human-made capsule art, trailer; start the business/legal track (LLC decision, bank account)._
+- [ ] M2 gate: 3 strangers play a full run unaided
+
+### M3 — Content, hardening + Next Fest demo (10–14 weeks)
+- [ ] M3: content to launch cap + clip machine + seed codes/daily mountain
+- [ ] M3: rope item: soft/cosmetic rope or a rope tied to the host-owned sled/cargo #item
+  - _Description: from the M0 gate. A hard rope between two independently simulated players braked pairs to 10–12 m/s (or yanked them with prediction) at 150 ms in the spike, so build it as a loose, mostly visual link or anchor one end to a host-owned object._
+- [ ] M3: online hardening: lobby flow, disconnects, version check, bandwidth test, soak test
+- [ ] M3: polish: menus, settings, game feel, controller support
+- [ ] M3: security & legal checklist complete
+  - _Description: see Appendix 2 of [[friendslop-game-gameplan]]._
+- [ ] M3: Steam Playtest rounds + Next Fest demo
+  - _Description: gate on wishlists: ≥ 5k launch as planned; 1–5k smaller launch or more marketing; < 1k rethink the hook._
+
+### M4 — Early Access launch (4–6 weeks, then ongoing)
+- [ ] M4: Early Access launch + post-launch update plan
+  - _Description: $7.99–$9.99, decide Friend's Pass, submit for Steam review before setting a date, EA roadmap on the store page._
 - [x] determine feasibility with claude
   - _Done 2026-09-04: build GO, sell GO-conditional; Godot 4 + GodotSteam. See the friendslop-game README._
 - [x] write and approve the full gameplan (roadmap critique, council review, v1 vs v2)
@@ -24,14 +65,9 @@ continue / change / kill decision).
   - _Description: pin one Godot version; .gitignore the .godot cache and .blend1 autosaves; LFS for .glb/.png/.wav/.blend; lobby filtered by a custom key. Also do one Godot 3D beginner tutorial yourself (human)._
   - _Built 2026-10-13 ([friendslop-game#1](https://github.com/liammpek16/friendslop-game/pull/1), draft): Godot 4.7.2 + Jolt, GodotSteam 4.23.1 in LFS, ENet + Steam lobby networking, `tools/smoke_test.ps1` passes at 4 and 8 players headless; Steam lobby created and found on this PC._
   - _Ticked 2026-10-13 on request. The Steam join between two PCs is not yet tested; tracked as its own goal below._
-- [ ] M0: verify a Steam join between two PCs/accounts (human + a friend)
-  - _Description: unzip `build/friendslop-test.zip` (made by `tools/package_test.ps1`) on both PCs, host → Find Steam lobbies → join; both see 2 moving players; leave/host-left handled. Steps in the session guide / PR #1._
 - [x] M0: Blender MCP test: generate and import one prop
   - _Description: answers the old goal "can I use Blender with Claude to generate models?"_
   - _Built 2026-10-13 ([friendslop-game#2](https://github.com/liammpek16/friendslop-game/pull/2), draft, stacked on #1): yes, headless. Blender 5.2.2 installed; `tools/blender/make_sled.py` builds a low-poly sled with no Blender window, exports .glb; `scenes/props/sled.tscn` physics prop; `tools/checks/check_props.gd` passes. Interactive Blender MCP not set up (optional)._
-- [ ] M0: netcode spike: fast slope, owned movement, host-owned boxes, rope vs shared-sled under 150 ms lag
-  - _Description: throwaway code. Each player owns their movement, host owns shared objects; compare two players roped together vs one host-owned sled with clumsy at 150 ms / 2% loss._
-  - _Built 2026-10-13 ([friendslop-game#3](https://github.com/liammpek16/friendslop-game/pull/3), draft, stacked on #2). Results in `docs/spike/m0-netcode-spike.md`: at ~20 m/s and 150 ms + jitter + 2% loss, others drawn up to 4.4 m behind; rope toward the displayed partner is stable but brakes pairs to 10–12 m/s; rope with prediction yanks (tug ~4×, yank ~6× at 150 ms); host-owned sled is consistent (p95 1.3 m), rider steering +240 ms after the host's. Recommendation: shared sled, rope only soft/cosmetic, stay on Godot. Built-in lag simulator used instead of clumsy._
 - [x] M0: headless host + 3 bot clients test harness for VERIFY
   - _Description: scripted inputs + fake lag, assert positions converge; becomes the feature loop's netcode check._
   - _Mostly built 2026-10-13: `tools/smoke_test.ps1` (host + N bots, pass/fail, 4 and 8 players) in #1, and `tools/spike/run_spike.ps1` + `analyze.py` (fake lag, true-vs-shown errors) in #3. Remaining: pass/fail thresholds on the lag run and wiring it into the loop's VERIFY stage._
@@ -60,37 +96,9 @@ continue / change / kill decision).
   - _Description: host-owned AI like the sled; the crew's combat job._
   - _Built 2026-10-13 ([friendslop-game#9](https://github.com/liammpek16/friendslop-game/pull/9), draft): wild goblins at 130/270/410/520 m chase the sled, cling on (slowing it), steal the eggs after 3 s and flee; escaping with them fails the run. Crew: thrown items hit, pan + F whacks (2), skiing into a thief tackles (1, drops the eggs); 2 damage defeats. Bot tests: goblin dealt with + delivered at 0/150 ms; steal → tackle → recover path passes. Bots' throws mostly miss at 150 ms (tackles win), so hit feel under lag needs a human playtest. Merged; ticked 2026-10-14._
   - _Revised 2026-10-14 (playtest feedback: a fleeing goblin ran through the side wall to infinity): goblins now live in 4 nests beside the course, wake when the eggs come within 35 m, carry stolen eggs back to their nest and eat them there until the crew fights them; give up beyond 70 m; movement clamped to the course. Also fixed eggs being re-strapped the instant a goblin grabbed them. verify 11/11; steal test: stolen twice, taken home twice, tackled, recovered, delivered._
-- [ ] M1: rebindable input map + controller mapping
 - [x] M1: basic proximity voice via Steam Voice + per-player mute
   - _Built 2026-10-14 ([friendslop-game#10](https://github.com/liammpek16/friendslop-game/pull/10), draft): Steam Voice when Steam runs, else microphone PCM (LAN), test tone for bots; sent only within 45 m; 3D positional from the speaker, muffled while tumbling; hats bob when talking; open mic / push-to-talk (T, V), Tab + 1-8 mutes. `tools/voice_test.ps1`: in-range players hear each other, a player 250 m away hears/is heard by nobody, mute works (0 and 150 ms). Mic capture checked locally. Steam Voice path untested (needs two Steam accounts/PCs)._
   - _Ticked 2026-10-14 (#10 merged). The Steam Voice path itself is still to be confirmed in the two-PC Steam test._
-- [ ] M1: Steam invite/join flow under 60 s
-- [ ] M1 gate: fun playtest with 2–3 friends (go / re-theme / kill)
-  - _Description: human-only. Pass = ≥ 2 of 3 friends ask to play again within a week and ≥ 5 laugh moments in the recording. No money spent before this passes. Then start Discord + devlog + clips._
-
-### M2 — Vertical slice + Steam page (8–12 weeks)
-- [ ] M2: seeded procedural mountain from hand-made chunks + determinism test
-- [ ] M2: 4 characters on a shared rig + base & ski animations + hats + talking animation
-- [ ] M2: art style + first audio pass + 10 objects on the shared object system
-  - _Description: toon shader + outline; AI meshes only as cleaned-up starting points; keep an AI-content log for Steam's disclosure._
-- [ ] M2: Steamworks account, App ID, store page live as Coming Soon
-  - _Description: human-led. Name/trademark check, $100 fee, tax interview, human-made capsule art, trailer; start the business/legal track (LLC decision, bank account)._
-- [ ] M2 gate: 3 strangers play a full run unaided
-
-### M3 — Content, hardening + Next Fest demo (10–14 weeks)
-- [ ] M3: content to launch cap + clip machine + seed codes/daily mountain
-- [ ] M3: rope item: soft/cosmetic rope or a rope tied to the host-owned sled/cargo #item
-  - _Description: from the M0 gate. A hard rope between two independently simulated players braked pairs to 10–12 m/s (or yanked them with prediction) at 150 ms in the spike, so build it as a loose, mostly visual link or anchor one end to a host-owned object._
-- [ ] M3: online hardening: lobby flow, disconnects, version check, bandwidth test, soak test
-- [ ] M3: polish: menus, settings, game feel, controller support
-- [ ] M3: security & legal checklist complete
-  - _Description: see Appendix 2 of [[friendslop-game-gameplan]]._
-- [ ] M3: Steam Playtest rounds + Next Fest demo
-  - _Description: gate on wishlists: ≥ 5k launch as planned; 1–5k smaller launch or more marketing; < 1k rethink the hook._
-
-### M4 — Early Access launch (4–6 weeks, then ongoing)
-- [ ] M4: Early Access launch + post-launch update plan
-  - _Description: $7.99–$9.99, decide Friend's Pass, submit for Steam review before setting a date, EA roadmap on the store page._
 
 ## Risks
 - Fun can only be judged by human playtests (M1 gate).
