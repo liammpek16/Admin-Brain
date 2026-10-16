@@ -27,10 +27,10 @@ continue / change / kill decision).
   - _Built 2026-10-15 ([friendslop-game#21](https://github.com/liammpek16/friendslop-game/pull/21), merged): yetis live 28 m inside their tunnel (between you and the yeti egg), come out when someone nears the entrance, go back in after; leash from the entrance._
 - [x] M1: Collecting items in the should be revamped. Each player should have an inventory of 3 items + the one item they are holding. Then each player should have a personal stash on the cart that allows for 2 items. Then all other items should be able to be stored on the sled.
   - _Built 2026-10-15 ([friendslop-game#21](https://github.com/liammpek16/friendslop-game/pull/21), merged): hand + 3-slot bag (G / 1-3), 2-slot personal locker on the sled (Z, owner only), shared stash of 16 (Q). Bags/lockers count at the bottom, tigers smell meat in them. Tests: inventory scenario; verify 18/18 PASS._
-- [ ] M1: Add in sabotage features in the lodge phase. Players may purchase specific tools that can sabotage other players. The two I have in mind for now are poison that can be used in the other players food, or a fire starter that can be used to burn down the other players lodge. These should both be very expensive items compared to the upgrades.
-  - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), draft): poison $500 (rival's guests get sick and pay nothing this visit, ratings -2) and fire starter $800 (15 s for the owner to put it out at their board, else every upgrade burns to half); bought at your board (9 / 0), used at a rival's; own lodge refused. Test: lodge_test -Sabotage._
-- [ ] M1: Change the camera perspective to first person point of view
-  - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), draft): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
+- [x] M1: Add in sabotage features in the lodge phase. Players may purchase specific tools that can sabotage other players. The two I have in mind for now are poison that can be used in the other players food, or a fire starter that can be used to burn down the other players lodge. These should both be very expensive items compared to the upgrades.
+  - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): poison $500 (rival's guests get sick and pay nothing this visit, ratings -2) and fire starter $800 (15 s for the owner to put it out at their board, else every upgrade burns to half); bought at your board (9 / 0), used at a rival's; own lodge refused. Test: lodge_test -Sabotage._
+- [x] M1: Change the camera perspective to first person point of view
+  - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: Steam invite/join flow under 60 s
 - [ ] M2: seeded procedural mountain from hand-made chunks + determinism test
@@ -137,6 +137,7 @@ continue / change / kill decision).
 - [x] M1: basic proximity voice via Steam Voice + per-player mute
   - _Built 2026-10-14 ([friendslop-game#10](https://github.com/liammpek16/friendslop-game/pull/10), draft): Steam Voice when Steam runs, else microphone PCM (LAN), test tone for bots; sent only within 45 m; 3D positional from the speaker, muffled while tumbling; hats bob when talking; open mic / push-to-talk (T, V), Tab + 1-8 mutes. `tools/voice_test.ps1`: in-range players hear each other, a player 250 m away hears/is heard by nobody, mute works (0 and 150 ms). Mic capture checked locally. Steam Voice path untested (needs two Steam accounts/PCs)._
   - _Ticked 2026-10-14 (#10 merged). The Steam Voice path itself is still to be confirmed in the two-PC Steam test._
+- [ ] Add in an interior to the lodges. The lodges need to be walkable through and interactable with. This means making the lodges much bigger
 
 ## Risks
 - Fun can only be judged by human playtests (M1 gate).
