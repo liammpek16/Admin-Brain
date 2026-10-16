@@ -144,7 +144,10 @@ continue / change / kill decision).
   - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
 - [ ] M1: rebindable input map + controller mapping
 - [ ] M1: Steam invite/join flow under 60 s
-- [ ] M1: Show own character model feet + body orientation in first person POV
+- [ ] M1: Show own character model feet + arms + body orientation in first person POV
+  - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), draft): first person shows your torso, arms to your hands (right hand = hold point) and legs to the skis when you look down; the body faces where you head while the mouse turns your head._
+- [ ] M1: Sled ramming damage should only do damage when hitting monsters head on. That amount of damage should also be a function of how fast the cart is going. Monsters that are coming at the sled from the side or the back should not be damaged #improvement
+  - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), draft): rams only in front of the bow (within 40 deg), damage = 1.5 per m/s of the sled's own speed; side/back contact does nothing. Test: ram-side. Also fixed knocked-out players stuck on steep slopes. Verify 19/19 PASS._
 
 ## Risks
 - Fun can only be judged by human playtests (M1 gate).
