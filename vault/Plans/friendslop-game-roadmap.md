@@ -143,10 +143,11 @@ continue / change / kill decision).
 - [x] M1: Change the camera perspective to first person point of view
   - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
 - [ ] M1: rebindable input map + controller mapping
+  - _Built 2026-10-19 ([friendslop-game#25](https://github.com/liammpek16/friendslop-game/pull/25), draft): every action rebindable on keyboard/mouse and game pad (Controls screen: main menu or F1; saved to user://controls.cfg); pad defaults for everything incl. stick look and the lodge board; HUD hints follow the bindings. Test: check_controls._
 - [ ] M1: Steam invite/join flow under 60 s
 - [x] M1: Show own character model feet + arms + body orientation in first person POV
   - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), merged): first person shows your torso, arms to your hands (right hand = hold point) and legs to the skis when you look down; the body faces where you head while the mouse turns your head._
-- [x] M1: Sled ramming damage should only do damage when hitting monsters head on. That amount of damage should also be a function of how fast the cart is going. Monsters that are coming at the sled from the side or the back should not be damaged #improvement
+- [x] M1: Sled ramming damage should only do damage when hitting monsters head on. That amount of damage should also be a function of how fast the cart is going. Monsters that are coming at the sled from the side or the back should not be damaged
   - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), merged): rams only in front of the bow (within 40 deg), damage = 1.5 per m/s of the sled's own speed; side/back contact does nothing. Test: ram-side. Also fixed knocked-out players stuck on steep slopes. Verify 19/19 PASS._
 
 ## Risks
