@@ -38,11 +38,15 @@ are in this file's git history.
 
 ### M1: Dashboard + store (1–1.5 weeks)
 - [ ] M1: SQLite store (jobs, companies, events) + migrate jobs.json and Excel
+  - _Built 2026-10-19 ([job-hunt#18](https://github.com/liammpek16/job-hunt/pull/18), draft): `data/jobhunt.db` via node:sqlite (jobs, companies, events, meta); `npm run migrate` moved 212 companies, 55 scanned jobs, scan history and the 3 Excel applications (Radar, Yext, Kombo; Radar/Kombo boards then detected)._
 - [ ] M1: Jobs tab (New/Pipeline/Closed, keyboard triage, match chips, tier ranking) + Applied button
   - _Description: Applied records date, JD snapshot, resume used, follow-up +7 d, undo. Columns include Apply ↗ (direct) and a plain Find on LinkedIn ↗ link._
+  - _Built 2026-10-19 ([job-hunt#18](https://github.com/liammpek16/job-hunt/pull/18), draft): New/Backlog/Pipeline/Closed, j/k/i/d/o/u/Enter keys, chips (title, place, age, years, salary), Applied with resume picker + JD snapshot + follow-up, status dropdown, undo. Tried in the browser on a DB copy._
 - [ ] M1: Companies tab + paste-a-link intake + coverage %
   - _Description: pasting any posting URL takes only the company name (never fetches LinkedIn), auto-detects its ATS, adds it to the watchlist, and records whether we already had the job._
+  - _Built 2026-10-19 ([job-hunt#18](https://github.com/liammpek16/job-hunt/pull/18), draft): link never fetched; company/job id from URL text (ATS, LinkedIn slug, careers domain); board from URL or detected; board scanned at once; coverage % in the health bar. Plus add-company by name and tier edits._
 - [ ] M1: closed detection + health bar; retire claude posting source, adzuna, linkedin.js, dashboard.html, Excel
+  - _Built 2026-10-19: closed detection in #17 (merged); health bar (last scan, 7am task via schtasks, coverage) and retirements (claude/adzuna/linkedin sources, searcher, relevance, dashboard.html, JSON store; Excel migrated) in [job-hunt#18](https://github.com/liammpek16/job-hunt/pull/18), draft._
 - [ ] M1 gate: one week of daily use, < 5 min/day triage (human)
 
 ### M2: Resume adjuster (1–1.5 weeks)
