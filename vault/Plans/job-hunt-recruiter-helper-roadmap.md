@@ -8,53 +8,63 @@ status: active
 ---
 
 ## Goal
-Build the Job Hunt / Recruiter Helper agent (see the project's repo README): resume review
-vs Google XYZ, job search, resume tailoring, and an ATS pre-screen.
+An automated job application workflow: find fresh postings for my titles and locations, tailor
+my base resume to each one I pick, give me the direct apply link, and track every application
+to its outcome from my email. I apply myself. Plan approved 2026-10-19: council-revised v4
+(`job-hunt/docs/plan-v4-council.md`). Jobs come only from employers' own ATS boards
+(Greenhouse, Lever, Ashby, SmartRecruiters); no LinkedIn scraping. A company watchlist is the
+search. Gated milestones M0–M4.
+
+The pre-revamp goals (resume reviewer, Greenhouse/Lever/Ashby sources, old webapp, PRs #1–#15)
+are in this file's git history.
 
 ## Steps
-- [x] Build the resume reviewer skill (Google XYZ critique + rewrites) — near · high #improvement _Delivered: PR #1 merged; validated on the real resume; + .docx export._
-- [x] Build the job searcher skill (≥100 roles for title/location/salary) — mid · high #improvement _Delivered: PR #2 merged; Adzuna + LinkedIn auto-detect. Live run needs an API key._
-- [x] Build the resume customizer skill (tailor to a job description, XYZ) — mid · med #improvement _Delivered: PR #3 merged; + .docx export. Needs a real JD to validate._
-- [x] Build the ATS scanner skill (flag rejection risks) — mid · med #improvement _Delivered: PR #4 merged; + ATS-safe .docx export._
-- [x] Test the full pipeline on my current resume — mid · high #improvement _Delivered: ran reviewer→search store→customizer→ATS on the real resume (Sales Engineer); all clean; improved/tailored/ATS-safe .docx produced. Finding: resume is quantification-light (1/17 full XYZ); JD enrichment would sharpen tailoring._
-- [x] build a dashboard for jobs applied to/interviews completed #improvement _Delivered: PR #5 merged; fills as you apply to roles._
-- [x] output the tailored resumes as PDFs instead of only .docx #improvement _Delivered: PR #8 merged; `--pdf` on reviewer/customizer/ATS (pdfkit, docx kept). Also fixed a latent markdown-heading leak in all rendered resumes. 60/60 tests._
-- [ ] get first interview
-- [x] link dashboard to admin brain panel #improvement _Delivered: PR #6 merged; HUD webapp button launches the live dashboard (port 4188)._
-- [x] make the searcher skill runnable using my claude code subscription rather than api credits. #improvement _Delivered: PR #7 merged; `claude` source (no API key, subscription handoff), auto-selected when no key; 56/56 tests._
-- [x] run the first search for jobs in New York City with a title of sales engineer. _Delivered: 22 real NYC "Sales Engineer" roles surfaced on the subscription, saved to the store._
-- [x] add a button to the webapp to run the search skill using my claude code subscription #improvement _Delivered: PR #9 merged; webapp Run-search button → Claude Code subscription file handoff (no API key)._
-- [x] add a display for all of the surfaced jobs from the search sorted by relevance. Make sure that all of these jobs are sortable by relevance for me as well. #improvement _Delivered: PR #9 merged; relevance-ranked list (lib/relevance.js) + click-any-column sort._
-- [x] add a button to run the resume refine skills on each job listing surfaced by the search skill #improvement _Delivered: PR #9 merged; per-row "Refine résumé" tailors the resume to that role's JD in-process._
-- [x] add a link to each surfaced job from the search to the actual web link for the job posting. #improvement _Delivered: PR #9 merged; "View posting ↗" + linked title on every row._
-- [x] add a preview menu for the improved resumes for each job listing that has been run. #improvement _Delivered: PR #9 merged; inline expandable tailoring-report preview per refined role._
-- [x] remove accents on resume #improvement _Delivered: PR #10 merged; lib/text.js folds diacritics + smart punctuation to ASCII in every generated .docx/.pdf (ATS-safe); original resume untouched._
-- [x] fix bug where it is surfacing non existent jobs #improvement _Delivered: PR #10 merged; claude source now drops roles with no valid http(s) posting URL on ingest._
-- [x] add new button to preview .pdf files for the newly generated resumes #improvement _Delivered: PR #10 merged; refine generates a tailored-resume PDF + per-row "Preview PDF ↗" button (GET /api/tailored/pdf)._
-- [x] new searches do not surface any new jobs. This should be adjusted to either find new job postings within the last week, or provide an error saying that there have been no new job postings within the last week and the search criteria should be expanded. #improvement _Delivered: PR #11 merged; 7-day recency window + results file consumed after ingest (fresh re-runs) + `no_new` "expand your criteria" message when nothing new comes back._
-- [x] improve the scraper function. When implementing this feature, please describe what posting sites are currently being scraped, and do research on what other platforms can be scraped for more job postings. Please implement a new scraper with improved job hunting features, and if browser integration is needed for further searching, please let me know. #improvement _Delivered: PR #12 merged; new key-less/browser-free `greenhouse` board source (official API, `--source greenhouse`, 48 live SE roles verified). Research report in vault; browser NOT needed — Lever/Ashby next (no browser). See Reports/2026-09-15-job-hunt-scraper-research-and-greenhouse-source.md._
-- [x] add Lever + Ashby board sources (more key-less/browser-free scraping coverage) #improvement _Delivered: PR #13 merged; `lever` + `ashby` sources on a shared board-common module (Greenhouse refactored onto it); 124 tests; live-verified real SE roles, no key/browser._
-- [x] wire the board sources into the webapp search panel (source dropdown + recency window) #improvement _Delivered: PR #14 merged; Source dropdown (Claude/Greenhouse/Lever/Ashby) + "Posted within" window; live board fetch + ingest; 132 tests, 48 live roles E2E._
-- [x] tighten remote-location matching so foreign-remote roles don't match a US search #improvement _Delivered: PR #15 merged; country-aware locationMatches drops clearly-foreign remote roles (UK/India/EMEA…) while keeping US/US-remote/agnostic; 139 tests; live Datadog NY 20→17, 0 foreign._
-- [ ] add a column for job posting source #improvement
 
-## Build order (from the 2026-09-04 scope-refinement council)
-See `Cycles/2026-09-04-job-hunt-scope-refinement.md`. The steps above are listed by feature;
-the recommended *build* order is:
-1. **Resume reviewer** (goal 1) — build as a reusable **structured XYZ scorer** (per-bullet
-   hasX/hasY/hasZ + rewrite); goals 3, 4, 6 inherit this data shape.
-2. **Job-search feasibility spike** — *insert before committing to goal 2.* Decide the
-   legal/reliable data source for ≥100 roles (official API vs. alternative). This is the
-   biggest risk and gates the actual outcome (an interview).
-3. **Resume customizer** (goal 3) + **ATS scanner** (goal 4) — both reuse the goal-1 scorer.
-4. **Pipeline test** (goal 5) → **Dashboard** (goal 6) over the structured records.
-- **Goal 7 ("get first interview") is the success *metric*, not a build step** — track it; the
-  loop should not SELECT it as a codeable task.
+### M0: Real jobs this week (3–5 days)
+- [ ] M0: search profile + include/exclude title filter
+  - _Description: `config/search-profile.json` with titles + synonyms, exclude words (Senior/Staff/Principal/Manager/Director/Partner/Intern), locations, max age. Fixture tests for the filter._
+- [ ] M0: starter watchlist with tiers + ATS auto-detect; remove Jobgether, add blocklist
+  - _Description: ~100 target companies (tier A/B/C) drafted with Claude; auto-detect tries slugs on each ATS API and saves the hit, else "not covered". Blocklist aggregators and staffing firms._
+- [ ] M0: SmartRecruiters source (+ Workable probe) on board-common
+- [ ] M0: daily scheduled scan + Backlog on first run + Greenhouse first_published
+  - _Description: Windows Task Scheduler at 7am; first run marks existing jobs Backlog so New means genuinely new; use Greenhouse first_published and our own first-seen date._
+- [ ] M0 gate: ≥ 80 covered companies and an 18/20 spot check (human)
+
+### M1: Dashboard + store (1–1.5 weeks)
+- [ ] M1: SQLite store (jobs, companies, events) + migrate jobs.json and Excel
+- [ ] M1: Jobs tab (New/Pipeline/Closed, keyboard triage, match chips, tier ranking) + Applied button
+  - _Description: Applied records date, JD snapshot, resume used, follow-up +7 d, undo. Columns include Apply ↗ (direct) and a plain Find on LinkedIn ↗ link._
+- [ ] M1: Companies tab + paste-a-link intake + coverage %
+  - _Description: pasting any posting URL takes only the company name (never fetches LinkedIn), auto-detects its ATS, adds it to the watchlist, and records whether we already had the job._
+- [ ] M1: closed detection + health bar; retire claude posting source, adzuna, linkedin.js, dashboard.html, Excel
+- [ ] M1 gate: one week of daily use, < 5 min/day triage (human)
+
+### M2: Resume adjuster (1–1.5 weeks)
+- [ ] M2: canonical base resume + in-place .docx editor (`lib/docx-edit.js`)
+- [ ] M2: Generate resume → `claude -p` + guardrails + preview (PDF, bullet diff, ATS score)
+  - _Description: saved to `C:\Users\liamm\job-hunt\Resumes\`; guardrails: no new employers/dates/tools/numbers, one page; Accept / Regenerate-with-note. PDF via LibreOffice headless._
+- [ ] M2 gate: 5 resumes, ≤ 1 manual edit each (human)
+
+### M3: Email tracking (1–1.5 weeks)
+- [ ] M3: Gmail API read-only poller on a `Job Hunt` label
+- [ ] M3: classifier + matcher + Unmatched tray + undo + ghost timer
+  - _Description: rules first, `claude -p` for the rest; match by company then title; low confidence → Unmatched; 30 days of silence → Ghosted; notification on interview/offer._
+- [ ] M3 gate: 2 weeks ≥ 90% correct, zero silent wrong rejections (human)
+
+### M4: Hit rate + coverage (ongoing)
+- [ ] M4: funnel metrics + weekly HUD digest + interview prep pack
+- [ ] M4: discovery sweep + lookalike suggestions; Workday decision from coverage %
+  - _Description: Claude suggests company slugs only (≤ 25/week, each with ≥ 1 open match). Add an opt-in Workday source only if coverage % < 70% and the missed jobs are mostly on Workday._
+
+### Outcome
+- [ ] get first interview
+  - _Description: the success metric, not a build step; the loop should not SELECT it._
 
 ## Risks
-- Job-board access (LinkedIn/Indeed) may hit anti-bot / ToS limits — reliably surfacing
-  ≥100 roles is the hard part and may need an official API or a data source. → de-risk with the
-  early feasibility spike above, not a mid-roadmap slot.
-- "Improvements" and "tailoring" need a real resume + approval gates to avoid over-editing.
+- **Coverage:** ATS boards miss Workday/iCIMS enterprises. Measured by coverage % from
+  paste-a-link intake; Workday decision in M4.
+- **Noise at scale:** 300+ boards need a strict title filter; fixture-tested in M0.
+- **Over-editing resumes:** guardrail checks in code plus a bullet diff before Accept.
+- **Wrong email statuses:** low confidence goes to the Unmatched tray; every change is undoable.
 
-> Tick a box in Obsidian to mark a skill done — progress updates across brief/HUD/metrics.
+> Tick a box in Obsidian to mark a goal done. Progress updates across brief/HUD/metrics.

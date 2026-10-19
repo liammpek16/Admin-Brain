@@ -4,9 +4,9 @@ name: Job Hunt / Recruiter Helper
 status: active
 health: green
 priority: high
-next: output the tailored resumes as PDFs instead of only .docx
+next: 'M0: search profile + include/exclude title filter'
 started: '2026-09-05'
-updated: '2026-09-14'
+updated: '2026-10-19'
 tags:
   - career
   - tooling
