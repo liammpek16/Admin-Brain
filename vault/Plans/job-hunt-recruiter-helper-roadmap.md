@@ -21,19 +21,20 @@ are in this file's git history.
 ## Steps
 
 ### M0: Real jobs this week (3–5 days)
-- [ ] M0: search profile + include/exclude title filter
+- [x] M0: search profile + include/exclude title filter
   - _Description: `config/search-profile.json` with titles + synonyms, exclude words (Senior/Staff/Principal/Manager/Director/Partner/Intern), locations, max age. Fixture tests for the filter._
-  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), draft): `lib/profile.js`; titles incl. presales/applications-engineer variants, whole-word excludes, Boston/MA + New York/NY + US-remote (now needs a positive US signal), max 4 years required (dropped 41 roles in the first scan)._
-- [ ] M0: starter watchlist with tiers + ATS auto-detect; remove Jobgether, add blocklist
+  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), merged): `lib/profile.js`; titles incl. presales/applications-engineer variants, whole-word excludes, Boston/MA + New York/NY + US-remote (now needs a positive US signal), max 4 years required (dropped 41 roles in the first scan)._
+- [x] M0: starter watchlist with tiers + ATS auto-detect; remove Jobgether, add blocklist
   - _Description: ~100 target companies (tier A/B/C) drafted with Claude; auto-detect tries slugs on each ATS API and saves the hit, else "not covered". Blocklist aggregators and staffing firms._
-  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), draft): 210 companies, tiers A/B/C; `npm run detect` covered 144 (greenhouse 77, ashby 49, lever 11, smartrecruiters 5, workable 2), 66 not covered (mostly Workday). Jobgether removed and blocklisted with 19 staffing firms._
-- [ ] M0: SmartRecruiters source (+ Workable probe) on board-common
-  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), draft): SmartRecruiters (paged, JD fetched for matches) + Workable widget source. Workable confirmed but rate-limits hard (IP blocked ~24 h after detection), so its detection pass is opt-in._
-- [ ] M0: daily scheduled scan + Backlog on first run + Greenhouse first_published
+  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), merged): 210 companies, tiers A/B/C; `npm run detect` covered 144 (greenhouse 77, ashby 49, lever 11, smartrecruiters 5, workable 2), 66 not covered (mostly Workday). Jobgether removed and blocklisted with 19 staffing firms._
+- [x] M0: SmartRecruiters source (+ Workable probe) on board-common
+  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), merged): SmartRecruiters (paged, JD fetched for matches) + Workable widget source. Workable confirmed but rate-limits hard (IP blocked ~24 h after detection), so its detection pass is opt-in._
+- [x] M0: daily scheduled scan + Backlog on first run + Greenhouse first_published
   - _Description: Windows Task Scheduler at 7am; first run marks existing jobs Backlog so New means genuinely new; use Greenhouse first_published and our own first-seen date._
-  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), draft): `npm run scan` (~85 s, 142/144 boards, 55 matching roles, all backlog on first run); task "JobHunt Daily Scan" registered for 07:00, works once the PR is merged; dashboard Scan button + new/backlog/tier badges._
-- [ ] M0 gate: ≥ 80 covered companies and an 18/20 spot check (human)
-  - _Claude's check 2026-10-19: 144 covered; random 20-role spot checks 20/20 and 19/20 after the remote fix (the miss, Colombia, now fixed), all postings live. Your own spot check still to do._
+  - _Built 2026-10-19 ([job-hunt#17](https://github.com/liammpek16/job-hunt/pull/17), merged): `npm run scan` (~85 s, 142/144 boards, 55 matching roles, all backlog on first run); task "JobHunt Daily Scan" registered for 07:00, live now that #17 is merged; dashboard Scan button + new/backlog/tier badges._
+- [x] M0 gate: ≥ 80 covered companies and an 18/20 spot check (human)
+  - _Claude's check 2026-10-19: 144 covered; random 20-role spot checks 20/20 and 19/20 after the remote fix (the miss, Colombia, now fixed), all postings live. Ticked 2026-10-19 on request; your own spot check is still worth doing in the dashboard._
+  - _2026-10-19 follow-up in #17: the scan now closes roles that leave their board; 67 pre-revamp roles archived (35 no longer existed)._
 
 ### M1: Dashboard + store (1–1.5 weeks)
 - [ ] M1: SQLite store (jobs, companies, events) + migrate jobs.json and Excel
