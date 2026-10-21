@@ -51,8 +51,10 @@ are in this file's git history.
 
 ### M2: Resume adjuster (1–1.5 weeks)
 - [ ] M2: canonical base resume + in-place .docx editor (`lib/docx-edit.js`)
+  - _Built 2026-10-20 ([job-hunt#19](https://github.com/liammpek16/job-hunt/pull/19), draft): base = Resumes/_base/Pek_Liam_Resume.docx (from _32726, via config/resume.json; Resumes/ gitignored since the repo is public); nesting-aware paragraph map, only the 14 list bullets under Experience + Skills editable, text swapped into the first run so layout is identical._
 - [ ] M2: Generate resume → `claude -p` + guardrails + preview (PDF, bullet diff, ATS score)
   - _Description: saved to `C:\Users\liamm\job-hunt\Resumes\`; guardrails: no new employers/dates/tools/numbers, one page; Accept / Regenerate-with-note. PDF via LibreOffice headless._
+  - _Built 2026-10-20 ([job-hunt#19](https://github.com/liammpek16/job-hunt/pull/19), draft): `claude -p` (no tools, ~5k tokens, ~22 s); code rejects new numbers / non-editable edits, warns on new terms + length; diff, JD keyword coverage before→after, docx-preview render with page count, Accept/Open/Download, versions. Real runs: Xometry 28→36%, Zoo 36→44%, one page. LibreOffice not installed yet (PDF optional). Also fixed entity-encoded Greenhouse JDs (29 jobs)._
 - [ ] M2 gate: 5 resumes, ≤ 1 manual edit each (human)
 
 ### M3: Email tracking (1–1.5 weeks)
