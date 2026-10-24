@@ -145,6 +145,7 @@ continue / change / kill decision).
 - [x] M1: rebindable input map + controller mapping
   - _Built 2026-10-19 ([friendslop-game#25](https://github.com/liammpek16/friendslop-game/pull/25), merged): every action rebindable on keyboard/mouse and game pad (Controls screen: main menu or F1; saved to user://controls.cfg); pad defaults for everything incl. stick look and the lodge board; HUD hints follow the bindings. Test: check_controls._
 - [ ] M1: Steam invite/join flow under 60 s
+  - _Built 2026-10-24 ([friendslop-game#26](https://github.com/liammpek16/friendslop-game/pull/26), draft): F2 opens the Steam invite overlay; accepting joins straight in (running game or launched via +connect_lobby); rich presence Join game; joiner logs invite-to-in-game seconds. Needs the two-PC test to confirm under 60 s._
 - [x] M1: Show own character model feet + arms + body orientation in first person POV
   - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), merged): first person shows your torso, arms to your hands (right hand = hold point) and legs to the skis when you look down; the body faces where you head while the mouse turns your head._
 - [x] M1: Sled ramming damage should only do damage when hitting monsters head on. That amount of damage should also be a function of how fast the cart is going. Monsters that are coming at the sled from the side or the back should not be damaged
