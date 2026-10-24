@@ -23,8 +23,8 @@ continue / change / kill decision).
   - _Description: human-only. Pass = ≥ 2 of 3 friends ask to play again within a week and ≥ 5 laugh moments in the recording. No money spent before this passes. Then start Discord + devlog + clips._
 
 ### M2 — Vertical slice + Steam page (8–12 weeks)
-- [ ] M2: seeded procedural mountain from hand-made chunks + determinism test
-  - _Built 2026-10-24 ([friendslop-game#27](https://github.com/liammpek16/friendslop-game/pull/27), draft): chunk templates (clearing, forest, ledge, ridge, fork, jump run, yeti country, safe stop) strung together by a seeded RNG (safe stop every ~300 m, no repeats, ledge drops inside the bend); seed 0 = classic course; host picks the seed each day and clients build the same mountain (fingerprint checked). Tests: check_procgen (10 seeds), generated-course check, run on seed 1234; verify 23/23 PASS._
+- [x] M2: seeded procedural mountain from hand-made chunks + determinism test
+  - _Built 2026-10-24 ([friendslop-game#27](https://github.com/liammpek16/friendslop-game/pull/27), merged): chunk templates (clearing, forest, ledge, ridge, fork, jump run, yeti country, safe stop) strung together by a seeded RNG (safe stop every ~300 m, no repeats, ledge drops inside the bend); seed 0 = classic course; host picks the seed each day and clients build the same mountain (fingerprint checked). Tests: check_procgen (10 seeds), generated-course check, run on seed 1234; verify 23/23 PASS._
 - [ ] M2: 4 characters on a shared rig + base & ski animations + hats + talking animation
 - [ ] M2: art style + first audio pass + 10 objects on the shared object system
   - _Description: toon shader + outline; AI meshes only as cleaned-up starting points; keep an AI-content log for Steam's disclosure._
@@ -145,8 +145,8 @@ continue / change / kill decision).
   - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
 - [x] M1: rebindable input map + controller mapping
   - _Built 2026-10-19 ([friendslop-game#25](https://github.com/liammpek16/friendslop-game/pull/25), merged): every action rebindable on keyboard/mouse and game pad (Controls screen: main menu or F1; saved to user://controls.cfg); pad defaults for everything incl. stick look and the lodge board; HUD hints follow the bindings. Test: check_controls._
-- [ ] M1: Steam invite/join flow under 60 s
-  - _Built 2026-10-24 ([friendslop-game#26](https://github.com/liammpek16/friendslop-game/pull/26), draft): F2 opens the Steam invite overlay; accepting joins straight in (running game or launched via +connect_lobby); rich presence Join game; joiner logs invite-to-in-game seconds. Needs the two-PC test to confirm under 60 s._
+- [x] M1: Steam invite/join flow under 60 s
+  - _Built 2026-10-24 ([friendslop-game#26](https://github.com/liammpek16/friendslop-game/pull/26), merged): F2 opens the Steam invite overlay; accepting joins straight in (running game or launched via +connect_lobby); rich presence Join game; joiner logs invite-to-in-game seconds. Needs the two-PC test to confirm under 60 s._
 - [x] M1: Show own character model feet + arms + body orientation in first person POV
   - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), merged): first person shows your torso, arms to your hands (right hand = hold point) and legs to the skis when you look down; the body faces where you head while the mouse turns your head._
 - [x] M1: Sled ramming damage should only do damage when hitting monsters head on. That amount of damage should also be a function of how fast the cart is going. Monsters that are coming at the sled from the side or the back should not be damaged
