@@ -24,6 +24,7 @@ continue / change / kill decision).
 
 ### M2 — Vertical slice + Steam page (8–12 weeks)
 - [ ] M2: seeded procedural mountain from hand-made chunks + determinism test
+  - _Built 2026-10-24 ([friendslop-game#27](https://github.com/liammpek16/friendslop-game/pull/27), draft): chunk templates (clearing, forest, ledge, ridge, fork, jump run, yeti country, safe stop) strung together by a seeded RNG (safe stop every ~300 m, no repeats, ledge drops inside the bend); seed 0 = classic course; host picks the seed each day and clients build the same mountain (fingerprint checked). Tests: check_procgen (10 seeds), generated-course check, run on seed 1234; verify 23/23 PASS._
 - [ ] M2: 4 characters on a shared rig + base & ski animations + hats + talking animation
 - [ ] M2: art style + first audio pass + 10 objects on the shared object system
   - _Description: toon shader + outline; AI meshes only as cleaned-up starting points; keep an AI-content log for Steam's disclosure._
