@@ -142,8 +142,8 @@ continue / change / kill decision).
   - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): poison $500 (rival's guests get sick and pay nothing this visit, ratings -2) and fire starter $800 (15 s for the owner to put it out at their board, else every upgrade burns to half); bought at your board (9 / 0), used at a rival's; own lodge refused. Test: lodge_test -Sabotage._
 - [x] M1: Change the camera perspective to first person point of view
   - _Built 2026-10-16 ([friendslop-game#22](https://github.com/liammpek16/friendslop-game/pull/22), merged): first person by default (mountain + village): eyes at your head, mouse look, crosshair, own body hidden; C toggles the third-person chase camera._
-- [ ] M1: rebindable input map + controller mapping
-  - _Built 2026-10-19 ([friendslop-game#25](https://github.com/liammpek16/friendslop-game/pull/25), draft): every action rebindable on keyboard/mouse and game pad (Controls screen: main menu or F1; saved to user://controls.cfg); pad defaults for everything incl. stick look and the lodge board; HUD hints follow the bindings. Test: check_controls._
+- [x] M1: rebindable input map + controller mapping
+  - _Built 2026-10-19 ([friendslop-game#25](https://github.com/liammpek16/friendslop-game/pull/25), merged): every action rebindable on keyboard/mouse and game pad (Controls screen: main menu or F1; saved to user://controls.cfg); pad defaults for everything incl. stick look and the lodge board; HUD hints follow the bindings. Test: check_controls._
 - [ ] M1: Steam invite/join flow under 60 s
 - [x] M1: Show own character model feet + arms + body orientation in first person POV
   - _Built 2026-10-16 ([friendslop-game#24](https://github.com/liammpek16/friendslop-game/pull/24), merged): first person shows your torso, arms to your hands (right hand = hold point) and legs to the skis when you look down; the body faces where you head while the mouse turns your head._
