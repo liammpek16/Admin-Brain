@@ -266,4 +266,10 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
      - August and Anna's marriage register, open after 80 years.
      - Both would name the grandparents.
    - Burgsteinfurt has an old Wessels family, with baptisms from 1720 indexed on FamilySearch. That family was Catholic, and Anna Maria may have been Protestant, so a link isn't assumed.
+   - **Registers that exist (searched 2026-11-18):** the Landesarchiv NRW, Abteilung Ostwestfalen-Lippe (Detmold), holds the duplicate (*Zweitschrift*) civil registers in fond **P 9 / 14 "Standesämter im Kreis Steinfurt"**.
+     - Burgsteinfurt marriages are complete for 1874–1938. The 1923 volume is **Nr. 312**; 1920 to 1924 run consecutively around that number (search "Heiratsregister Standesamt Burgsteinfurt" on archive.nrw.de or deutsche-digitale-bibliothek.de).
+     - Marriages over 80 years old are open to anyone.
+     - The registers are catalogued but not viewable online, so they must be ordered from the Landesarchiv or checked on a commercial site that has licensed NRW civil registers (e.g. Ancestry).
+   - **Not found:** August Wessels or Anna Elsen in FamilySearch's German indexes, or any Wessels in the Arolsen Archives for Burgsteinfurt. FamilySearch's only Wessels–Elsen marriages are just over the Dutch border, in Gelderland and Overijssel (1828, 1887). Burgsteinfurt is about 30 km from that border.
+   - **Weak lead:** a local-history newsletter from Emsdetten (Heimatblatt Nr. 93) mentions a vocational-school teacher (*Gewerbeoberlehrer*) August Wessels of Emsdetten, who trained a bakers' class at the Burgsteinfurt trade school. The date is unknown, and he isn't linked to us.
    - George and Anne Marie's marriage, around 1945–46, probably in Burgsteinfurt, would also be held there.
