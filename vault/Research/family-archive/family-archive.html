@@ -1,0 +1,658 @@
+<title>Pek Family Archive</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a records-office workbench. Top bar with view tabs; the main stage (tree, map or index) on the left; a record card for the selected person on the right (a bottom sheet on phones). */
+:root{
+  --bg:#EEF1F0; --surface:#FBFCFC; --sunk:#E3E8E7; --ink:#18232B; --muted:#55636C; --rule:#C9D2D1;
+  --accent:#1F4E6B; --accent-ink:#FFFFFF; --focus:#2F7FB0;
+  --ok:#2E7D4F; --warn:#9A6A12; --tree:#6B5B95; --fam:#8A5A44;
+  --sea:#DCE6EA; --land:#F7F8F6; --border-land:#B9C4C3;
+  --font-sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --l-root:#A67C00; --l-pek:#B03A2E; --l-nemir:#9B3D7A; --l-ulj:#A0662A; --l-junge:#4A6378; --l-kosch:#2E5C9A;
+  --l-bruck:#1F7A6D; --l-wes:#B8702A; --l-mcl:#3C7D33; --l-pett:#2A7891; --l-lyons:#7A7F2A; --l-conn:#4F7A43; --l-other:#6B5B95;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12181C; --surface:#1A2228; --sunk:#222C33; --ink:#E4EAEC; --muted:#9AA8AF; --rule:#33424B;
+  --accent:#7DB4D6; --accent-ink:#0E1A22; --focus:#9CCBEA;
+  --ok:#6CC28F; --warn:#E0B25A; --tree:#B3A5DE; --fam:#D59F86;
+  --sea:#16222A; --land:#26323A; --border-land:#3D4C55;
+  --l-root:#E2B93B; --l-pek:#E57A6E; --l-nemir:#D681B9; --l-ulj:#D9A066; --l-junge:#93AFC6; --l-kosch:#7FA6DE;
+  --l-bruck:#5CC2B1; --l-wes:#E6A562; --l-mcl:#82C474; --l-pett:#6CC0D8; --l-lyons:#C4C866; --l-conn:#93C285; --l-other:#B3A5DE;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12181C; --surface:#1A2228; --sunk:#222C33; --ink:#E4EAEC; --muted:#9AA8AF; --rule:#33424B;
+  --accent:#7DB4D6; --accent-ink:#0E1A22; --focus:#9CCBEA;
+  --ok:#6CC28F; --warn:#E0B25A; --tree:#B3A5DE; --fam:#D59F86;
+  --sea:#16222A; --land:#26323A; --border-land:#3D4C55;
+  --l-root:#E2B93B; --l-pek:#E57A6E; --l-nemir:#D681B9; --l-ulj:#D9A066; --l-junge:#93AFC6; --l-kosch:#7FA6DE;
+  --l-bruck:#5CC2B1; --l-wes:#E6A562; --l-mcl:#82C474; --l-pett:#6CC0D8; --l-lyons:#C4C866; --l-conn:#93C285; --l-other:#B3A5DE;
+  color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.5;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.app{display:grid;grid-template-rows:auto 1fr;height:100%;min-height:0}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.brand{display:flex;flex-direction:column;min-width:0}
+.brand h1{font-family:var(--font-serif);font-weight:600;font-size:1.25rem;margin:0;letter-spacing:.005em;text-wrap:balance}
+.brand p{margin:0;color:var(--muted);font-size:.82rem}
+.tabs{display:flex;gap:4px;background:var(--sunk);padding:3px;border-radius:8px}
+.tabs button{border:0;background:transparent;color:var(--muted);font:500 .9rem var(--font-sans);padding:6px 12px;border-radius:6px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.search{margin-left:auto;display:flex;align-items:center;gap:6px;position:relative}
+.search input{font:400 .9rem var(--font-sans);padding:7px 10px;border:1px solid var(--rule);border-radius:7px;background:var(--bg);color:var(--ink);width:min(240px,60vw)}
+.results{position:absolute;top:110%;right:0;width:min(320px,90vw);max-height:320px;overflow:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:40}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--ink);padding:8px 12px;font:inherit;cursor:pointer}
+.results button:hover,.results button:focus{background:var(--sunk)}
+.results small{color:var(--muted)}
+main.stage{display:grid;grid-template-columns:minmax(0,1fr) 400px;min-height:0}
+.view{position:relative;min-height:0;min-width:0;overflow:hidden}
+.view svg{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.view svg:active{cursor:grabbing}
+.tools{position:absolute;top:12px;left:max(12px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px;z-index:5}
+.tools button,.chip{border:1px solid var(--rule);background:var(--surface);color:var(--ink);font:500 .82rem var(--font-sans);padding:5px 10px;border-radius:6px;cursor:pointer}
+.tools button:hover,.chip:hover{border-color:var(--accent)}
+.legend{position:absolute;bottom:12px;left:max(12px,env(safe-area-inset-left,0px));right:12px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--muted);pointer-events:none;z-index:4}
+.legend span{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
+.sw{width:18px;height:10px;border:2px solid var(--muted);border-radius:3px;display:inline-block}
+.sw.prob{border-style:dashed}.sw.tree{border-style:dotted}
+.sw.step{border:0;border-top:2px dotted var(--l-bruck);height:0;width:22px;border-radius:0}
+/* tree nodes */
+.node rect{fill:var(--surface);stroke-width:1.4}
+.node .nm{font:600 12.5px var(--font-sans);fill:var(--ink)}
+.node .dt{font:400 11px var(--font-mono);fill:var(--muted)}
+.node{cursor:pointer}
+.node:hover rect,.node:focus rect{stroke-width:2.6}
+.node:focus{outline:none}
+.node.sel rect{stroke-width:3;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.node.dim{opacity:.35}
+.link{fill:none;stroke:var(--rule);stroke-width:1.3}
+.link.step{stroke:var(--l-bruck);stroke-dasharray:2 4;stroke-width:1.6}
+.link.hi{stroke:var(--accent);stroke-width:2.4}
+.genhead{font:600 11px var(--font-sans);fill:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+/* map */
+.sea{fill:var(--sea)}
+.country{fill:var(--land);stroke:var(--border-land);stroke-width:.5;vector-effect:non-scaling-stroke}
+.marker{cursor:pointer}
+.marker circle{stroke:var(--surface);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.marker text{font:600 11px var(--font-sans);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px;pointer-events:none}
+.marker.approx circle{stroke-dasharray:2 2}
+.migr{fill:none;stroke:var(--accent);stroke-width:1.2;stroke-opacity:.45;vector-effect:non-scaling-stroke}
+.popover{position:absolute;z-index:6;background:var(--surface);border:1px solid var(--rule);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:10px 12px;max-width:min(300px,80vw)}
+.popover h3{margin:0 0 6px;font:600 .9rem var(--font-sans)}
+.popover ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.popover button.lk{all:unset;cursor:pointer;color:var(--accent);font-size:.88rem}
+.popover button.lk:focus-visible{outline:2px solid var(--focus)}
+.popover small{color:var(--muted)}
+/* people index */
+.index{overflow:auto;height:100%;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:16px}
+.index h2{font:600 .78rem var(--font-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+.index h2:first-child{margin-top:0}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.row{all:unset;cursor:pointer;display:grid;gap:2px;background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--c);border-radius:6px;padding:8px 10px}
+.row:hover,.row:focus-visible{border-color:var(--accent);border-left-color:var(--c)}
+.row b{font-weight:600}
+.row span{font:400 .78rem var(--font-mono);color:var(--muted)}
+/* record card */
+aside.card{border-left:1px solid var(--rule);background:var(--surface);overflow:auto;min-height:0;padding-block:18px 28px;padding-left:22px;padding-right:max(22px,env(safe-area-inset-right,0px))}
+.card .close{display:none}
+.eyebrow{font:500 .72rem var(--font-sans);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h2{font:600 1.45rem/1.2 var(--font-serif);margin:6px 0 2px;text-wrap:balance}
+.card .alt{color:var(--muted);font-style:italic;font-family:var(--font-serif);margin:0 0 10px}
+.badge{font:600 .7rem var(--font-sans);text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px;border:1px solid currentColor}
+.b-record{color:var(--ok)}.b-probable{color:var(--warn)}.b-tree{color:var(--tree)}.b-family{color:var(--fam)}.b-living{color:var(--accent)}.b-unknown{color:var(--muted)}
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:12px 0 16px;font-size:.9rem}
+dl.facts dt{color:var(--muted)}dl.facts dd{margin:0}
+.bio{font-size:.95rem;line-height:1.6;max-width:62ch}
+.bio p{margin:0 0 .7em}
+.card h3{font:600 .78rem var(--font-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 8px;border-top:1px solid var(--rule);padding-top:14px}
+.rel{border:1px solid var(--rule);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:var(--bg)}
+.rel-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.rel-head button{all:unset;cursor:pointer;color:var(--accent);font-weight:600}
+.rel-head button:focus-visible{outline:2px solid var(--focus)}
+.rel-head small{color:var(--muted)}
+.docs{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.doc{border-left:2px solid var(--rule);padding-left:10px}
+.doc .t{font-weight:600;font-size:.88rem}
+.doc .r{font:400 .76rem var(--font-mono);color:var(--muted);word-break:break-word}
+.doc .s{font-size:.85rem;margin-top:2px}
+.doc a{color:var(--accent);font-size:.82rem}
+.empty{color:var(--muted);font-size:.88rem}
+.notice{font-size:.82rem;color:var(--muted);margin-top:22px;border-top:1px solid var(--rule);padding-top:12px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (max-width:860px){
+  main.stage{grid-template-columns:minmax(0,1fr)}
+  aside.card{position:fixed;left:0;right:0;bottom:0;max-height:78%;border-left:0;border-top:1px solid var(--rule);border-radius:14px 14px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.25);z-index:25;padding-bottom:max(24px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  aside.card .close{display:inline-block;position:sticky;top:0;float:right;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 10px;font:500 .85rem var(--font-sans);cursor:pointer}
+  .search{margin-left:0;width:100%}.search input{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Pek Family Archive</h1>
+      <p>Ancestors of Liam M. Pek · records gathered November 2026</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Views">
+      <button id="tab-tree" role="tab" aria-selected="true" aria-controls="view-tree">Tree</button>
+      <button id="tab-map" role="tab" aria-selected="false" aria-controls="view-map">Map</button>
+      <button id="tab-index" role="tab" aria-selected="false" aria-controls="view-index">People</button>
+    </div>
+    <div class="search">
+      <label for="q" class="sr" style="position:absolute;left:-9999px">Find a person</label>
+      <input id="q" type="search" placeholder="Find a person…" autocomplete="off">
+      <div class="results" id="results" hidden></div>
+    </div>
+  </header>
+  <main class="stage">
+    <section class="view" id="view-tree" role="tabpanel" aria-labelledby="tab-tree">
+      <div class="tools">
+        <button id="t-in" aria-label="Zoom in">＋</button><button id="t-out" aria-label="Zoom out">－</button>
+        <button id="t-fit">Fit whole tree</button><button id="t-home">Back to Liam</button>
+      </div>
+      <svg id="tree" aria-label="Family tree. Select a person to open their record card."></svg>
+      <div class="legend">
+        <span><i class="sw"></i>Record seen</span><span><i class="sw prob"></i>Probable</span><span><i class="sw tree"></i>From others' trees or family memory</span><span><i class="sw step"></i>Step-parent</span>
+      </div>
+    </section>
+    <section class="view" id="view-map" role="tabpanel" aria-labelledby="tab-map" hidden>
+      <div class="tools" id="map-tools"></div>
+      <svg id="map" aria-label="Map of birthplaces"></svg>
+      <div class="popover" id="pop" hidden></div>
+      <div class="legend"><span>Circles mark birthplaces · dashed circles are approximate · lines join a parent's birthplace to a child's</span></div>
+    </section>
+    <section class="view" id="view-index" role="tabpanel" aria-labelledby="tab-index" hidden>
+      <div class="index" id="index"></div>
+    </section>
+    <aside class="card" id="card" aria-live="polite"></aside>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+/* ---------- data ---------- */
+const FS = id => "https://www.familysearch.org/ark:/61903/1:1:" + id;
+const FST = id => "https://www.familysearch.org/en/tree/person/details/" + id;
+const ROD = n => "https://ru.rodovid.org/wk/" + encodeURIComponent("Запись:" + n);
+const ARO = n => "https://collections.arolsen-archives.org/en/document/" + n;
+
+const LINES = {
+  root:["You","--l-root"], pek:["Pek (Padang, Indonesia)","--l-pek"], nemir:["Nemirovich-Danchenko (St Petersburg)","--l-nemir"],
+  ulj:["Udyanovsky (Kharkiv)","--l-ulj"], junge:["Junge (Riga)","--l-junge"], kosch:["von Koschembahr (Silesia, step-line)","--l-kosch"],
+  bruck:["Bruck (Berlin, step-line)","--l-bruck"], wes:["Wessels (Westphalia)","--l-wes"], mcl:["McLellan (Ayrshire & Glasgow)","--l-mcl"],
+  pett:["Pettigrew (Glasgow)","--l-pett"], lyons:["Lyons (Co. Galway)","--l-lyons"], conn:["Connell (Ireland)","--l-conn"], other:["Married-in families","--l-other"]
+};
+
+const PLACES = {
+  padang:["Padang, West Sumatra",-0.947,100.417], burg:["Burgsteinfurt, Westphalia",52.147,7.338], munich:["Munich, Bavaria",48.137,11.576],
+  spb:["St Petersburg",59.939,30.314], kharkiv:["Kharkiv (Charkow)",49.994,36.230], riga:["Riga",56.950,24.105],
+  courland:["Courland (near Mitau/Jelgava)",56.65,23.72,true], boston:["Boston, Massachusetts",42.360,-71.059],
+  glasgow:["Glasgow",55.864,-4.252], camlachie:["Camlachie, Glasgow",55.854,-4.212], maybole:["Maybole, Ayrshire",55.354,-4.683],
+  girvan:["Girvan, Ayrshire",55.243,-4.857], buggans:["Buggans, Killeroran, Co. Galway",53.49,-8.37,true],
+  galway:["County Galway",53.33,-8.70,true], berlin:["Berlin",52.520,13.405], ratibor:["Ratibor (Racibórz)",50.092,18.220],
+  lissa:["Lissa (Leszno), Posen",51.841,16.575], silesia:["Silesia",51.10,17.03,true]
+};
+
+/* status: record | probable | tree | family | living | unknown */
+const P = {
+ liam:{n:"Liam M. Pek",line:"root",st:"living",gen:"You",bio:["The person this archive is built around. Liam's father's family is Chinese-Indonesian, from Padang in West Sumatra. His mother's family brings together Russian, Baltic-German, German, Scottish and Irish lines that met in and around Boston."]},
+ hengky:{n:"Hengky \"Hank\" Gunawan Pek",line:"pek",st:"living",b:["1960","padang"],res:"Moved to Jakarta in the late 1960s",
+   bio:["Born in Padang, West Sumatra, into a Chinese-Indonesian family whose Hokkien surname is Pek (白, Bai in Mandarin). In the 1960s, when Chinese Indonesians were pressed to take Indonesian-sounding names, the family adopted the surname Gunawan. The family moved from Padang to Jakarta in the late 1960s.","He later married Kristen A. Von Koschembahr. Jeanne McLellan Bundtzen's 2019 obituary lists him as her son-in-law, \"Hank Hengky Gunawan Pek\"."]},
+ lengkim:{n:"Pek Leng Kim",alt:"Gunawan",line:"pek",st:"family",b:["","padang"],
+   bio:["Hengky's father, known from family memory as Pek Leng Kim. Born in Padang; the family took the Indonesian surname Gunawan and moved to Jakarta in the late 1960s.","No record has been found yet. FamilySearch's indexed Padang civil registers (1912–1945) contain only four Pek entries, none for Leng Kim. His birth year would let the unindexed Padang registers be searched page by page."]},
+ pekmom:{n:"Hengky's mother",line:"pek",st:"unknown",bio:["Name not yet known. Her Chinese surname would help identify the family in Padang records."]},
+ kristen:{n:"Kristen A. Von Koschembahr",line:"kosch",st:"record",b:["7 Dec 1966",null],d:["16 Jul 2016",null],bur:"Saint Joseph Cemetery, West Roxbury, Boston",
+   bio:["Liam's mother. Daughter of Alexander \"Alex\" Von Koschembahr and Jeanne McLellan, who married in Massachusetts in 1966 and divorced in 1977. Her younger brother Gregory (1968–1999) died at 31.","Public records place her in Allston, Boston, in 2000. She died in 2016 and is buried at Saint Joseph Cemetery in West Roxbury, alongside her father, brother and mother."]},
+ alex:{n:"Alexander \"Alex\" Von Koschembahr",alt:"registered as Dantschenko in 1948",line:"nemir",st:"record",b:["23 Jun 1946","burg"],d:["24 Jun 2009","St Johns County, Florida"],bur:"Saint Joseph Cemetery, West Roxbury",
+   bio:["Born in Burgsteinfurt, Westphalia, in the year after the war, to George and Anna Maria. The family were stateless displaced persons; in 1949 they sailed to New York on the Batory and settled with George's stepfather, Frederick, in Woburn, Massachusetts.","He married Jeanne McLellan in June 1966; they had Kristen and Gregory and divorced in 1977. He married again in Westport, Connecticut, in 1981 and 1989, and in St Johns County, Florida, in 2000. He died in Florida in 2009, the day after his 63rd birthday."]},
+ george:{n:"George Von Koschembahr",alt:"born Georg von Nemirowitsch-Dantschenko",line:"nemir",st:"record",b:["6 Oct 1921","munich"],d:["15 Sep 1996",null],bur:"Mount Auburn Cemetery, Cambridge, Massachusetts",
+   bio:["Born in Munich to Russian émigré parents, Georgij Nemirovich-Danchenko and Anna Udyanovskaya. He grew up in Berlin and finished the Russian Gymnasium there in 1939, the year his father died. His mother then married Friedrich (Frederick) von Koschembahr, who adopted him; George later used his stepfather's surname.","As a stateless Russian he was conscripted for labour in 1943 at Korneuburg near Vienna. A military court sentenced him to five years' hard imprisonment for sabotage, and he was held in a Budapest prison from May 1944 until February 1945. After the war he studied at the Technische Hochschule in Munich, was certified by the Bavarian State Ministry as a persecuted person, and emigrated with his wife Anna Maria and son Alexander in 1949.","He became a US citizen in 1955, later lived in St Augustine, Florida, and is buried at Mount Auburn Cemetery."]},
+ annamaria:{n:"Anna Maria \"Ann Marie\" Wessels",line:"wes",st:"record",b:["1 May 1924","burg"],d:["21 Mar 2002","Jacksonville area, Florida"],bur:"Mount Auburn Cemetery, Cambridge",
+   bio:["Born in Burgsteinfurt, Westphalia, to August Wessels and Anna M. Elsen. She went to school there until 1938 and lived in Burgsteinfurt until 1948. She married George, and their son Alexander was born in Burgsteinfurt in June 1946.","By marrying a stateless man she was herself listed as stateless. The family emigrated on the Batory in 1949; she became a US citizen in 1956 and died in Florida in 2002."]},
+ august:{n:"August Wessels",line:"wes",st:"record",bio:["Anna Maria's father, named in her US Social Security record. Probably of Burgsteinfurt, where an old Wessels family is recorded from 1720. His own birth and marriage records would be held by the Standesamt (civil registry) in Steinfurt."]},
+ elsen:{n:"Anna M. Elsen",line:"wes",st:"record",bio:["Anna Maria's mother, named in her US Social Security record. Nothing else is known yet."]},
+ frederick:{n:"Frederick W. Von Koschembahr",alt:"born Friedrich Wilhelm Bruck",line:"bruck",st:"record",b:["15 Dec 1889","berlin"],d:["14 Mar 1963",null],bur:"Mount Auburn Cemetery, Cambridge",
+   bio:["George's stepfather. Born in Berlin to Wilhelm Bruck and the noblewoman Mathilde Margarethe von Koschembahr; the family later took her surname. He married Anna (Udyanovskaya), widow of Georgij Nemirovich-Danchenko, in Dresden on 24 Dec 1929 and adopted her son Georg.","A writer, he reached New York from Lisbon on the SS Excambion in November 1940 and became a US citizen in the 1940s. In 1950 he ran a candy business in Woburn, Massachusetts, with Anna, George, Anna Maria and Alexander in his household.","His older brother Gerhard (Bruck) von Koschembahr married Baroness Hilda von Zedlitz und Neukirch and brought ten of their 13 children to New York in 1938."]},
+ wilhelm:{n:"Wilhelm Bruck",line:"bruck",st:"tree",b:["23 Feb 1849","ratibor"],d:["15 Feb 1907","Berlin"],
+   bio:["A Justizrat (senior lawyer) in Berlin, born in Ratibor, Silesia. He married Mathilde Margarethe von Koschembahr in Berlin on 14 Sep 1884; they had five children, including Gerhard (1885) and Friedrich Wilhelm (1889). Details come from Bruck family research."]},
+ mathilde:{n:"Mathilde Margarethe von Koschembahr",line:"kosch",st:"record",b:["28 Nov 1860","lissa"],d:["19 Oct 1946","Boston"],bur:"Mount Auburn Cemetery (as Margaret Von Koschembahr)",
+   bio:["Daughter of Leopold von Koschembahr and Amalie Mockrauer, baptised at Lissa in the province of Posen. She married Wilhelm Bruck in 1884 and returned to her maiden name after his death in 1907. She followed her son Frederick to Massachusetts and died in Boston in 1946."]},
+ leopold:{n:"Leopold von Koschembahr",line:"kosch",st:"tree",b:["1829",null],d:["1874",null],bio:["Of Kesselbach (Żarki Średnie) near Görlitz. His children were baptised at Lissa, Posen, between 1859 and 1863. He belonged to an old Silesian noble family documented from about 1564."]},
+ amalie:{n:"Amalie Mockrauer",line:"other",st:"tree",b:["1834",null],d:["1914",null],bio:["Wife of Leopold von Koschembahr and mother of Mathilde."]},
+ julius:{n:"Julius Ferdinand Leopold von Koschembahr",alt:"auf Gross Wilkau",line:"kosch",st:"tree",b:["16 Mar 1799","silesia"],d:["1851",null],bio:["Lord of Gross Wilkau in Silesia. Married Friederike von Hengel in 1822 and, after her death, Countess Agnes von Pfeil und Klein-Ellguth in 1845. Known only from the FamilySearch shared tree."]},
+ hengel:{n:"Friederike Mathilde Adelheid von Hengel",line:"other",st:"tree",d:["1845",null],bio:["First wife of Julius von Koschembahr and mother of Leopold."]},
+ ernst:{n:"Ernst Leopold Gustav von Koschembahr",line:"kosch",st:"tree",b:["1769",null],d:["10 Oct 1843","Breslau"],bio:["Father of Julius. A Lutheran burial record from Breslau (13 Oct 1843) matches his dates. Married Sophie von Oppeln-Bronikowski at Kempen, Posen, in 1797."]},
+ sophie:{n:"Sophie Wilhelmine Constanze von Oppeln-Bronikowski",line:"other",st:"tree",b:["1779",null],d:["1853",null],bio:["Wife of Ernst von Koschembahr, from another Silesian noble family."]},
+ georgij:{n:"Georgij Nemirovič-Dančenko",alt:"Georgij Vladimirovich Nemirovich-Danchenko; in Germany \"Georg\"",line:"nemir",st:"probable",b:["19 Jul 1889","spb"],d:["23 Aug 1939","Tallinn, Estonia"],bur:"Siselinna cemetery, Tallinn",
+   bio:["Born in St Petersburg, the second son of Lt Col Vladimir Prokofievich Nemirovich-Danchenko and Ekaterina Junge; his father died when he was six. He graduated top of his class from the Imperial School of Jurisprudence in 1910 and served in the State Chancellery and Ministry of Agriculture.","In the Civil War he joined the Whites and headed the press department of General Wrangel's government in Crimea in 1920. Evacuated in November 1920, he reached Munich on 25 Feb 1921 with his wife Anna and lived at Schellingstraße 37. There he edited the émigré Aufbau correspondence, worked with Max von Scheubner-Richter and supported Grand Duke Kirill's claim to the throne. He spoke at an NSDAP event in April 1921 and his writing contained antisemitic rhetoric.","His son Georg was born in Munich in October 1921. After 1924 he was without work; by 1929 Anna had remarried. He moved to France in 1932, where he took a law doctorate and joined the Young Russia movement, and died in Tallinn in August 1939.","He married twice: his cousin Olga Konstantinovna Nemirovich-Danchenko in January 1913, and Anna Vladimirovna Udyanovskaya in October 1915. He is linked to George as father by strong but indirect evidence; no birth record has been seen."]},
+ annaU:{n:"Anna Vladimirovna Udyanovskaya",alt:"also written Uljanska, Udianskaya; later Anna Von Koschembahr",line:"ulj",st:"record",b:["19 Dec 1895","kharkiv"],d:["6 Jun 1982","York County, Maine"],bur:"Mount Auburn Cemetery, Cambridge",
+   bio:["Born in Kharkiv (Charkow), daughter of Vladimir Udyanovsky, a provincial secretary in the civil service. She married Georgij Nemirovich-Danchenko at the Panteleimon church in St Petersburg on 30 Oct 1915, fled with him through Italy to Munich, and gave birth to George there in 1921.","On 24 Dec 1929 in Dresden she married Friedrich (Frederick) von Koschembahr, who adopted her son. She stayed in Europe through the war, holding a Nansen passport for stateless Russians, and reached New York in 1948. She lived with Frederick in Woburn, Massachusetts, and died in Maine in 1982."]},
+ vladU:{n:"Vladimir Udyanovsky",line:"ulj",st:"probable",bio:["Anna's father, known from her patronymic Vladimirovna and from the 1915 marriage index, which calls her \"daughter of a provincial secretary\", a junior civil-service rank. Nothing else is known."]},
+ vladimirP:{n:"Vladimir Prokofievich Nemirovich-Danchenko",line:"nemir",st:"record",b:["16 Jul 1854?",null],d:["27 Mar 1896","St Petersburg"],
+   bio:["An army officer: a staff captain when he married, later a lieutenant colonel. He married Ekaterina Vasilievna Junge at the church of the Nikolaev Engineering Academy in St Petersburg on 20 Apr 1886. Their sons were Vasily (1887–1970) and Georgij (1889–1939). He died in the Nicholas Military Hospital in 1896, aged 40.","His first cousins were the theatre director Vladimir Ivanovich Nemirovich-Danchenko, co-founder of the Moscow Art Theatre, and the writer Vasily Ivanovich Nemirovich-Danchenko."]},
+ ekaterina:{n:"Ekaterina Vasilievna Junge",alt:"Katharina Bertha; later Hartmann",line:"junge",st:"record",b:["16 Jul 1864",null],d:["1 Feb 1922","Petrograd"],
+   bio:["Daughter of Vasily Andreevich Junge, from a Riga German family, and Agnes Andresen. She married Vladimir Nemirovich-Danchenko in 1886 and was widowed in 1896. In 1908 she married the court councillor Vladimir Alexandrovich Hartmann. She died of typhus in Petrograd in 1922, at Voinova Street 34.","Her sister Maria became Countess Nirod by marriage."]},
+ prokofij:{n:"Prokofij Vasilievich Nemirovich-Danchenko",line:"nemir",st:"tree",b:["c. 1813",null],bio:["A colonel. Married Alexandra Ivanovna Kalinina, daughter of a Don Cossack colonel. Sons: Vladimir (1854?) and Konstantin (1864), a major-general by 1916. His brother Ivan was the father of the theatre director and the writer."]},
+ kalinina:{n:"Alexandra Ivanovna Kalinina",line:"other",st:"tree",bio:["Wife of Prokofij Nemirovich-Danchenko and daughter of a colonel of the Don Cossack Host."]},
+ vasilyP:{n:"Vasily Prokopovich Nemirovich-Danchenko",line:"nemir",st:"tree",b:["1773",null],bio:["A cornet (junior cavalry officer). Father of Ivan (1803–1862) and Prokofij (c. 1813). The family were Ukrainian gentry with the Gozdawa arms, entered in the Chernigov and Kazan nobility books."]},
+ prokop:{n:"Prokop Ivanovich Nemirovich-Danchenko",line:"nemir",st:"tree",d:["before 1784",null],bio:["Held the rank of viyskovyi tovarysh, a Cossack officer rank in the Hetmanate. The family descends from Danila Nemirich, who received estates from Bohdan Khmelnytsky."]},
+ ivanM:{n:"Ivan Matveevich Nemirovich-Danchenko",line:"nemir",st:"tree",bio:["Earliest named ancestor on this line in Rodovid, a user-contributed genealogy wiki."]},
+ ulyana:{n:"Ulyana Semyonovna Vindrikova",line:"other",st:"tree",bio:["Wife of Ivan Matveevich Nemirovich-Danchenko."]},
+ vasJunge:{n:"Vasily Andreevich Junge",line:"junge",st:"tree",b:["1 Feb 1830","riga"],d:["21 Dec 1897","St Petersburg"],
+   bio:["Baptised at Riga Cathedral on 19 Mar 1830; his Heidel grandparents and uncle stood as godparents. He married Agnes Andresen on 7 Jan 1860 and had four daughters, among them Ekaterina (1864) and Maria, later Countess Nirod.","His brother Eduard Andreevich Junge (1831–1898) was a professor of ophthalmology in St Petersburg and a founder of the Crimean resort of Koktebel; Eduard's wife was the painter Countess Ekaterina Tolstaya."]},
+ andresen:{n:"Agnes Cecilia Eugenia Fabiana Andresen",line:"other",st:"tree",b:["15 Mar 1842",null],d:["after 1914",null],bio:["Wife of Vasily Junge. The 1914 St Petersburg directory lists her at Sobornaya 23, Gatchina."]},
+ jhJunge:{n:"Johann Heinrich Junge",line:"junge",st:"tree",b:["c. 1802","courland"],d:["c. 1838","Mitau (Jelgava)"],
+   bio:["Born in Courland. He leased the farm Posedorf (Poliems) in what is now Valmiera district, Latvia. He married Gertrude Heidel at St Peter's Church in Riga on 17 Jun 1823. Children: Vasily (1830), Eduard (1831, the ophthalmologist) and Henrietta (1836). His father was a Junge born about 1772."]},
+ heidel:{n:"Gertrude Wilhelmine Heidel",line:"other",st:"tree",b:["14 Mar 1802","riga"],bio:["Daughter of the Riga tanner Johann Melchior Heidel and Anna Christina Michaelis. Her brothers were Johann Jakob (1800), a merchant, and Gottlieb Eduard (1806)."]},
+ mheidel:{n:"Johann Melchior Heidel",line:"other",st:"tree",b:["c. 1770","riga"],bio:["A tanner in Riga. Godfather at his grandson Vasily Junge's baptism in 1830."]},
+ michaelis:{n:"Anna Christina Michaelis",line:"other",st:"tree",b:["c. 1770","riga"],bio:["Wife of Johann Melchior Heidel; godmother at her grandson Vasily's baptism."]},
+ jeanne:{n:"Jeanne E. \"Jeane\" McLellan",alt:"later Bundtzen",line:"mcl",st:"record",b:["16 Jun 1946","boston"],d:["7 Apr 2019","Franklin, Massachusetts"],bur:"Saint Joseph Cemetery, West Roxbury",
+   bio:["Born in Boston to Alexander McLellan and Kathleen P. Lyons; her older brother John L. McLellan (1943–2013) became an electrical engineer. She married Alex Von Koschembahr in June 1966 and had Kristen and Gregory. After their 1977 divorce she married John Eugene Bundtzen (1930–2003) in Milford, Connecticut, on 15 Jul 1977."]},
+ alexMcL:{n:"Alexander McLellan",line:"mcl",st:"record",b:["c. 1910","glasgow"],d:["14 Jan 1982?","Northbridge, Massachusetts"],bur:"Saint Joseph Cemetery, West Roxbury (probable)",
+   bio:["Born in Glasgow to Gordon McLellan and Magdalene Pettigrew and brought to Boston as a baby in July 1911. He grew up in Boston's Jamaica Plain area, married Kathleen P. Lyons in the late 1930s, and in 1950 worked as a knitter in a nylon-stocking mill in Natick.","His death date comes from a probable match in the Massachusetts death index."]},
+ kathleen:{n:"Kathleen P. Lyons",line:"lyons",st:"record",b:["11 May 1914?","boston"],d:["1987?",null],bur:"Saint Joseph Cemetery, West Roxbury (probable)",
+   bio:["Born in Boston to Irish immigrants Lawrence F. Lyons and Ellen Connell, the second of five children: Mary E., Kathleen, James F., John P. and Helen. She married Alexander McLellan and had John (1943) and Jeanne (1946)."]},
+ gordon:{n:"Gordon McLellan",line:"mcl",st:"record",b:["24 Nov 1883","glasgow"],d:["1952","Boston"],bur:"Saint Joseph Cemetery, West Roxbury",
+   bio:["Son of the weaver Alexander McLellan and Elizabeth Gordon, whose surname became his first name. In 1901 he was a general labourer living at 24 David Street, Camlachie. An iron worker, he sailed from Glasgow to Boston on the Allan Line's Numidian on 6 Jul 1911 with his wife Magdalene and baby Alexander.","He worked as a carpenter in Boston, was naturalised in 1918 and 1920, and visited Scotland in 1921."]},
+ magdalene:{n:"Magdalene Kennedy Pettigrew",line:"pett",st:"record",b:["30 Jan 1883","camlachie"],d:["30 Jan 1953","Boston"],
+   bio:["Born in Camlachie, Glasgow, to Archibald Kennedy Pettigrew and Sarah Nixon. In 1901 she was a chocolate coverer living at 30 Brown Street, Bridgeton. She married Gordon McLellan and emigrated with him in 1911. Her 1953 obituary names her sons Alexander and Gordon Jr."]},
+ alexSr:{n:"Alexander McLellan",line:"mcl",st:"record",b:["c. 1842","maybole"],d:["before 1921",null],
+   bio:["A cotton weaver, later a wool weaver, born in Maybole, Ayrshire. Already a widower when he married Elizabeth Gordon on 23 Mar 1866. By 1901 they lived at 24 David Street, Camlachie, Glasgow. He had died by the time of his son Gordon's 1921 passport application."]},
+ elizGordon:{n:"Elizabeth Gordon",line:"other",st:"record",b:["c. 1842","girvan"],bio:["Born in Girvan, Ayrshire, daughter of William Gordon and Janet Smith. Married Alexander McLellan in 1866; in 1901 she was 58 and living in Camlachie, Glasgow."]},
+ johnMcL:{n:"John McLellan",line:"mcl",st:"record",bio:["Named as Alexander McLellan's father in his 1866 marriage record."]},
+ morrison:{n:"Margaret Morrison",line:"other",st:"record",bio:["Named as Alexander McLellan's mother in his 1866 marriage record."]},
+ wGordon:{n:"William Gordon",line:"other",st:"record",bio:["Named as Elizabeth Gordon's father in her 1866 marriage record."]},
+ jSmith:{n:"Janet Smith",line:"other",st:"record",bio:["Named as Elizabeth Gordon's mother in her 1866 marriage record."]},
+ archibald:{n:"Archibald Kennedy Pettigrew",line:"pett",st:"record",b:["13 Nov 1855","glasgow"],d:["19 Jul 1931","Dennistoun, Glasgow"],
+   bio:["A hoistman (hoist operator) in Glasgow. He married Sarah Nixon in Dennistoun on 19 Jul 1879. In 1901 the family lived at 30 Brown Street, Bridgeton, with children Magdalene, Archibald, James, Maggie and William."]},
+ sarah:{n:"Sarah Nixon",line:"other",st:"record",b:["19 Nov 1856","girvan"],d:["15 Apr 1944","Bridgeton, Glasgow"],bio:["Born in Girvan, Ayrshire, to the hand-loom weaver William Nixon and Isabella Stead. Like Gordon McLellan's mother she came from Girvan to Glasgow's East End."]},
+ wPett:{n:"William Pettigrew",line:"pett",st:"tree",bio:["Father of Archibald, from the FamilySearch shared tree; not yet checked against a record."]},
+ mconomy:{n:"Margaret McOnomy",line:"other",st:"tree",bio:["Mother of Archibald, from the FamilySearch shared tree."]},
+ wNixon:{n:"William Nixon",line:"other",st:"tree",b:["c. 1823","Ireland"],d:["16 Apr 1886","Girvan"],bio:["Born in Ireland. A cotton hand-loom weaver in Girvan, Ayrshire. Married Isabella Stead in Girvan on 28 Jan 1849."]},
+ stead:{n:"Isabella Stead",line:"other",st:"tree",b:["1825",null],d:["1861",null],bio:["Wife of William Nixon and mother of Sarah."]},
+ lawrence:{n:"Lawrence Francis Lyons",line:"lyons",st:"record",b:["20 Mar 1884","buggans"],
+   bio:["Born at Buggans, a townland in Killeroran registration district near Ballygar, County Galway, to the farmer Patt Lyons and Mary Naughton. In 1901 he lived there with his widowed mother and brothers Patrick, Thomas, Peter and John.","After a spell in Warrington, England, he sailed from Liverpool on the Saxonia and reached Boston on 3 Apr 1908, working as a stableman. He married Ellen Connell in Boston on 11 Oct 1911 and became a citizen in 1916. Later records give his birth year as 1886 or his birthday as 21 Feb, but the Irish register shows 20 Mar 1884."]},
+ ellen:{n:"Ellen Connell",line:"conn",st:"record",b:["c. 1885","Ireland"],bio:["Born in Ireland to John Connell and Mary Kileen; came to the US in 1904. Married Lawrence Lyons in Boston in 1911 and raised five children there."]},
+ patrick:{n:"Patrick \"Patt\" Lyons",line:"lyons",st:"record",b:["1839",null],res:"Farmer at Buggans, Killeroran",
+   bio:["A farmer at Buggans, Co. Galway, son of James Lyons. Already a widower when he married Mary Naughton at the Catholic chapel in Ballygar on 8 Feb 1871. He was not in the household in 1901 and had probably died."]},
+ maryN:{n:"Mary Naughton",line:"other",st:"record",b:["c. 1844","galway"],
+   bio:["Daughter of the farmer Michael Naughton. Married Patt Lyons in 1871 and registered her son Laurence's birth in 1884 with her mark. In 1901, aged 57, she headed the household at Boggauns."]},
+ jamesL:{n:"James Lyons",line:"lyons",st:"record",bio:["A farmer in Co. Galway, named as Patt Lyons's father in the 1871 marriage register."]},
+ michaelN:{n:"Michael Naughton",line:"other",st:"record",bio:["A farmer in Co. Galway, named as Mary Naughton's father in the 1871 marriage register. A Michael Naughton also witnessed the wedding."]},
+ johnC:{n:"John Connell",line:"conn",st:"record",bio:["Named as Ellen Connell's father in her 1911 Boston marriage record."]},
+ kileen:{n:"Mary Kileen",line:"other",st:"record",bio:["Named as Ellen Connell's mother in her 1911 Boston marriage record."]}
+};
+
+const D = {
+ fam_pek:{t:"Family information",r:"From Liam, November 2026",s:"Hengky's father was Pek Leng Kim; the family took the Indonesian surname Gunawan, came from Padang and moved to Jakarta in the late 1960s."},
+ obit_jeanne:{t:"Obituary of Jeanne E. McLellan Bundtzen",r:"US Obituary Records 2014–2023 · 10 Apr 2019",u:FS("61JV-FZJV"),s:"Names her parents Alexander McLellan and Kathleen P. Lyons McLellan, her brother John, her children Kristen A. and Gregory Von Koschembahr, son-in-law Hank Hengky Gunawan Pek and grandson Liam M. Pek."},
+ obit_greg:{t:"Obituary of Gregory Vonkoschembahr",r:"GenealogyBank · 14 Apr 1999",u:FS("QKWL-SF61"),s:"Names his parents Alexander Vonkoschembahr and Jeanne McLellan Bundtzen, stepfather John Bundtzen, and sister Kristen."},
+ obit_bundtzen:{t:"Obituary of John E. Bundtzen",r:"Worcester Telegram & Gazette · 25 Nov 2003",u:FS("QKWL-QGK7"),s:"Names his wife Jeanne McLellan Bundtzen and her children Gregory and Kristen Vonkoschembahr."},
+ numident_greg:{t:"Social Security record of Greg Vonkoschembahr",r:"US Social Security NUMIDENT",u:FS("6KML-7L6F"),s:"Born 6 Feb 1968, Winchester, Mass.; parents Alexander Vonkoschemba* and Jeanne E. McLellan."},
+ ct_divorce:{t:"Connecticut divorce index, Alex Vonkoschembahr",r:"Connecticut Divorce Index · 3 Mar 1977",u:FS("VK9X-5W9"),s:"Born June 1946 abroad; married June 1966 in Massachusetts; divorced 1977."},
+ ct_marr77:{t:"Connecticut marriage index, Bundtzen",r:"Connecticut Marriage Index · 15 Jul 1977, Milford",u:FS("VWY4-L6Q"),s:"Jeann V. Koschembahr married John E. Bundtzen."},
+ fs_jeanne:{t:"FamilySearch tree profile, Jeanne McLellan",r:"FamilySearch Family Tree GJNN-L97",u:FST("GJNN-L97"),s:"Born 16 Jun 1946 Boston; died 7 Apr 2019; buried West Roxbury."},
+ fag_stjoseph:{t:"Find a Grave, Saint Joseph Cemetery",r:"Find a Grave Index · West Roxbury, Boston",s:"Burials of Alexander Von Koschembahr (2009), Gregory (1999), Kristen A. (2016) and Jeanne E. McLellan Bundtzen (2019); also Gordon McLellan (1952) and probably Alexander (1982) and Kathleen McLellan (1987)."},
+ batory:{t:"New York passenger list, ship Batory",r:"NY Passenger and Crew Lists · 1949",u:FS("24RP-V87"),s:"Anna Maria Koschembahr, 25, and Alexander, 3, both listed as stateless. Alexander's entry: "+FS("24RP-V8W")},
+ census50_woburn:{t:"US Census 1950, Woburn, Massachusetts",r:"1950 Census · ED 9-727",u:FS("6FSB-SG59"),s:"Household of Frederick Von Koschembahr (60, born Germany, candy business) and Anna (54, born Russia); George (28) as their son, his wife Anna M. (25) and their son Alexander (3)."},
+ ssdi_alex:{t:"Social Security Death Index, Alexander Von Koschembahr",r:"SSDI",u:FS("VQMK-6ZV"),s:"Born 23 Jun 1946; died 24 Jun 2009, St Johns County, Florida."},
+ aro_cover:{t:"Displaced-person file cover, Koschembahr v. Nemirowitsch-Dantschenko",r:"Arolsen Archives 3.2.1.1 / 32110000 163.023 · DocID 79320335",u:ARO("79320335"),s:"Lists Georg (6.10.1921, München), Anne Marie (1.5.1924, Burgsteinfurt), Alexander (23.6.1946) and Anna, née Udianskaya."},
+ aro_pciro:{t:"PCIRO application of Georg Koschembahr",r:"Arolsen Archives · DocID 79320336 · 9 Apr 1948",u:ARO("79320336"),s:"Family table: wife Anne Marie, son Alexander, mother Anna (born 19.12.1895, Charkow). Residences: Berlin 1935–43, Korneuburg 1943–44, Budapest May 1944–Feb 1945, Munich from May 1945. Employment includes 'Gefängnis' (prison), Budapest. Documents include a 1948 confirmation of persecution from the Bavarian State Ministry."},
+ aro_am:{t:"PCIRO application of Anne Marie Koschembahr, née Wessels",r:"Arolsen Archives · DocID 79320337 · 28 Jun 1948",u:ARO("79320337"),s:"Born 1 May 1924, Burgsteinfurt; son Alexander born 23 Jun 1946, Burgsteinfurt; lived in Burgsteinfurt 1935–48; schooling to 1938."},
+ aro_interview:{t:"IRO interview notes on Georg",r:"Arolsen Archives · DocID 79320338 · 9 Apr 1948",u:ARO("79320338"),s:"'Adopted son of Koschembahr'; parents Russian émigrés; father died 1939; mother married Friedrich Koschembahr, who adopted him; conscripted labour at Korneuburg; sentenced for sabotage to five years' hard imprisonment; held in Budapest until February 1945."},
+ numident_george:{t:"Social Security record of George Vonkoschembahr",r:"US Social Security NUMIDENT",u:FS("6KM2-8P59"),s:"Born 6 Oct 1921, Munich; died 15 Sep 1996; parents Frederick W. Vonkoschemba* and Anni Vonuddanskad* (a garbled Udyanovskaya)."},
+ numident_am:{t:"Social Security record of Anna Maria Vonkoschembahr",r:"US Social Security NUMIDENT",u:FS("6KM3-QSPZ"),s:"Born 1 May 1924, Burgsteinfurt; died 21 Mar 2002; parents August Wessels and Anna M. Elsen."},
+ obit_am:{t:"Obituary of Anne Marie Von Koschembahr",r:"Florida Times-Union · 26 Mar 2002",u:FS("QK2N-NPDZ"),s:"Died 21 Mar 2002, aged 77."},
+ nat_am:{t:"Massachusetts naturalization index, Anne Marie",r:"MA Naturalization Index · 1956",u:FS("XGWV-X3T"),s:"Naturalized 1956."},
+ nat_george:{t:"Massachusetts naturalization index, George",r:"MA Naturalization Index · 1955",u:FS("XGWV-6PL"),s:"Naturalized 1955; born 1921. The full card is on Fold3 (paid)."},
+ decl_fred:{t:"Declaration of Intention of Friedrich Wilhelm von Koschembahr",r:"US District Court, Boston · No. 303654 · 19 Sep 1941",u:FS("6TVY-BL2Y"),s:"Born Berlin 15 Dec 1889; writer. Wife Anna, born Charkow 19 Dec 1895; married Dresden 24 Dec 1929. One child: 'von Nemirowitsch-Dantschenko, Georg (stepson)', born Munich 6 Oct 1921. Arrived New York 29 Nov 1940 on the SS Excambion from Lisbon."},
+ numident_fred:{t:"Social Security record of Frederick W. Vonkoschembahr",r:"US Social Security NUMIDENT",u:FS("6KMH-W618"),s:"Born 15 Dec 1889, Berlin; died 14 Mar 1963; parents 'Wilhelm Vonkoschemba*' and 'Margaret Cousins' (Cousins appears to be an error for Koschembahr)."},
+ bruck115:{t:"The Bruck von Koschembahr branch (family research)",r:"bruckfamilyblog.com · post 115",u:"https://bruckfamilyblog.com/post-115-the-bruck-von-koschembahr-branch-of-my-family-tree/",s:"Family table of Wilhelm Bruck (1849–1907) and Mathilde Margarethe von Koschembahr (1860–1946): children Gerhard (1885), Charlotte (1886), Marianne (1888), Friedrich Wilhelm (15 Dec 1889 – 14 Mar 1963) and Heinz (1892)."},
+ bruck173:{t:"Wilhelm Bruck (family research)",r:"bruckfamilyblog.com · Wilhelm Bruck category / post 173",u:"https://bruckfamilyblog.com/category/wilhelm-bruck-1849-1907/",s:"Mathilde's parents: Leopold von Koschembahr (1829–1874) and Amalie Mockrauer."},
+ bapt_mathilde:{t:"Baptism of Mathilde Margaretha Koschembahr",r:"Prussia, Posen church records · Lissa · 7 Feb 1861",s:"Born 28 Nov 1860; parents Leopold Koschembahr and Amalie Mockrauer."},
+ fs_leopold:{t:"FamilySearch tree profile, Leopold von Koschembahr",r:"FamilySearch Family Tree KZLK-6K3",u:FST("KZLK-6K3"),s:"Children include Mathilde Margaretha (1860); parents Julius Ferdinand Leopold von Koschembahr and Friederike von Hengel."},
+ fs_julius:{t:"FamilySearch tree profile, Julius F. L. von Koschembahr",r:"FamilySearch Family Tree GLJ1-B4V",u:FST("GLJ1-B4V"),s:"Born 16 Mar 1799, Silesia; parents Ernst Leopold Gustav von Koschembahr and Sophie von Oppeln-Bronikowski (married 1797, Kempen)."},
+ burial_ernst:{t:"Burial of Ernst Leopold von Koschembahr",r:"Germany, Lutheran burials · Breslau · 13 Oct 1843",s:"Died 10 Oct 1843, born 1769."},
+ fag_mtauburn:{t:"Find a Grave, Mount Auburn Cemetery",r:"Find a Grave Index · Cambridge, Mass.",s:"Burials of Frederick Wilhelm (1963), Anna (1982), George (1996), Ann Marie (2002) and Margaret (1946) Von Koschembahr."},
+ osmikon:{t:"Networking for the Monarchy: the Munich years of Georgij Nemirovič-Dančenko",r:"osmikon.de · dossier 'Munich and the Russian Revolution'",u:"https://www.osmikon.de/en/themendossiers/muenchen-und-die-russische-revolution/biografien/georgij-nemirovic-dancenko",s:"He arrived in Munich on 25 Feb 1921 with his wife Anna, née Uljanska, a landowner's daughter from Kharkiv whom he married in November 1915. Covers his career, his politics and his later life."},
+ ruwiki_g:{t:"Георгий Владимирович Немирович-Данченко",r:"Russian Wikipedia",u:"https://ru.wikipedia.org/wiki/"+encodeURIComponent("Немирович-Данченко,_Георгий_Владимирович"),s:"Born 7 (19) Jul 1889, St Petersburg; died 23 Aug 1939, Tallinn. Parents: Vladimir Prokofievich Nemirovich-Danchenko and Ekaterina Vasilievna, née Junge."},
+ ruwiki_fam:{t:"Немировичи-Данченко (family article)",r:"Russian Wikipedia",u:"https://ru.wikipedia.org/wiki/"+encodeURIComponent("Немировичи-Данченко"),s:"Genealogy of the noble family: Vasily Prokopovich's sons Ivan (1803) and Prokofij (c. 1813); Prokofij's son Vladimir (1864?–1896), father of Georgij."},
+ vgd:{t:"Index of St Petersburg parish registers",r:"VGD forum index to TsGIA SPb fond 19",u:"https://forum.vgd.ru/post/3866/145769/120.htm",s:"Births of Vasily (4 Mar 1887) and Georgij (7 Jul 1889, Engineers' Castle church) to Vladimir Prokop'evich and Ekaterina Vasilievna Junge. Their marriage, 20 Apr 1886. Vladimir's death, 27 Mar 1896, aged 40. Georgij's marriages: 27 Jan 1913 to Olga Konstantinovna, and 30 Oct 1915 at the Panteleimon church to 'Udyanovskaya, daughter of a provincial secretary, Anna Vladimirovna' (19-127-3148 l.234)."},
+ rod_g:{t:"Rodovid: Georgij Vladimirovich",r:"Rodovid record 1179992",u:ROD(1179992),s:"Born 7 Jul 1889, St Petersburg; journalist; married Olga Konstantinovna and Anna Vladimirovna Udyanovskaya; buried Siselinna cemetery, Tallinn."},
+ rod_vlad:{t:"Rodovid: Vladimir Prokofievich",r:"Rodovid record 1179910",u:ROD(1179910),s:"Son of Prokofij Vasilievich and Alexandra Kalinina; married Ekaterina Junge 20 Apr 1886; sons Vasily (1887) and Georgij (1889); died 27 Mar 1896. Cites TsGIA SPb f.19 op.126 d.956 l.44."},
+ rod_ek:{t:"Rodovid: Ekaterina Vasilievna Junge",r:"Rodovid record 1179824",u:ROD(1179824),s:"Born 16 Jul 1864; parents Vasily Andreevich Junge and Agnes Andresen; second marriage 27 Apr 1908 to V. A. Hartmann; died of typhus 1 Feb 1922 (TsGA SPb f.R-6143)."},
+ rod_anna:{t:"Rodovid: Anna Vladimirovna Udyanovskaya",r:"Rodovid record 1617806",u:ROD(1617806),s:"Daughter of a provincial secretary; married Georgij 30 Oct 1915, St Petersburg (TsGIA SPb f.19 op.127 d.3148 l.234)."},
+ rod_prok:{t:"Rodovid: Prokofij Vasilievich",r:"Rodovid record 1039254",u:ROD(1039254),s:"Colonel; son of Vasily Prokopovich; married Alexandra Ivanovna Kalinina; sons Vladimir and Konstantin."},
+ rod_vasP:{t:"Rodovid: Vasily Prokopovich",r:"Rodovid record 639338",u:ROD(639338),s:"Born 1773, cornet; son of Prokop Ivanovich (d. before 1784), whose parents were Ivan Matveevich and Ulyana Semyonovna Vindrikova."},
+ rod_vasJ:{t:"Rodovid: Vasily Andreevich Junge",r:"Rodovid record 422477",u:ROD(422477),s:"Born 1 Feb 1830, Riga, baptised at the Cathedral; parents Johann Heinrich Junge and Gertrude Heidel; married Agnes Andresen 7 Jan 1860; daughters Emilie, Elisabeth, Ekaterina and Maria."},
+ rod_jh:{t:"Rodovid: Johann Heinrich Junge",r:"Rodovid record 309178 · cites Latvian State Historical Archives 3-R-8331",u:ROD(309178),s:"Married Gertrude Heidel 17 Jun 1823, St Peter's, Riga; tenant of the farm Posedorf; children Vasily, Eduard and Henrietta."},
+ rod_heidel:{t:"Rodovid: Gertrude Wilhelmine Heidel",r:"Rodovid record 309179",u:ROD(309179),s:"Born 14 Mar 1802; parents Johann Melchior Heidel (tanner) and Anna Christina Michaelis."},
+ aro_arr48:{t:"New York passenger list, Anna Von Koschembahr",r:"NY Passenger Lists · 1948 · Pvt Elden H. Johnson",u:FS("QVPZ-FPZB"),s:"Arrived 1948, aged 52."},
+ me_death:{t:"Maine death index, Anna Vonkoschembahr",r:"Maine Death Index · 6 Jun 1982",u:FS("KCVK-PLR"),s:"Died 6 Jun 1982, York County."},
+ obit_john:{t:"Obituary of John L. McLellan",r:"Ocala Star-Banner · 12 Jul 2013",u:FS("QK2K-F12J"),s:"Born 10 Feb 1943; electrical engineer; died Dunnellon, Florida. Names his parents Alexander McLelland and Kathleen Lyons McLelland and his sister Jeanne."},
+ c40_mcl:{t:"US Census 1940, Boston Ward 19",r:"1940 Census",u:FS("K4VC-QVS"),s:"Alexander McLellan, 28, born Scotland, and wife Kathleen, 25, born Massachusetts."},
+ c50_natick:{t:"US Census 1950, Natick",r:"1950 Census · ED 9-424",u:FS("6FS1-K427"),s:"Alexander (38, Scotland, knitter in a nylon-stocking mill) and Kathleen P. (35, Massachusetts; both her parents born in Ireland)."},
+ c30_gordon:{t:"US Census 1930, Boston",r:"1930 Census",u:FS("XQRW-MQN"),s:"Gordon Mc Lellan (46, Scotland), Magdalene (47, Scotland), son Alexander (18, Scotland, arrived 1911) and son Gordon Jr (9, Massachusetts)."},
+ c20_gordon:{t:"US Census 1920, Boston",r:"1920 Census",u:FS("MF9Q-DG9"),s:"Gordon and Magdelen McClellen with son Alexander (born c. 1912, Scotland)."},
+ passport21:{t:"Passport application of Gordon McLellan",r:"US Passport Applications · Mar 1921",u:FS("QKDF-JSWR"),s:"Born Glasgow 24 Dec 1883. Father Alexander McLellan, born Scotland, deceased. Wife Magdalene and son Alexander, born Glasgow. Emigrated from Glasgow 7 Jul 1911; naturalized Boston 29 Sep 1920; going to Scotland to visit his parents."},
+ out1911:{t:"UK outgoing passenger list, Numidian",r:"UK Outgoing Passenger Lists · Glasgow · 6 Jul 1911",u:FS("68GK-D76D"),s:"Gordon McLellan, 27, iron worker, bound for Boston on the Allan Line."},
+ obit_magd:{t:"Obituary of Magdalene (Pettigrew) McLellan",r:"Boston newspaper · Feb 1953",u:FS("Q5QP-21K1"),s:"Names her husband Gordon and sons Alexander and Gordon Jr."},
+ numident_gj:{t:"Social Security record of Gordon McLellan Jr",r:"US Social Security NUMIDENT",u:FS("6KMC-JBWZ"),s:"Parents Gordon McLellan and Magdalene Pettigrew."},
+ scot01_g:{t:"Scotland Census 1901, Camlachie",r:"1901 Census · 24 David Street, Glasgow",u:FS("7YDX-1P6Z"),s:"Gordon McLelland, 18, general labourer; father Alexander, 58, weaver, born Maybole; mother Elizabeth, 58, born Girvan."},
+ scot01_m:{t:"Scotland Census 1901, Bridgeton",r:"1901 Census · 30 Brown Street, Glasgow",u:FS("7YD8-6KT2"),s:"Magdalene Pettigrew, 18, chocolate coverer; father Archibald, 46, hoistman; mother Sarah, 45, born Girvan; siblings Archibald, James, Maggie and William."},
+ marr1866:{t:"Marriage of Alexander McLellan and Elizabeth Gordon",r:"Scotland Civil Registration · 23 Mar 1866",u:FS("XSNW-937R"),s:"Alexr McLellan, 24, widower, cotton weaver, son of John McLellan and Margaret Morrison; Elizabeth Gordon, 24, daughter of William Gordon and Janet Smith."},
+ fs_magd:{t:"FamilySearch tree profile, Magdalene Kennedy Pettigrew",r:"FamilySearch Family Tree GZYP-P6X",u:FST("GZYP-P6X"),s:"Born 30 Jan 1883, Camlachie; parents Archibald Kennedy Pettigrew and Sarah Nixon, married 19 Jul 1879, Dennistoun."},
+ fs_arch:{t:"FamilySearch tree profile, Archibald Kennedy Pettigrew",r:"FamilySearch Family Tree 93R9-NDS",u:FST("93R9-NDS"),s:"Born 13 Nov 1855; died 19 Jul 1931; parents William Pettigrew and Margaret McOnomy."},
+ fs_sarah:{t:"FamilySearch tree profile, Sarah Nixon",r:"FamilySearch Family Tree 9MXH-JDP",u:FST("9MXH-JDP"),s:"Born 19 Nov 1856, Girvan; died 15 Apr 1944; parents William Nixon and Isabella Stead, married 28 Jan 1849, Girvan."},
+ ma_death82:{t:"Massachusetts death index, Alexander McLellan",r:"MA Death Index 1970–2003 · probable match",s:"Born 24 Sep 1911, foreign-born; died 14 Jan 1982, Northbridge."},
+ c30_lyons:{t:"US Census 1930, Boston",r:"1930 Census",u:FS("XQRK-FC9"),s:"Lawrence F. Lyons (44, Ireland), Ellen (43, Ireland), and children Mary E. (17), Cathleen P. (15), James F. (14), John P. (12) and Helen (9)."},
+ marr1911:{t:"Marriage of Lawrence Lyons and Ellen Connell",r:"Massachusetts Vital Records · Boston · 11 Oct 1911 · p. 261 no. 5997",u:FS("N4FN-N1Y"),s:"Lawrence, 26, born Ireland, son of Patrick Lyons and Mary Naughton; Ellen, 26, born Ireland, daughter of John Connell and Mary Kileen."},
+ birth1914:{t:"Birth of a Lyons child, Boston",r:"Massachusetts Vital Records · 11 May 1914",u:FS("FXK7-C2L"),s:"Unnamed child of Lawrence Lyons and Ellen Connell. The only family birth that fits 'Cathleen P., 15' in the April 1930 census."},
+ obit_helen:{t:"Obituary of Helen C. Lyons",r:"Boston Herald · 16 Dec 1957",u:FS("QPBZ-KGDR"),s:"Mentions Mrs Kathleen P. McLellan, John J. and James F."},
+ decl1909:{t:"Declaration of Intention of Lawrence Francis Lyons",r:"US Circuit Court, Boston · No. 8650 · 1 Apr 1909",u:FS("654Z-PTKH"),s:"Stableman; born Co. Galway 20 Mar 1886 [the register says 1884]; sailed from Liverpool on the Saxonia; last residence Warrington, England; arrived Boston 3 Apr 1908."},
+ numident_law:{t:"Social Security record of Lawrence F. Lyons",r:"US Social Security NUMIDENT",u:FS("6KMH-SP8H"),s:"Born 21 Feb 1884, Ireland."},
+ ire1901:{t:"Ireland Census 1901, Boggauns",r:"1901 Census · Cloonkeen DED, Co. Galway",u:FS("QPBG-L1HT"),s:"Laurence Lyons, 16, scholar, with his mother Mary (57) and brothers Patrick (24), Thomas (18), Peter (11) and John (8)."},
+ birth1884:{t:"Birth register, Killeroran district, 1884, entry 438",r:"Irish civil registration · Mountbellew union · irishgenealogy.ie copy 01989838",s:"Laurence, born 20 Mar 1884 at Buggans; father Patt Lyons, farmer, Buggans; mother Mary Lyons, formerly Naughton; registered 24 Apr 1884 by the mother (her mark). You have the PDF."},
+ marr1871:{t:"Marriage register, Killeroran district, 1871, entry 50",r:"Irish civil registration · Ballygar RC chapel · irishgenealogy.ie copy 08161097",s:"8 Feb 1871: Patt Lyons, widower, farmer, of Buggane(s), son of James Lyons, farmer; Mary Naughton, spinster, of Coolarcha (?), daughter of Michael Naughton, farmer. Witnesses Michael Naughton and Biddy Mulligan. You have the PDF."},
+ fs_law:{t:"FamilySearch tree profile, Lawrence F. Lyons",r:"FamilySearch Family Tree GKKB-H2P",u:FST("GKKB-H2P"),s:"Lived in Boston 1930–1950."},
+ fs_ellen:{t:"FamilySearch tree profile, Ellen Connell Lyons",r:"FamilySearch Family Tree GKKB-78P",u:FST("GKKB-78P"),s:"Born 1885, Ireland; arrived 1904; married 11 Oct 1911."}
+};
+
+/* child -> parent links: [child, parent, kind, strength, [docs]] */
+const L = [
+ ["liam","hengky","bio","record",["obit_jeanne","fam_pek"]],
+ ["liam","kristen","bio","record",["obit_jeanne"]],
+ ["hengky","lengkim","bio","family",["fam_pek"]],
+ ["hengky","pekmom","bio","unknown",[]],
+ ["kristen","alex","bio","record",["obit_greg","ct_divorce"]],
+ ["kristen","jeanne","bio","record",["obit_jeanne","obit_bundtzen","obit_greg"]],
+ ["alex","george","bio","record",["census50_woburn","aro_cover","aro_pciro"]],
+ ["alex","annamaria","bio","record",["census50_woburn","batory","aro_am","aro_cover"]],
+ ["george","frederick","step","record",["decl_fred","aro_interview","numident_george"]],
+ ["george","georgij","bio","probable",["decl_fred","aro_interview","osmikon"]],
+ ["george","annaU","bio","record",["aro_pciro","aro_cover","decl_fred","numident_george","census50_woburn"]],
+ ["annamaria","august","bio","record",["numident_am"]],
+ ["annamaria","elsen","bio","record",["numident_am"]],
+ ["frederick","wilhelm","bio","record",["bruck115","numident_fred"]],
+ ["frederick","mathilde","bio","record",["bruck115","numident_fred"]],
+ ["mathilde","leopold","bio","record",["bapt_mathilde","bruck173","fs_leopold"]],
+ ["mathilde","amalie","bio","record",["bapt_mathilde","bruck173"]],
+ ["leopold","julius","bio","tree",["fs_leopold"]],
+ ["leopold","hengel","bio","tree",["fs_leopold"]],
+ ["julius","ernst","bio","tree",["fs_julius"]],
+ ["julius","sophie","bio","tree",["fs_julius"]],
+ ["georgij","vladimirP","bio","record",["vgd","ruwiki_g","rod_vlad"]],
+ ["georgij","ekaterina","bio","record",["vgd","ruwiki_g","rod_ek"]],
+ ["annaU","vladU","bio","probable",["vgd","rod_anna"]],
+ ["vladimirP","prokofij","bio","tree",["rod_vlad","ruwiki_fam"]],
+ ["vladimirP","kalinina","bio","tree",["rod_vlad"]],
+ ["prokofij","vasilyP","bio","tree",["rod_prok","ruwiki_fam"]],
+ ["vasilyP","prokop","bio","tree",["rod_vasP"]],
+ ["prokop","ivanM","bio","tree",["rod_vasP"]],
+ ["prokop","ulyana","bio","tree",["rod_vasP"]],
+ ["ekaterina","vasJunge","bio","tree",["rod_ek"]],
+ ["ekaterina","andresen","bio","tree",["rod_ek"]],
+ ["vasJunge","jhJunge","bio","tree",["rod_vasJ","rod_jh"]],
+ ["vasJunge","heidel","bio","tree",["rod_vasJ","rod_jh"]],
+ ["heidel","mheidel","bio","tree",["rod_heidel"]],
+ ["heidel","michaelis","bio","tree",["rod_heidel"]],
+ ["jeanne","alexMcL","bio","record",["obit_jeanne","obit_john"]],
+ ["jeanne","kathleen","bio","record",["obit_jeanne","obit_john"]],
+ ["alexMcL","gordon","bio","record",["c30_gordon","c20_gordon","passport21","obit_magd"]],
+ ["alexMcL","magdalene","bio","record",["c30_gordon","passport21","obit_magd"]],
+ ["gordon","alexSr","bio","record",["scot01_g","passport21"]],
+ ["gordon","elizGordon","bio","record",["scot01_g"]],
+ ["magdalene","archibald","bio","record",["scot01_m","fs_magd"]],
+ ["magdalene","sarah","bio","record",["scot01_m","fs_magd"]],
+ ["alexSr","johnMcL","bio","record",["marr1866"]],
+ ["alexSr","morrison","bio","record",["marr1866"]],
+ ["elizGordon","wGordon","bio","record",["marr1866"]],
+ ["elizGordon","jSmith","bio","record",["marr1866"]],
+ ["archibald","wPett","bio","tree",["fs_arch"]],
+ ["archibald","mconomy","bio","tree",["fs_arch"]],
+ ["sarah","wNixon","bio","tree",["fs_sarah"]],
+ ["sarah","stead","bio","tree",["fs_sarah"]],
+ ["kathleen","lawrence","bio","record",["c30_lyons","birth1914","marr1911"]],
+ ["kathleen","ellen","bio","record",["c30_lyons","birth1914"]],
+ ["lawrence","patrick","bio","record",["birth1884","marr1911"]],
+ ["lawrence","maryN","bio","record",["birth1884","marr1911","ire1901"]],
+ ["patrick","jamesL","bio","record",["marr1871"]],
+ ["maryN","michaelN","bio","record",["marr1871"]],
+ ["ellen","johnC","bio","record",["marr1911"]],
+ ["ellen","kileen","bio","record",["marr1911"]]
+];
+
+/* records about a person's own life (not a parent link) */
+const LIFE = {
+ kristen:["fag_stjoseph"], alex:["batory","ssdi_alex","ct_divorce","fag_stjoseph"], george:["numident_george","nat_george","aro_interview","aro_pciro","fag_mtauburn"],
+ annamaria:["numident_am","nat_am","obit_am","batory","fag_mtauburn"], frederick:["decl_fred","numident_fred","census50_woburn","fag_mtauburn"],
+ mathilde:["fag_mtauburn"], ernst:["burial_ernst"], georgij:["osmikon","ruwiki_g","rod_g","vgd"], annaU:["decl_fred","rod_anna","vgd","aro_arr48","me_death","fag_mtauburn"],
+ vladimirP:["vgd","rod_vlad"], ekaterina:["rod_ek","vgd"], jeanne:["fs_jeanne","ct_marr77","numident_greg","fag_stjoseph"],
+ alexMcL:["c40_mcl","c50_natick","ma_death82"], kathleen:["c40_mcl","c50_natick","obit_helen"], gordon:["out1911","passport21","scot01_g"],
+ magdalene:["numident_gj","scot01_m"], lawrence:["decl1909","numident_law","ire1901","fs_law"], ellen:["fs_ellen"], maryN:["ire1901"],
+ jhJunge:["rod_jh"], vasJunge:["rod_vasJ"], prokofij:["rod_prok"], vasilyP:["rod_vasP"]
+};
+
+const STATUS = {record:"Record seen",probable:"Probable",tree:"From others' trees",family:"Family memory",living:"Living",unknown:"Unknown"};
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lineColor = id => `var(${LINES[P[id].line][1]})`;
+const parentsOf = id => L.filter(l => l[0] === id);
+const childrenOf = id => L.filter(l => l[1] === id);
+const placeName = p => p ? (PLACES[p] ? PLACES[p][0] : p) : null;
+function lifespan(id){ const p=P[id]; const b=p.b&&p.b[0], d=p.d&&p.d[0]; if(!b&&!d) return ""; return (b||"?")+" – "+(d||(p.st==="living"?"":"?")); }
+function shortYear(s){ if(!s) return ""; if(/^(before|after)/.test(s)) return s.replace("before","bef.").replace("after","aft."); const m=String(s).match(/(c\. )?\d{4}\??/); return m?m[0].replace("c. ","c."):s; }
+function datesShort(id){ const p=P[id]; const b=p.b&&p.b[0]?shortYear(p.b[0]):"", d=p.d&&p.d[0]?shortYear(p.d[0]):""; if(p.st==="living") return b?"b. "+b:"living"; if(!b&&!d) return ""; if(!d) return "b. "+b; if(!b) return "d. "+d; return b+" – "+d; }
+
+/* ---------- tree layout ---------- */
+const COLW=250, BW=214, BH=50, ROWH=60, PADX=30, PADY=56;
+const pos = {}; let slot = 0, maxGen = 0;
+(function place(id, g){
+  maxGen = Math.max(maxGen, g);
+  const ps = parentsOf(id);
+  if(!ps.length){ pos[id]={g, y:slot++}; return; }
+  ps.forEach(l => place(l[1], g+1));
+  const bio = ps.filter(l => l[2] !== "step");
+  const use = bio.length ? bio : ps;
+  pos[id]={g, y: use.reduce((s,l)=>s+pos[l[1]].y,0)/use.length};
+})("liam",0);
+const TW = PADX*2 + (maxGen+1)*COLW, TH = PADY + slot*ROWH + 40;
+const X = id => PADX + pos[id].g*COLW, Y = id => PADY + pos[id].y*ROWH;
+
+const treeSvg = d3.select("#tree"), tg = treeSvg.append("g");
+const GEN = ["You","Parents","Grandparents","Great-grandparents","2× great","3× great","4× great","5× great","6× great","7× great","8× great","9× great"];
+for(let g=0; g<=maxGen; g++) tg.append("text").attr("class","genhead").attr("x",PADX+g*COLW+BW/2).attr("y",28).attr("text-anchor","middle").text(GEN[g]||"");
+const linkSel = [];
+L.forEach(([c,p,kind]) => {
+  if(!pos[c]||!pos[p]) return;
+  const x1=X(c)+BW, y1=Y(c)+BH/2, x2=X(p), y2=Y(p)+BH/2, mx=x1+(x2-x1)/2 - (kind==="step"?8:0);
+  const path = tg.append("path").attr("class","link"+(kind==="step"?" step":"")).attr("d",`M${x1},${y1}H${mx}V${y2}H${x2}`);
+  linkSel.push({c,p,path});
+  if(kind==="step") tg.append("text").attr("x",mx+5).attr("y",(y1+y2)/2).attr("transform",`rotate(-90 ${mx+5} ${(y1+y2)/2})`).attr("text-anchor","middle").attr("style","font:italic 11px var(--font-sans);fill:var(--l-bruck)").text("stepfather");
+});
+const nodeSel = {};
+Object.keys(pos).forEach(id => {
+  const p=P[id];
+  const g = tg.append("g").attr("class","node").attr("tabindex",0).attr("role","button").attr("aria-label",p.n+(datesShort(id)?", "+datesShort(id):""))
+    .attr("transform",`translate(${X(id)},${Y(id)})`).on("click",()=>select(id)).on("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();select(id);} });
+  const dash = p.st==="probable"?"6 3":(p.st==="tree"||p.st==="family"||p.st==="unknown")?"2 3":null;
+  g.append("rect").attr("width",BW).attr("height",BH).attr("rx",7).attr("stroke",lineColor(id)).attr("stroke-dasharray",dash)
+    .attr("style",`fill:color-mix(in srgb, ${lineColor(id)} 11%, var(--surface))`);
+  g.append("rect").attr("width",5).attr("height",BH).attr("rx",2).attr("style",`fill:${lineColor(id)};stroke:none`);
+  const name = p.n.length>30 ? p.n.replace(/"[^"]*" /,"").slice(0,30) : p.n;
+  g.append("text").attr("class","nm").attr("x",14).attr("y",21).text(name.length>30?name.slice(0,29)+"…":name);
+  g.append("text").attr("class","dt").attr("x",14).attr("y",38).text(datesShort(id) + (p.b&&p.b[1]&&PLACES[p.b[1]]?" · "+PLACES[p.b[1]][0].split(",")[0].split(" (")[0]:""));
+  nodeSel[id]=g;
+});
+const tz = d3.zoom().scaleExtent([0.2,2.2]).on("zoom",e=>tg.attr("transform",e.transform));
+treeSvg.call(tz).on("dblclick.zoom",null);
+function treeFocus(id, k){
+  const r = treeSvg.node().getBoundingClientRect(); const kk = k || d3.zoomTransform(treeSvg.node()).k || .9;
+  const cx = X(id)+BW/2, cy = Y(id)+BH/2;
+  treeSvg.transition().duration(450).call(tz.transform, d3.zoomIdentity.translate(r.width/2 - cx*kk, r.height/2 - cy*kk).scale(kk));
+}
+function treeFit(){ const r=treeSvg.node().getBoundingClientRect(); const k=Math.min(r.width/TW, r.height/TH)*0.98;
+  treeSvg.transition().duration(450).call(tz.transform, d3.zoomIdentity.translate((r.width-TW*k)/2,(r.height-TH*k)/2).scale(k)); }
+$("#t-in").onclick=()=>treeSvg.transition().call(tz.scaleBy,1.25);
+$("#t-out").onclick=()=>treeSvg.transition().call(tz.scaleBy,0.8);
+$("#t-fit").onclick=treeFit;
+$("#t-home").onclick=()=>{ treeFocus("liam",0.9); };
+
+/* ancestry path highlight */
+function lineageUp(id){ const s=new Set([id]); const st=[id]; while(st.length){ const c=st.pop(); parentsOf(c).forEach(l=>{ if(!s.has(l[1])){s.add(l[1]);st.push(l[1]);} }); } return s; }
+function lineageDown(id){ const s=new Set([id]); let c=id; while(c){ const ch=childrenOf(c)[0]; if(!ch) break; c=ch[0]; s.add(c);} return s; }
+
+/* ---------- record card ---------- */
+let current = null;
+function docItem(k){ const d=D[k]; if(!d) return ""; return `<li class="doc"><div class="t">${esc(d.t)}</div><div class="r">${esc(d.r)}</div><div class="s">${esc(d.s)}</div>${d.u?`<a href="${esc(d.u)}" target="_blank" rel="noopener">Open record ↗</a>`:""}</li>`; }
+function relBlock(l, who, label){
+  const [c,p,kind,str,docs] = l; const other = who==="parent"?p:c;
+  const strength = str==="unknown"?"No record yet":STATUS[str];
+  return `<div class="rel"><div class="rel-head"><span>${label}${kind==="step"?" (step)":""}: <button data-go="${other}">${esc(P[other].n)}</button></span><small>${esc(strength)}${P[other].b||P[other].d?" · "+esc(datesShort(other)):""}</small></div>
+    ${docs.length?`<ul class="docs">${docs.map(docItem).join("")}</ul>`:`<p class="empty">No document links them yet.</p>`}</div>`;
+}
+function select(id, opts={}){
+  if(!P[id]) return; current=id; const p=P[id];
+  Object.entries(nodeSel).forEach(([k,g])=>g.classed("sel",k===id));
+  const up=lineageDown(id); linkSel.forEach(o=>o.path.classed("hi", up.has(o.c)&&up.has(o.p)));
+  const facts=[];
+  if(p.b) facts.push(["Born", [p.b[0], placeName(p.b[1])].filter(Boolean).join(", ")]);
+  if(p.d) facts.push(["Died", [p.d[0], p.d[1]].filter(Boolean).join(", ")]);
+  if(p.bur) facts.push(["Buried", p.bur]);
+  if(p.res) facts.push(["Lived", p.res]);
+  facts.push(["Family line", LINES[p.line][0]]);
+  const ps=parentsOf(id), cs=childrenOf(id), life=(LIFE[id]||[]);
+  $("#card").innerHTML = `<button class="close" id="card-close">Close</button>
+    <div class="eyebrow"><span class="dot" style="background:${lineColor(id)}"></span>${esc(LINES[p.line][0])}<span class="badge b-${p.st}">${esc(STATUS[p.st])}</span></div>
+    <h2>${esc(p.n)}</h2>${p.alt?`<p class="alt">${esc(p.alt)}</p>`:""}
+    <dl class="facts">${facts.map(f=>`<dt>${esc(f[0])}</dt><dd>${esc(f[1])}</dd>`).join("")}</dl>
+    <div class="bio">${(p.bio||[]).map(t=>`<p>${esc(t)}</p>`).join("")}</div>
+    <h3>Parents and the records that link them</h3>${ps.length?ps.map(l=>relBlock(l,"parent",l[2]==="step"?"Stepfather":"Parent")).join(""):`<p class="empty">No parents identified yet.</p>`}
+    <h3>Children in this tree</h3>${cs.length?cs.map(l=>relBlock(l,"child","Child")).join(""):`<p class="empty">None in this tree.</p>`}
+    ${life.length?`<h3>Other records about ${esc(p.n.split(" ")[0])}</h3><ul class="docs">${life.map(docItem).join("")}</ul>`:""}
+    <p class="notice">"Record seen" means an original record or its index was read. "From others' trees" means the link comes from a user-built tree (FamilySearch, Rodovid, family blogs) and has not been checked against an original.</p>`;
+  $("#card").scrollTop=0;
+  $("#card").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>select(b.dataset.go,{focus:true}));
+  const cl=$("#card-close"); if(cl) cl.onclick=()=>{ $("#card").hidden=true; };
+  $("#card").hidden=false;
+  try{ if(location.hash!=="#p-"+id) history.replaceState(null,"","#p-"+id); }catch(e){}
+  if(opts.focus && !$("#view-tree").hidden) treeFocus(id);
+  if(!$("#view-map").hidden) highlightMap(id);
+}
+
+/* ---------- people index & search ---------- */
+function buildIndex(){
+  const groups={}; Object.keys(P).forEach(id=>{ (groups[P[id].line]=groups[P[id].line]||[]).push(id); });
+  $("#index").innerHTML = Object.keys(LINES).filter(k=>groups[k]).map(k=>`<h2><span class="dot" style="background:var(${LINES[k][1]})"></span>${esc(LINES[k][0])} · ${groups[k].length}</h2>
+    <div class="rows">${groups[k].map(id=>`<button class="row" style="--c:${lineColor(id)}" data-go="${id}"><b>${esc(P[id].n)}</b><span>${esc(datesShort(id)||STATUS[P[id].st])}${P[id].b&&P[id].b[1]?" · "+esc(placeName(P[id].b[1])):""}</span></button>`).join("")}</div>`).join("");
+  $("#index").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>select(b.dataset.go));
+}
+const q=$("#q"), res=$("#results");
+q.addEventListener("input",()=>{ const s=q.value.trim().toLowerCase(); if(!s){res.hidden=true;return;}
+  const hits=Object.keys(P).filter(id=>(P[id].n+" "+(P[id].alt||"")).toLowerCase().includes(s)).slice(0,12);
+  res.innerHTML = hits.length?hits.map(id=>`<button data-go="${id}">${esc(P[id].n)}<br><small>${esc(datesShort(id))}</small></button>`).join(""):`<button disabled>No one by that name</button>`;
+  res.hidden=false; res.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ res.hidden=true; q.value=""; showTab("tree"); select(b.dataset.go,{focus:true}); });
+});
+q.addEventListener("keydown",e=>{ if(e.key==="Escape"){res.hidden=true;} if(e.key==="Enter"){ const b=res.querySelector("[data-go]"); if(b) b.click(); }});
+document.addEventListener("click",e=>{ if(!e.target.closest(".search")) res.hidden=true; });
+
+/* ---------- tabs ---------- */
+function showTab(name){
+  ["tree","map","index"].forEach(t=>{ $("#tab-"+t).setAttribute("aria-selected",String(t===name)); $("#view-"+t).hidden = t!==name; });
+  if(name==="map"){ ensureMap(); if(current) highlightMap(current); }
+}
+["tree","map","index"].forEach(t=>$("#tab-"+t).onclick=()=>showTab(t));
+
+/* ---------- map ---------- */
+let mapReady=false, mz, mg, proj, mapW, mapH;
+const markers={};
+function ensureMap(){
+  if(mapReady) return; mapReady=true;
+  const svg=d3.select("#map"); const r=svg.node().getBoundingClientRect(); mapW=r.width||800; mapH=r.height||500;
+  proj=d3.geoNaturalEarth1().scale(mapW/5.6).translate([mapW/2,mapH/2]);
+  const path=d3.geoPath(proj);
+  svg.append("rect").attr("class","sea").attr("width","100%").attr("height","100%");
+  mg=svg.append("g");
+  const land=mg.append("g"), lines=mg.append("g"), pts=mg.append("g");
+  fetch("countries-50m.json").then(r=>r.json()).then(topo=>{
+    land.selectAll("path").data(topojson.feature(topo,topo.objects.countries).features).join("path").attr("class","country").attr("d",path);
+  }).catch(()=>{ land.append("text").attr("x",20).attr("y",60).attr("style","fill:var(--muted);font:13px var(--font-sans)").text("Map outlines could not load; birthplaces are still shown."); });
+  // aggregate births by place
+  const byPlace={};
+  Object.keys(P).forEach(id=>{ const k=P[id].b&&P[id].b[1]; if(k&&PLACES[k]) (byPlace[k]=byPlace[k]||[]).push(id); });
+  // migration lines parent birthplace -> child birthplace
+  L.forEach(([c,p,kind])=>{ const a=P[p].b&&P[p].b[1], b=P[c].b&&P[c].b[1]; if(kind==="step"||!a||!b||a===b||!PLACES[a]||!PLACES[b]) return;
+    const A=proj([PLACES[a][2],PLACES[a][1]]), B=proj([PLACES[b][2],PLACES[b][1]]);
+    const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2 - Math.hypot(B[0]-A[0],B[1]-A[1])*0.18;
+    lines.append("path").attr("class","migr").attr("data-c",c).attr("data-p",p).attr("d",`M${A[0]},${A[1]}Q${mx},${my} ${B[0]},${B[1]}`);
+  });
+  Object.entries(byPlace).forEach(([k,ids])=>{
+    const [nm,lat,lon,approx]=PLACES[k]; const [x,y]=proj([lon,lat]);
+    const g=pts.append("g").attr("class","marker"+(approx?" approx":"")).attr("transform",`translate(${x},${y})`).attr("tabindex",0).attr("role","button")
+      .attr("aria-label",`${nm}: ${ids.length} ${ids.length>1?"people":"person"} born here`);
+    g.append("circle").attr("r",4+Math.sqrt(ids.length)*2.2).attr("style",`fill:${lineColor(ids[0])}`);
+    g.append("text").attr("x",9).attr("y",4).text(nm.split(",")[0].split(" (")[0]);
+    const open=e=>{ e.stopPropagation(); showPop(k,ids,g.node()); };
+    g.on("click",open).on("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(e);} });
+    markers[k]={g,ids,x,y};
+  });
+  mz=d3.zoom().scaleExtent([0.8,60]).on("zoom",e=>{ mg.attr("transform",e.transform);
+    pts.selectAll(".marker").each(function(){ const t=d3.select(this); const tr=t.attr("transform").match(/translate\(([^,]+),([^)]+)\)/); t.attr("transform",`translate(${tr[1]},${tr[2]}) scale(${1/e.transform.k})`); });
+    $("#pop").hidden=true; });
+  svg.call(mz).on("dblclick.zoom",null);
+  svg.on("click",()=>{ $("#pop").hidden=true; });
+  const presets={ "Europe":["burg","spb","kharkiv","glasgow","buggans","munich"], "Britain & Ireland":["glasgow","girvan","maybole","buggans","galway"],
+    "Baltic & Russia":["riga","spb","kharkiv","courland"], "Germany & Poland":["burg","munich","berlin","ratibor","lissa","silesia"], "Boston":["boston"], "Sumatra":["padang"], "Everywhere":Object.keys(byPlace) };
+  $("#map-tools").innerHTML = Object.keys(presets).map(n=>`<button data-preset="${esc(n)}">${esc(n)}</button>`).join("");
+  $("#map-tools").querySelectorAll("button").forEach(b=>b.onclick=()=>fitPlaces(presets[b.dataset.preset]));
+  fitPlaces(presets["Europe"], 0);
+}
+function fitPlaces(keys, dur=600){
+  const pts=keys.filter(k=>PLACES[k]).map(k=>proj([PLACES[k][2],PLACES[k][1]]));
+  const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
+  let x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys);
+  const padx=Math.max(40,(x1-x0)*0.18), pady=Math.max(40,(y1-y0)*0.18);
+  x0-=padx; x1+=padx; y0-=pady; y1+=pady;
+  const r=d3.select("#map").node().getBoundingClientRect();
+  const k=Math.min(60, 0.9/Math.max((x1-x0)/r.width,(y1-y0)/r.height));
+  const t=d3.zoomIdentity.translate(r.width/2-k*(x0+x1)/2, r.height/2-k*(y0+y1)/2).scale(k);
+  d3.select("#map").transition().duration(dur).call(mz.transform,t);
+}
+function showPop(k,ids,node){
+  const pop=$("#pop"); const [nm,,,approx]=PLACES[k];
+  pop.innerHTML=`<h3>${esc(nm)}${approx?" <small>(approximate)</small>":""}</h3><ul>${ids.map(id=>`<li><button class="lk" data-go="${id}">${esc(P[id].n)}</button> <small>${esc(datesShort(id))}</small></li>`).join("")}</ul>`;
+  const vr=$("#view-map").getBoundingClientRect(), nr=node.getBoundingClientRect();
+  pop.hidden=false; const pw=pop.offsetWidth, ph=pop.offsetHeight;
+  let left=nr.left-vr.left+14, top=nr.top-vr.top+14;
+  if(left+pw>vr.width-8) left=Math.max(8,vr.width-pw-8); if(top+ph>vr.height-8) top=Math.max(8,nr.top-vr.top-ph-8);
+  pop.style.left=left+"px"; pop.style.top=top+"px";
+  pop.querySelectorAll("[data-go]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); select(b.dataset.go); });
+}
+function highlightMap(id){
+  if(!mapReady) return; const set=lineageDown(id);
+  d3.selectAll(".migr").attr("style",function(){ const c=this.dataset.c,p=this.dataset.p; return set.has(c)&&set.has(p)?"stroke-opacity:1;stroke-width:2.6":null; });
+  Object.values(markers).forEach(m=>m.g.select("circle").attr("stroke-width",m.ids.includes(id)?4:1.5));
+}
+
+/* ---------- boot ---------- */
+buildIndex();
+const start = (location.hash||"").replace(/^#p-/,"");
+requestAnimationFrame(()=>{
+  const first = P[start] ? start : "liam";
+  select(first);
+  treeFocus(first, 0.9);
+});
+window.addEventListener("hashchange",()=>{ const id=(location.hash||"").replace(/^#p-/,""); if(P[id]&&id!==current) select(id,{focus:true}); });
+</script>

@@ -1,0 +1,1060 @@
+0 HEAD
+1 SOUR CLAUDE
+2 NAME Family research with Claude
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 SUBM @SUB1@
+0 @SUB1@ SUBM
+1 NAME Liam Pek
+0 @I1@ INDI
+1 NAME Liam M /Pek/
+1 SEX M
+1 FAMC @F1@
+1 NOTE Living.
+0 @I2@ INDI
+1 NAME Hengky Gunawan /Pek/
+2 NICK Hank
+1 SEX M
+1 BIRT
+2 DATE 1960
+1 FAMS @F1@
+1 FAMC @F2@
+1 BIRT
+2 DATE 1960
+2 PLAC Padang, West Sumatra, Indonesia
+1 RESI
+2 DATE ABT 1968
+2 PLAC Jakarta, Indonesia
+2 NOTE The family moved from Padang to Jakarta in the late 1960s (family information).
+1 NOTE Living. Chinese-Indonesian family; Chinese surname Pek (Hokkien Pe̍h, 白). The family adopted the Indonesian surname Gunawan, typical of the 1960s naming policy for Chinese Indonesians. Listed as "Hank Hengky Gunawan Pek" in Jeanne McLellan Bundtzen's obituary record (FamilySearch).
+0 @I3@ INDI
+1 NAME Leng Kim /Pek/
+2 NOTE Chinese order: Pek Leng Kim. Indonesian family name adopted: Gunawan.
+1 SEX M
+1 BIRT
+2 PLAC Padang, West Sumatra, Indonesia
+2 NOTE Family information.
+1 RESI
+2 DATE ABT 1968
+2 PLAC Jakarta, Indonesia
+1 FAMS @F2@
+1 NOTE Name from family memory ("Pek Leng Kim, I think"); not yet confirmed by a record. FamilySearch "Indonesia, Civil Registration, 1806-1997" has only four indexed Pek entries for Padang/Padangpanjang (1919-1944) and none for Leng Kim. One possible related family: Tjioe Pek and Kim Kie Nio Ang, with a daughter Ham Hie Nio Pek born 20 Oct 1919 in Padang. No link established.
+0 @I4@ INDI
+1 NAME Kristen A. /Von Koschembahr/
+1 SEX F
+1 BIRT
+2 DATE 7 DEC 1966
+1 DEAT
+2 DATE 16 JUL 2016
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 RESI
+2 DATE 13 NOV 2000
+2 PLAC Allston, Massachusetts, USA
+1 FAMS @F1@
+1 FAMC @F3@
+1 NOTE Sources: US Public Records 1970-2009; Find a Grave Index; obituary of Jeanne E. McLellan Bundtzen (US Obituary Records 2014-2023).
+0 @I5@ INDI
+1 NAME Alexander /Von Koschembahr/
+2 NICK Alex
+1 SEX M
+1 BIRT
+2 DATE 23 JUN 1946
+2 PLAC Burgsteinfurt, Westphalia, Germany
+2 NOTE Arolsen Archives IRO file (DP registration as "Dantschenko, Alexander"; birth certificate Standesamt Burgsteinfurt).
+1 IMMI
+2 DATE 1949
+2 PLAC New York City, New York, USA
+2 NOTE Ship Batory, age 3, listed as stateless, with mother Anna Maria.
+1 RESI
+2 DATE 10 APR 1950
+2 PLAC Woburn, Middlesex, Massachusetts, USA
+2 NOTE 1950 census, in household of grandfather Frederick.
+1 RESI
+2 DATE 2000
+2 PLAC Saint Augustine, St. Johns, Florida, USA
+1 DEAT
+2 DATE 24 JUN 2009
+2 PLAC St. Johns County, Florida, USA
+2 NOTE Social Security Death Index; Find a Grave gives 22 Jun 2009.
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 FAMS @F3@
+1 FAMS @F4@
+1 FAMS @F5@
+1 FAMS @F6@
+1 FAMC @F7@
+1 NOTE Sources: NY Passenger Lists 1949; US Census 1950; SSDI; CT Marriage and Divorce Indexes; FL Marriage Index; Find a Grave Index.
+0 @I6@ INDI
+1 NAME Jeanne E. /McLellan/
+2 NICK Jeane
+1 SEX F
+1 BIRT
+2 DATE 16 JUN 1946
+2 PLAC Boston, Suffolk, Massachusetts, USA
+1 DEAT
+2 DATE 7 APR 2019
+1 BURI
+2 PLAC West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 FAMS @F3@
+1 FAMS @F8@
+1 FAMC @F9@
+1 NOTE Later known as Jeanne McLellan Bundtzen. FamilySearch Family Tree ID GJNN-L97.
+0 @I7@ INDI
+1 NAME Gregory /Von Koschembahr/
+2 NICK Greg
+1 SEX M
+1 BIRT
+2 DATE 6 FEB 1968
+2 PLAC Winchester, Middlesex, Massachusetts, USA
+1 DEAT
+2 DATE 10 APR 1999
+2 PLAC East Falmouth, Barnstable, Massachusetts, USA
+2 NOTE Social Security record; obituary dated 14 Apr 1999.
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 FAMC @F3@
+0 @I8@ INDI
+1 NAME John Eugene /Bundtzen/
+1 SEX M
+1 BIRT
+2 DATE 11 SEP 1930
+2 PLAC Schenectady, New York, USA
+1 DEAT
+2 DATE 23 NOV 2003
+1 FAMS @F8@
+1 NOTE Stepfather of Kristen. Obituary: Worcester Telegram & Gazette, 25 Nov 2003.
+0 @I9@ INDI
+1 NAME Alexander /McLellan/
+1 SEX M
+1 BIRT
+2 DATE 24 SEP 1911
+2 PLAC Scotland
+2 NOTE Born in Glasgow (his father's 1921 passport application). Censuses give c.1912; the MA Death Index / SSDI give 24 Sep 1911 (probable match). The family left Glasgow on 6 Jul 1911, so his birth was probably 1910 or early 1911.
+1 IMMI
+2 DATE ABT 1911
+2 NOTE 1930 census arrival year.
+1 RESI
+2 DATE 1920
+2 PLAC Boston, Suffolk, Massachusetts, USA
+2 NOTE With parents Gordon and Magdalene; also in 1930.
+1 RESI
+2 DATE 1940
+2 PLAC Boston (Ward 19), Suffolk, Massachusetts, USA
+1 RESI
+2 DATE 12 APR 1950
+2 PLAC Natick, Middlesex, Massachusetts, USA
+2 NOTE FamilySearch indexes the place as "Natick, Thomas, Nebraska"; ED 9-424 is Middlesex Co., MA.
+1 OCCU Knitter, nylon stocking manufacturing (1950)
+1 DEAT
+2 DATE 14 JAN 1982
+2 PLAC Northbridge, Worcester, Massachusetts, USA
+2 NOTE Probable match: MA Death Index; SSDI gives last residence Strafford, NH.
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 FAMS @F9@
+1 FAMC @F13@
+1 NOTE Spouse Kathleen confirmed by 1940 and 1950 censuses and Jeanne's 2019 obituary.
+0 @I10@ INDI
+1 NAME Kathleen P. /Lyons/
+1 SEX F
+1 BIRT
+2 DATE 11 MAY 1914
+2 PLAC Boston, Suffolk, Massachusetts, USA
+2 NOTE Probable: unnamed Lyons birth to Lawrence Lyons and Ellen Connell, 11 May 1914 (MA State Vital Records). It is the only sibling birth matching "Cathleen P., 15" in the April 1930 census.
+1 DEAT
+2 DATE 1987
+2 NOTE Probable match: Find a Grave Index, Kathleen McLellan, d. 1987.
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+1 FAMS @F9@
+1 FAMC @F22@
+1 NOTE Both parents born in Ireland (1950 census). Named as "Mrs Kathleen P McLellan" in the obituary of Helen C. Lyons, Boston Herald, 16 Dec 1957; Helen may be her mother or another relative.
+0 @I11@ INDI
+1 NAME John L. /McLellan/
+1 SEX M
+1 BIRT
+2 DATE 10 FEB 1943
+1 DEAT
+2 DATE 8 JUL 2013
+2 PLAC Dunnellon, Marion, Florida, USA
+1 OCCU Electrical engineer
+1 FAMC @F9@
+1 NOTE Obituary: Ocala Star-Banner, 12 Jul 2013.
+0 @I21@ INDI
+1 NAME Gordon /McLellan/
+1 SEX M
+1 BIRT
+2 DATE ABT 1884
+2 PLAC Scotland
+1 FAMS @F13@
+1 FAMC @F19@
+1 NOTE Born 24 Nov 1883 in Glasgow (1918 naturalization; the 1921 passport says 24 Dec). Iron worker. Sailed from Glasgow on the Allan Line ship Numidian on 6 Jul 1911, bound for Boston. Naturalized in 1918 and 1920; carpenter; lived in Jamaica Plain. His 1921 passport application lists his wife Magdalene and son Alexander, born in Glasgow, and his father Alexander McLellan, born in Scotland and deceased. Died 1952; buried at Saint Joseph Cemetery, West Roxbury. His wife's 1953 obituary names their sons Alexander and Gordon Jr.
+1 DEAT
+2 DATE 1952
+1 BURI
+2 PLAC Saint Joseph Cemetery, West Roxbury, Boston, Suffolk, Massachusetts, USA
+0 @I22@ INDI
+1 NAME Magdalene Kennedy /Pettigrew/
+1 SEX F
+1 BIRT
+2 DATE 30 JAN 1883
+2 PLAC Camlachie, Glasgow, Lanarkshire, Scotland
+1 OCCU Chocolate coverer (1901)
+1 RESI
+2 DATE 1901
+2 PLAC 30 Brown Street, Bridgeton, Glasgow, Scotland
+1 DEAT
+2 DATE 30 JAN 1953
+2 PLAC Boston, Suffolk, Massachusetts, USA
+1 FAMS @F13@
+1 FAMC @F20@
+1 NOTE Maiden name Pettigrew, from Social Security NUMIDENT and a Massachusetts marriage record. Her obituary (Boston, Feb 1953) names her husband Gordon and sons Alexander and Gordon Jr.
+0 @I36@ INDI
+1 NAME Alexander /McLellan/
+1 SEX M
+1 BIRT
+2 DATE ABT 1842
+2 PLAC Maybole, Ayrshire, Scotland
+1 OCCU Cotton weaver (1866); wool weaver / weaver (1901)
+1 RESI
+2 DATE 1871
+2 PLAC High Church district, Glasgow, Scotland
+1 RESI
+2 DATE 1901
+2 PLAC 24 David Street, Camlachie, Glasgow, Scotland
+2 NOTE Age 58, weaver, with wife Elizabeth and son Gordon (18, general labourer).
+1 FAMS @F19@
+1 FAMC @F28@
+1 NOTE A widower when he married Elizabeth Gordon in 1866. Deceased by 1921 (son Gordon's passport application). FamilySearch Family Tree ID KCBK-KFP. Children included Margaret, Ellen/Helen, John, Elizabeth, Jane and Gordon (spelled McClelland in many indexes).
+0 @I37@ INDI
+1 NAME Elizabeth /Gordon/
+1 SEX F
+1 BIRT
+2 DATE ABT 1842
+2 PLAC Girvan, Ayrshire, Scotland
+1 FAMS @F19@
+1 FAMC @F29@
+1 NOTE 1901 census, 24 David Street, Camlachie, age 58. FamilySearch Family Tree ID KZHR-B5F. Her son Gordon carried her maiden name as his first name.
+0 @I38@ INDI
+1 NAME Archibald Kennedy /Pettigrew/
+1 SEX M
+1 BIRT
+2 DATE 13 NOV 1855
+2 PLAC Clyde, Glasgow, Lanarkshire, Scotland
+1 OCCU Hoistman (1901)
+1 RESI
+2 DATE 1901
+2 PLAC 30 Brown Street, Bridgeton, Glasgow, Scotland
+1 DEAT
+2 DATE 19 JUL 1931
+2 PLAC Dennistoun, Glasgow, Scotland
+1 FAMS @F20@
+1 FAMC @F30@
+1 NOTE 1901 census household: wife Sarah, children Magdalene (18, chocolate coverer), Archibald (15), James (12), Maggie (9) and William (5). FamilySearch Family Tree ID 93R9-NDS; 7 children in the tree.
+0 @I39@ INDI
+1 NAME Sarah /Nixon/
+1 SEX F
+1 BIRT
+2 DATE 19 NOV 1856
+2 PLAC Girvan, Ayrshire, Scotland
+1 DEAT
+2 DATE 15 APR 1944
+2 PLAC Bridgeton, Glasgow, Scotland
+1 FAMS @F20@
+1 FAMC @F31@
+1 NOTE FamilySearch Family Tree ID 9MXH-JDP.
+0 @I51@ INDI
+1 NAME John /McLellan/
+1 SEX M
+1 FAMS @F28@
+0 @I52@ INDI
+1 NAME Margaret /Morrison/
+1 SEX F
+1 FAMS @F28@
+0 @F28@ FAM
+1 HUSB @I51@
+1 WIFE @I52@
+1 CHIL @I36@
+1 NOTE Named as Alexander's parents in his 1866 marriage record (Scotland Civil Registration).
+0 @I53@ INDI
+1 NAME William /Gordon/
+1 SEX M
+1 FAMS @F29@
+0 @I54@ INDI
+1 NAME Janet /Smith/
+1 SEX F
+1 FAMS @F29@
+0 @F29@ FAM
+1 HUSB @I53@
+1 WIFE @I54@
+1 CHIL @I37@
+1 NOTE Named as Elizabeth's parents in her 1866 marriage record.
+0 @I55@ INDI
+1 NAME William /Pettigrew/
+1 SEX M
+1 FAMS @F30@
+0 @I56@ INDI
+1 NAME Margaret /McOnomy/
+1 SEX F
+1 FAMS @F30@
+0 @F30@ FAM
+1 HUSB @I55@
+1 WIFE @I56@
+1 CHIL @I38@
+1 NOTE From the FamilySearch Family Tree (user-contributed).
+0 @I57@ INDI
+1 NAME William /Nixon/
+1 SEX M
+1 BIRT
+2 DATE ABT 1823
+2 PLAC Ireland
+1 OCCU Cotton hand-loom weaver (Girvan, 1856)
+1 DEAT
+2 DATE 16 APR 1886
+2 PLAC Girvan, Ayrshire, Scotland
+1 FAMS @F31@
+1 NOTE FamilySearch Family Tree ID L7X5-XLQ.
+0 @I58@ INDI
+1 NAME Isabella /Stead/
+1 SEX F
+1 BIRT
+2 DATE 1825
+1 DEAT
+2 DATE 1861
+1 FAMS @F31@
+0 @F31@ FAM
+1 HUSB @I57@
+1 WIFE @I58@
+1 MARR
+2 DATE 28 JAN 1849
+2 PLAC Girvan, Ayrshire, Scotland
+1 CHIL @I39@
+0 @I23@ INDI
+1 NAME Gordon /McLellan/
+2 NSFX Jr.
+1 SEX M
+1 BIRT
+2 DATE ABT 1921
+2 PLAC Massachusetts, USA
+1 FAMC @F13@
+0 @I12@ INDI
+1 NAME George /Von Koschembahr/
+1 SEX M
+1 BIRT
+2 DATE 6 OCT 1921
+2 PLAC Munich, Bavaria, Germany
+1 NATU
+2 DATE 1955
+2 PLAC Massachusetts, USA
+1 DEAT
+2 DATE 15 SEP 1996
+1 BURI
+2 PLAC Mount Auburn Cemetery, Cambridge, Middlesex, Massachusetts, USA
+1 FAMS @F7@
+1 FAMC @F18@
+1 FAMC @F10@
+2 PEDI step
+1 NOTE Arolsen Archives, IRO "Care and Maintenance" personal file 3.2.1.1 / 32110000 163.023, "KOSCHEMBAHR, GEORG, born 6-Oct-1921 München" (DocIDs 79320335-79320342). Filed as "Koschembahr v. Nemirowitsch-Dantschenko, Georg"; Russian, Nansen passport (stateless); Greek Orthodox. Interview of 9 Apr 1948: parents were Russian emigres; he grew up in Berlin; finished the Russian Gymnasium there in 1939, then studied at the Technische Hochschule Berlin (1935-43). His father died in 1939. His mother then married Friedrich Koschembahr, now in the USA, who adopted him. In 1943, as a stateless Russian, he was sent as a labour conscript to Korneuburg near Vienna. A military court sentenced him for sabotage to 5 years' hard imprisonment ("Schwerkerker"), and he was held in a prison in Budapest from May 1944 to Feb 1945. After liberation he went to Munich (May 1945) and studied at the Technische Hochschule München. In Apr 1948 the Bavarian State Ministry certified him as a persecuted person, and the IRO found him eligible as a "persecuted person". Addresses: Rabenkopfstr. 34, München (Apr 1948). Spoke Russian, German and English.
+1 NOTE Born Georg von Nemirowitsch-Dantschenko. Frederick W. von Koschembahr's 1941 Declaration of Intention lists him as "von Nemirowitsch-Dantschenko, Georg (stepson)", born 6 Oct 1921 in Munich and then living in Berlin. He later used his stepfather's surname.
+1 NOTE Sources: US Census 1950; Social Security NUMIDENT; MA Naturalization Index; Find a Grave Index. Lived in St. Augustine, Florida in 1985.
+0 @I13@ INDI
+1 NAME Anna Maria /Wessels/
+2 NICK Ann Marie
+1 SEX F
+1 RESI
+2 DATE 1935
+2 PLAC Burgsteinfurt, Westphalia, Germany
+2 NOTE Lived in Burgsteinfurt until 1948, then in Munich (Ainmillerstr.?). Schooling 1935-38, then housewife. German national before marriage. Arolsen Archives IRO application of 28 Jun 1948, "Nemirowitsch-Dantschenko / Koschembahr geb. Wessels", signed "Anna Koschembahr". Her documents include a Kennkarte (identity card) from Burgsteinfurt police, 1946. Her parents are not named in the file.
+1 BIRT
+2 DATE 1 MAY 1924
+2 PLAC Burgsteinfurt, Westphalia, Germany
+1 IMMI
+2 DATE 1949
+2 PLAC New York City, New York, USA
+2 NOTE Ship Batory, listed as stateless.
+1 NATU
+2 DATE 1956
+2 PLAC Massachusetts, USA
+1 DEAT
+2 DATE 21 MAR 2002
+2 NOTE Obituary in Florida Times-Union, Jacksonville, 26 Mar 2002.
+1 BURI
+2 PLAC Mount Auburn Cemetery, Cambridge, Middlesex, Massachusetts, USA
+1 FAMS @F7@
+1 FAMC @F11@
+0 @I14@ INDI
+1 NAME Frederick W. /Von Koschembahr/
+1 SEX M
+1 BIRT
+2 DATE 16 FEB 1952
+2 PLAC Winchester, Middlesex, Massachusetts, USA
+1 DEAT
+2 DATE 1 MAR 1997
+1 FAMC @F7@
+1 NOTE Brother of Alexander. Source: Social Security NUMIDENT.
+0 @I15@ INDI
+1 NAME August /Wessels/
+1 SEX M
+1 FAMS @F11@
+0 @I16@ INDI
+1 NAME Anna M. /Elsen/
+1 SEX F
+1 FAMS @F11@
+0 @I17@ INDI
+1 NAME Friedrich Wilhelm /Von Koschembahr/
+2 NICK Frederick William
+1 SEX M
+1 BIRT
+2 DATE 15 DEC 1889
+2 PLAC Berlin, Germany
+1 NATU
+2 DATE 1941
+2 PLAC Massachusetts, USA
+2 NOTE Naturalization records dated 19 Sep 1941, 10 Dec 1945 and 4 Mar 1946.
+1 EVEN
+2 TYPE WWII Draft Registration
+2 DATE 1942
+2 PLAC Cambridge, Middlesex, Massachusetts, USA
+1 OCCU Proprietor, candy business
+1 RESI
+2 DATE 10 APR 1950
+2 PLAC Woburn, Middlesex, Massachusetts, USA
+1 DEAT
+2 DATE 14 MAR 1963
+1 BURI
+2 PLAC Mount Auburn Cemetery, Cambridge, Middlesex, Massachusetts, USA
+1 FAMS @F10@
+1 FAMC @F12@
+1 NOTE Born Friedrich Wilhelm Bruck; later Bruck von Koschembahr, then Von Koschembahr. Younger brother of Gerhard (Bruck) von Koschembahr (1885-1961), whose family came to New York in 1938. Bruck family research (bruckfamilyblog.com, post 115) gives the same birth (15 Dec 1889, Berlin) and death (14 Mar 1963) dates, citing a Report of Death of American Citizen Abroad that places the death at "Haag, Germany". Social Security NUMIDENT lists his parents as "Wilhelm Vonkoschemba*" and "Margaret Cousins"; "Cousins" looks like an informant or transcription error for Koschembahr.
+0 @I18@ INDI
+1 NAME Anna Vladimirovna /Udyanovskaya/
+2 NICK Anni
+2 NOTE Rodovid: "Анна Владимировна Удяновская", daughter of a provincial secretary (gubernsky sekretar, a civil-service rank). osmikon.de: "Anna Uljanska", a landowner's daughter from Kharkiv. Arolsen DP file: "Udianskaya".
+2 NOTE Russian form probably Ul'janskaja. The Arolsen Archives DP file records her as "Anna Koschembahr v. Nemirowitsch-Dantschenko geb. UDIANSKAYA", born 19 Dec 1895, Charkow, Nansen (stateless). The Social Security index "Anni Vonuddanskad*" is the same name, garbled.
+1 SEX F
+1 BIRT
+2 DATE 19 DEC 1895
+2 PLAC Charkow (Kharkiv), Russian Empire (now Ukraine)
+2 NOTE From Frederick's 1941 Declaration of Intention.
+1 IMMI
+2 DATE 1948
+2 PLAC New York, New York, USA
+2 NOTE Ship Pvt. Elden H. Johnson, age 52, listed as German.
+1 DEAT
+2 DATE 6 JUN 1982
+2 PLAC York County, Maine, USA
+1 BURI
+2 PLAC Mount Auburn Cemetery, Cambridge, Middlesex, Massachusetts, USA
+1 FAMS @F10@
+1 FAMS @F18@
+1 FAMC @F32@
+1 NOTE Maiden name Uljanska/Udyanovskaya: osmikon.de biography of Georgij Nemirovič-Dančenko, which describes her as a landowner's daughter from Kharkiv, six years younger than Georgij, married November 1915. First married to a von Nemirowitsch-Dantschenko, probably Georgij Nemirovič-Dančenko, a Russian émigré in Munich from Feb 1921 "with his wife Anna" (osmikon.de dossier, Munich and the Russian Revolution). Married second Friedrich Wilhelm von Koschembahr on 24 Dec 1929 in Dresden.
+0 @I19@ INDI
+1 NAME Wilhelm /Bruck/
+1 SEX M
+1 BIRT
+2 DATE 23 FEB 1849
+2 PLAC Ratibor, Silesia, Prussia (now Racibórz, Poland)
+1 OCCU Justizrat (justice counsel)
+1 DEAT
+2 DATE 15 FEB 1907
+2 PLAC Berlin, Germany
+1 FAMS @F12@
+1 NOTE Per bruckfamilyblog.com (posts 115, 173). He added his wife's surname, becoming Bruck von Koschembahr. Listed as "Wilhelm Vonkoschemba*" in his son Frederick's Social Security record.
+0 @I20@ INDI
+1 NAME Mathilde Margarethe /von Koschembahr/
+2 NICK Margaret
+1 SEX F
+1 BIRT
+2 DATE 28 NOV 1860
+2 PLAC Lissa, Posen, Prussia (now Leszno, Poland)
+2 NOTE Baptized 7 Feb 1861, Lissa (Prussia Posen church records). The Bruck blog says Posen.
+1 MARR
+2 DATE 14 SEP 1884
+2 PLAC Berlin, Germany
+1 DEAT
+2 DATE 19 OCT 1946
+2 PLAC Boston, Suffolk, Massachusetts, USA
+1 BURI
+2 PLAC Mount Auburn Cemetery, Cambridge, Middlesex, Massachusetts, USA
+1 FAMS @F12@
+1 FAMC @F15@
+1 NOTE Married Wilhelm Bruck. After his death in 1907 she went back to her maiden name. FamilySearch Family Tree ID MWJ9-S2R. Find a Grave index: "Margaret Von Koschembahr" (1860-1946), Mount Auburn.
+0 @I24@ INDI
+1 NAME Gerhard /von Koschembahr/
+2 NICK born Gerhard Bruck
+1 SEX M
+1 BIRT
+2 DATE 28 JUL 1885
+2 PLAC Berlin, Germany
+1 IMMI
+2 DATE 1 OCT 1938
+2 PLAC New York City, New York, USA
+2 NOTE SS Paris from Le Havre, with wife and ten of their 13 children.
+1 NATU
+2 DATE 1944
+2 PLAC Ohio, USA
+1 DEAT
+2 DATE 3 OCT 1961
+2 PLAC Rye, Westchester, New York, USA
+1 FAMS @F14@
+1 FAMC @F12@
+1 NOTE Adopted his mother's maiden name in 1924, through an "adoption" by his unmarried aunt Mathilde von Koschembahr (1866-1931). Children include Irmela (1915), Gundula (1918), Gerhard W. (1917), Heinz (1919), Wolfgang (1921), Cordula (1924), John/Hans (1927), Dietrich (1929), Edela (1931) and Gottfried (1934).
+0 @I25@ INDI
+1 NAME Gabriele Hedwig Clementine Cornelia Hilda /von Zedlitz und Neukirch/
+2 NICK Hilda
+1 SEX F
+1 BIRT
+2 DATE 1 APR 1891
+2 PLAC Berlin, Germany
+1 FAMS @F14@
+1 NOTE Baroness. Daughter of Clemens Freiherr von Zedlitz and Cornelia Carnochan Roosevelt (a member of the American Roosevelt family).
+0 @I26@ INDI
+1 NAME Charlotte /Bruck/
+1 SEX F
+1 BIRT
+2 DATE 17 AUG 1886
+2 PLAC Berlin, Germany
+1 DEAT
+2 DATE 5 JUN 1974
+2 PLAC West Haven, Connecticut, USA
+1 FAMC @F12@
+1 NOTE Married Walter Edward Stavenhagen, 3 May 1906, Berlin.
+0 @I27@ INDI
+1 NAME Marianne Johanna /Bruck/
+1 SEX F
+1 BIRT
+2 DATE 31 JUL 1888
+2 PLAC Berlin, Germany
+1 DEAT
+2 DATE 21 SEP 1975
+2 PLAC Munich, Germany
+1 FAMC @F12@
+0 @I28@ INDI
+1 NAME Heinz Leopold /Bruck/
+1 SEX M
+1 BIRT
+2 DATE 17 JUL 1892
+2 PLAC Berlin, Germany
+1 DEAT
+2 DATE APR 1915
+2 PLAC Ypres, Belgium
+1 FAMC @F12@
+0 @I29@ INDI
+1 NAME Leopold /von Koschembahr/
+1 SEX M
+1 BIRT
+2 DATE 1829
+1 DEAT
+2 DATE 1874
+1 FAMS @F15@
+1 FAMC @F16@
+1 NOTE Estate: Kesselbach (Żarki Średnie) near Görlitz, Silesia (per Bruck blog). FamilySearch Family Tree ID KZLK-6K3. Children baptized in Lissa, Posen, 1859-1863.
+0 @I30@ INDI
+1 NAME Amalie /Mockrauer/
+1 SEX F
+1 BIRT
+2 DATE 1834
+1 DEAT
+2 DATE 1914
+2 NOTE The FamilySearch tree gives 1914; the Bruck blog gives 1918.
+1 FAMS @F15@
+0 @I31@ INDI
+1 NAME Julius Ferdinand Leopold /von Koschembahr/
+2 NICK auf Gross Wilkau
+1 SEX M
+1 BIRT
+2 DATE 16 MAR 1799
+2 PLAC Silesia, Prussia
+1 DEAT
+2 DATE 1851
+1 FAMS @F16@
+1 FAMC @F17@
+1 NOTE FamilySearch Family Tree ID GLJ1-B4V (user-contributed; not independently verified). Remarried in 1845 to Gräfin Agnes Friederike von Pfeil und Klein-Ellguth.
+0 @I32@ INDI
+1 NAME Friederike Mathilde Adelheid /von Hengel/
+1 SEX F
+1 DEAT
+2 DATE 1845
+1 FAMS @F16@
+0 @I33@ INDI
+1 NAME Ernst Leopold Gustav /von Koschembahr/
+1 SEX M
+1 BIRT
+2 DATE 1769
+1 DEAT
+2 DATE 10 OCT 1843
+2 PLAC Breslau, Silesia, Prussia (now Wrocław, Poland)
+2 NOTE Lutheran burial record, Breslau, 13 Oct 1843. The FamilySearch tree gives 1842.
+1 FAMS @F17@
+1 NOTE FamilySearch Family Tree ID PM5V-H48 (user-contributed).
+0 @I34@ INDI
+1 NAME Sophie Wilhelmine Constanze /von Oppeln-Bronikowski/
+1 SEX F
+1 BIRT
+2 DATE 1779
+1 DEAT
+2 DATE 1853
+1 FAMS @F17@
+0 @F1@ FAM
+1 HUSB @I2@
+1 WIFE @I4@
+1 CHIL @I1@
+0 @F2@ FAM
+1 HUSB @I3@
+1 CHIL @I2@
+0 @F3@ FAM
+1 HUSB @I5@
+1 WIFE @I6@
+1 CHIL @I4@
+1 CHIL @I7@
+1 MARR
+2 DATE JUN 1966
+2 PLAC Massachusetts, USA
+1 DIV
+2 DATE 3 MAR 1977
+2 PLAC Connecticut, USA
+0 @F4@ FAM
+1 HUSB @I5@
+1 MARR
+2 DATE 10 JAN 1981
+2 PLAC Westport, Fairfield, Connecticut, USA
+1 DIV
+2 DATE 1986
+2 PLAC Connecticut, USA
+1 NOTE Spouse: Barbara A. Burnes.
+0 @F5@ FAM
+1 HUSB @I5@
+1 MARR
+2 DATE 14 JAN 1989
+2 PLAC Westport, Fairfield, Connecticut, USA
+1 NOTE Spouse: Patti J. Bellew.
+0 @F6@ FAM
+1 HUSB @I5@
+1 MARR
+2 DATE 1 JUL 2000
+2 PLAC St. Johns, Florida, USA
+1 NOTE Spouse not named in index.
+0 @F7@ FAM
+1 HUSB @I12@
+1 WIFE @I13@
+1 CHIL @I5@
+1 CHIL @I14@
+0 @F8@ FAM
+1 HUSB @I8@
+1 WIFE @I6@
+1 MARR
+2 DATE 15 JUL 1977
+2 PLAC Milford, New Haven, Connecticut, USA
+0 @F9@ FAM
+1 HUSB @I9@
+1 WIFE @I10@
+1 CHIL @I6@
+1 CHIL @I11@
+0 @F10@ FAM
+1 HUSB @I17@
+1 WIFE @I18@
+1 MARR
+2 DATE 24 DEC 1929
+2 PLAC Dresden, Saxony, Germany
+1 CHIL @I12@
+2 PEDI step
+1 NOTE George was Frederick's stepson, not his biological son.
+0 @F18@ FAM
+1 HUSB @I35@
+1 WIFE @I18@
+1 CHIL @I12@
+0 @I35@ INDI
+1 NAME Georgij /Nemirovič-Dančenko/
+2 NICK Georg von Nemirowitsch-Dantschenko
+1 SEX M
+1 BIRT
+2 DATE 19 JUL 1889
+2 PLAC St. Petersburg, Russian Empire
+2 NOTE 7 Jul 1889 Old Style = 19 Jul New Style (Russian Wikipedia, Rodovid). osmikon.de gives 20 Jul.
+1 EDUC Imperial School of Jurisprudence, St. Petersburg (graduated 1910, top of class)
+1 OCCU Imperial civil servant (Imperial Council 1910; Court Councillor 1914); press chief of General Wrangel's government in Crimea; later writer, editor and speaker
+1 MARR
+2 DATE 30 OCT 1915
+2 PLAC Panteleimon Church, St. Petersburg, Russian Empire
+2 NOTE Married Anna Vladimirovna Udyanovskaya. Metric book, TsGIA SPb f.19 op.127 d.3148 l.234 (cited by Rodovid). VGD index of St. Petersburg metric books: groom "court councillor (n.s.) Georgij Vladimirovich", bride "Udyanovskaya, daughter of a provincial secretary, Anna Vladimirovna", Panteleimon church, 30 Oct 1915. First marriage, 27 Jan 1913 (church listed as "Skorb. Latysh.", TsGIA SPb 19-127-2810 l.7): Georgij, then a titular councillor, married his first cousin Olga Konstantinovna Nemirovich-Danchenko (b. 1890), daughter of Col. (later Maj.-Gen.) Konstantin Prokofievich. Georgij's own baptism record is in TsGIA SPb 19-125-1063 l.748 (church of the Engineers' Castle, 1889; father a captain). Rodovid lists a son, Georgij Georgievich, born 21 Sep 1916 in St. Petersburg ("alternative date 1922"); this may be a conflation with George (b. Munich, 6 Oct 1921) or an earlier son. Brother: Vasily Vladimirovich (4 Mar 1887 - 22 Sep 1970), married Olga Iosifovna Doboshinskaya in Gatchina.
+1 BURI
+2 DATE 1939
+2 PLAC Siselinna cemetery, Tallinn, Estonia
+1 RESI
+2 DATE 25 FEB 1921
+2 PLAC Pension Lörsch, Schellingstraße 37, Munich, Bavaria, Germany
+2 NOTE Arrived in Munich with his wife Anna, after a short stay in Rome. Stateless after 1922.
+1 RESI
+2 DATE ABT 1930
+2 PLAC France
+1 RESI
+2 DATE 1932
+2 PLAC Clichy, near Paris, France
+2 NOTE Law doctorate; member of the Young Russia (Mladorossi) movement; editorial secretary of "Illustrirovannaya Rossiya"; Freemason (Paris lodge "Free Russia", 1932/1934); board member of the National Union of Russian Writers and Journalists in France from 1937.
+1 DEAT
+2 DATE 23 AUG 1939
+2 PLAC Tallinn (Reval), Estonia
+2 NOTE Russian Wikipedia; also "Vesti dnya", Tallinn, 26 Aug 1939.
+1 FAMS @F18@
+1 FAMC @F21@
+1 NOTE Probable biological father of George (b. Munich, Oct 1921). Source: osmikon.de dossier "Munich and the Russian Revolution", biography "Networking for the Monarchy". Author of "V Krymu pri Vrangele" and "The Summer of the Lord". In Munich he edited the Aufbau correspondence and was secretary of the Russian Monarchist Association in Bavaria. He was associated with Scheubner-Richter and spoke at an NSDAP event in April 1921. He had one older brother.
+0 @F11@ FAM
+1 HUSB @I15@
+1 WIFE @I16@
+1 CHIL @I13@
+0 @F12@ FAM
+1 HUSB @I19@
+1 WIFE @I20@
+1 MARR
+2 DATE 14 SEP 1884
+2 PLAC Berlin, Germany
+1 CHIL @I24@
+1 CHIL @I26@
+1 CHIL @I27@
+1 CHIL @I17@
+1 CHIL @I28@
+0 @F14@ FAM
+1 HUSB @I24@
+1 WIFE @I25@
+1 MARR
+2 DATE 21 MAR 1914
+2 PLAC Dresden, Saxony, Germany
+0 @F15@ FAM
+1 HUSB @I29@
+1 WIFE @I30@
+1 CHIL @I20@
+0 @F16@ FAM
+1 HUSB @I31@
+1 WIFE @I32@
+1 MARR
+2 DATE 1822
+1 CHIL @I29@
+0 @F17@ FAM
+1 HUSB @I33@
+1 WIFE @I34@
+1 MARR
+2 DATE 2 OCT 1797
+2 PLAC Kempen, Posen, Prussia
+1 CHIL @I31@
+0 @F13@ FAM
+1 HUSB @I21@
+1 WIFE @I22@
+1 CHIL @I9@
+1 CHIL @I23@
+0 @F22@ FAM
+1 HUSB @I42@
+1 WIFE @I43@
+1 MARR
+2 DATE 11 OCT 1911
+2 PLAC Boston, Suffolk, Massachusetts, USA
+2 NOTE MA State Vital Records, p. 261 no. 5997.
+1 CHIL @I10@
+1 NOTE Children: Mary E. (b. 13 Jun 1912), Kathleen/Cathleen P. (b. 11 May 1914), James F. (b. 26 Sep 1915), John P. (b. c.1918) and Helen (b. 3 Aug 1920), all born in Boston. A Helen C. Lyons obituary (Boston Herald, 16 Dec 1957) mentions Mrs Kathleen P. McLellan, John J. and James F.
+0 @I42@ INDI
+1 NAME Lawrence Francis /Lyons/
+1 SEX M
+1 BIRT
+2 DATE 20 MAR 1884
+2 PLAC Buggans (Boggauns), Killeroran registration district, Mountbellew Union, County Galway, Ireland
+2 NOTE Civil birth register, Killeroran district, 1884, entry no. 438 (irishgenealogy.ie certified copy 01989838). Laurence, male, born 20 Mar 1884 at Buggans. Father Patt Lyons, farmer, of Buggans. Mother Mary Lyons, formerly Naughton. Informant: Mary Lyons, mother (her mark). Registered 24 Apr 1884; registrar Allen French. Later records give 20 Mar 1886 (1909 Declaration, WWI draft) or 21 Feb 1884 (Social Security, WWII draft). The Loughrea Laurence Lyons of 2 Nov 1885, son of John Lyons and Margaret Doolan, is a different person.
+1 RESI
+2 DATE 1901
+2 PLAC Boggauns, Cloonkeen, County Galway, Ireland
+2 NOTE 1901 Ireland census household headed by his mother Mary Lyons (57), with brothers Patrick (24), Thomas (18), Peter (11) and John (8). Father Patrick not in the household. Townland matches his birth record.
+1 OCCU Stableman (1909)
+1 IMMI
+2 DATE 3 APR 1908
+2 PLAC Boston, Massachusetts, USA
+2 NOTE Sailed from Liverpool on the SS Saxonia. Last foreign residence: Warrington, England.
+1 NATU
+2 DATE 1 APR 1909
+2 PLAC Boston, Massachusetts, USA
+2 NOTE Declaration of Intention no. 8650, U.S. Circuit Court, District of Massachusetts. Physical description: 5 ft 10 in, 170 lb, dark brown hair, gray eyes.
+1 NATU
+2 DATE 1916
+2 PLAC Massachusetts, USA
+1 RESI
+2 DATE 1930
+2 PLAC Boston, Suffolk, Massachusetts, USA
+2 NOTE Still in Boston in 1940 and 1950.
+1 FAMS @F22@
+1 FAMC @F23@
+1 NOTE FamilySearch Family Tree ID GKKB-H2P.
+0 @I43@ INDI
+1 NAME Ellen /Connell/
+1 SEX F
+1 BIRT
+2 DATE ABT 1885
+2 PLAC Ireland
+1 IMMI
+2 DATE 1904
+1 FAMS @F22@
+1 FAMC @F24@
+1 NOTE FamilySearch Family Tree ID GKKB-78P.
+0 @I44@ INDI
+1 NAME Patrick /Lyons/
+2 NICK Patt
+1 SEX M
+1 BIRT
+2 DATE 1839
+1 OCCU Farmer
+1 RESI
+2 DATE 1884
+2 PLAC Buggans (Boggauns), Killeroran, Co. Galway, Ireland
+1 FAMS @F23@
+1 FAMC @F26@
+1 NOTE A widower when he married Mary Naughton in 1871, so he had an earlier wife, name unknown. Absent from the 1901 census household at Boggauns; possibly deceased by then.
+0 @I45@ INDI
+1 NAME Mary /Naughton/
+1 SEX F
+1 BIRT
+2 DATE ABT 1844
+2 PLAC County Galway, Ireland
+1 RESI
+2 DATE 1901
+2 PLAC Boggauns, Cloonkeen DED, County Galway, Ireland
+2 NOTE Head of household, age 57.
+1 RESI
+2 DATE 1871
+2 PLAC Coolarcha (reading uncertain), Killeroran district, County Galway, Ireland
+1 FAMS @F23@
+1 FAMC @F27@
+1 NOTE Signed her son Laurence's 1884 birth registration with her mark.
+0 @F23@ FAM
+1 HUSB @I44@
+1 WIFE @I45@
+1 MARR
+2 DATE 8 FEB 1871
+2 PLAC Roman Catholic Chapel of Ballygar, Killeroran district, Mountbellew Union, County Galway, Ireland
+2 NOTE Civil marriage register, Killeroran, 1871, entry no. 50 (irishgenealogy.ie copy 08161097). Groom Patt Lyons, full age, widower, farmer, of Buggane(s), son of James Lyons, farmer. Bride Mary Naughton, full age, spinster, of Coolarcha (?), daughter of Michael Naughton, farmer. Witnesses Michael Naughton and Biddy Mulligan (their marks). Officiant William Magauran, P.P.
+1 CHIL @I42@
+0 @I49@ INDI
+1 NAME James /Lyons/
+1 SEX M
+1 OCCU Farmer
+1 FAMS @F26@
+1 NOTE Named as Patrick Lyons's father in the 1871 marriage register.
+0 @F26@ FAM
+1 HUSB @I49@
+1 CHIL @I44@
+0 @I50@ INDI
+1 NAME Michael /Naughton/
+1 SEX M
+1 OCCU Farmer
+1 FAMS @F27@
+1 NOTE Named as Mary Naughton's father in the 1871 marriage register. A Michael Naughton was a witness at the wedding, either her father or a brother.
+0 @F27@ FAM
+1 HUSB @I50@
+1 CHIL @I45@
+1 NOTE Other children (1901 census, Boggauns): Patrick (c.1877), Thomas (c.1883), Peter (c.1890) and John (c.1893).
+0 @I46@ INDI
+1 NAME John /Connell/
+1 SEX M
+1 FAMS @F24@
+0 @I47@ INDI
+1 NAME Mary /Kileen/
+1 SEX F
+1 FAMS @F24@
+0 @F24@ FAM
+1 HUSB @I46@
+1 WIFE @I47@
+1 CHIL @I43@
+0 @F21@ FAM
+1 HUSB @I40@
+1 WIFE @I41@
+1 CHIL @I35@
+0 @I40@ INDI
+1 NAME Vladimir Prokofievich /Nemirovič-Dančenko/
+1 SEX M
+1 BIRT
+2 DATE 16 JUL 1854
+2 NOTE Rodovid gives 16 Jul 1854; its age at death implies c.1856; Russian Wikipedia gives 1864.
+1 MARR
+2 DATE 20 APR 1886
+2 PLAC Church of the Nikolaev Engineering Academy, St. Petersburg
+2 NOTE Married Ekaterina Vasilievna Junge. TsGIA SPb f.19 op.125 d.951 l.41 (cited by Rodovid).
+1 DEAT
+2 DATE 27 MAR 1896
+2 PLAC St. Petersburg, Russian Empire
+2 NOTE Alternative date 28 Mar 1896. TsGIA SPb f.19 op.126 d.956 l.44 (cited by Rodovid).
+1 OCCU Army officer (staff captain at marriage; lieutenant colonel)
+1 FAMS @F21@
+1 FAMC @F25@
+1 NOTE Father of Georgij per Russian Wikipedia ("Nemirovichi-Danchenko" family article and Georgij's article) and Rodovid. The osmikon.de article instead names the theatre director Vladimir Ivanovich (1858-1943). He was actually Vladimir Prokofievich's first cousin: their fathers, Prokofij and Ivan Vasilievich, were brothers.
+0 @I41@ INDI
+1 NAME Ekaterina Vasilievna /Junge/
+2 NICK Katharina Bertha
+1 SEX F
+1 BIRT
+2 DATE 16 JUL 1864
+1 DEAT
+2 DATE 1 FEB 1922
+2 PLAC Petrograd (St. Petersburg), Russia
+2 NOTE Typhus; address Voinova St. 34, apt 53; death reported by her husband. TsGA SPb f.R-6143 op.2 d.1180 (cited by Rodovid). Russian Wikipedia gives "after 1924".
+1 FAMS @F21@
+1 FAMC @F33@
+1 NOTE "From an assimilated German family" (osmikon.de). Baptismal name Katharina Bertha. Second marriage, 27 Apr 1908, church of the Imperial School of Jurisprudence, St. Petersburg, to court councillor Vladimir Alexandrovich Hartmann (TsGIA SPb f.19 op.127 d.2147, cited by Rodovid). Sisters: Emilie (c.1860, m. Alexeev), Elisabeth (c.1862, m. Anger, then Ascher) and Maria (1867-1915, m. Adolf von Brandt, then Count Alexander Nirod). Rodovid ID 1179824; Wikidata Q109752917.
+0 @I48@ INDI
+1 NAME Prokofij Vasilievich /Nemirovič-Dančenko/
+1 SEX M
+1 BIRT
+2 DATE ABT 1813
+1 OCCU Army officer (colonel)
+1 FAMS @F25@
+1 FAMC @F34@
+1 NOTE Brother of Ivan Vasilievich (1803-c.1869), the father of theatre director Vladimir Ivanovich and writer Vasily Ivanovich Nemirovich-Danchenko. Noble family (arms Gozdawa) in the Chernigov and Kazan genealogy books, descended from Danila Nemirich, who received estates from Bohdan Khmelnytsky (Russian Wikipedia).
+0 @F25@ FAM
+1 HUSB @I48@
+1 WIFE @I60@
+1 CHIL @I40@
+1 NOTE Also a son, Konstantin Prokofievich (b. 10 Jun 1864), retired major-general after 1916. His daughter Olga (b. 1890) married her cousin Georgij.
+0 @I59@ INDI
+1 NAME Vladimir /Udyanovsky/
+1 SEX M
+1 OCCU Provincial secretary (gubernsky sekretar)
+1 FAMS @F32@
+1 NOTE Father of Anna Vladimirovna Udyanovskaya (patronymic; Rodovid).
+0 @F32@ FAM
+1 HUSB @I59@
+1 CHIL @I18@
+0 @I60@ INDI
+1 NAME Alexandra Ivanovna /Kalinina/
+1 SEX F
+1 FAMS @F25@
+1 NOTE Daughter of a colonel of the Don Cossack Host (Rodovid).
+0 @I61@ INDI
+1 NAME Vasily Prokopovich /Nemirovič-Dančenko/
+1 SEX M
+1 BIRT
+2 DATE 1773
+1 OCCU Cornet (cavalry officer)
+1 FAMS @F34@
+1 FAMC @F35@
+1 NOTE Also father of Ivan Vasilievich (1803-1862, d. Shemokmedi, Georgia), who married Alexandra Kasparovna Yagubyan (Armenian). Ivan's sons were the theatre director Vladimir Ivanovich and the writer Vasily Ivanovich Nemirovich-Danchenko. Rodovid ID 639338.
+0 @F34@ FAM
+1 HUSB @I61@
+1 CHIL @I48@
+0 @I62@ INDI
+1 NAME Prokop Ivanovich /Nemirovič-Dančenko/
+1 SEX M
+1 OCCU Viyskovyi tovarysh ("military fellow", a Cossack Hetmanate rank)
+1 DEAT
+2 DATE BEF 1784
+1 FAMS @F35@
+1 FAMC @F36@
+0 @F35@ FAM
+1 HUSB @I62@
+1 CHIL @I61@
+0 @I63@ INDI
+1 NAME Ivan Matveevich /Nemirovič-Dančenko/
+1 SEX M
+1 FAMS @F36@
+0 @I64@ INDI
+1 NAME Ulyana Semyonovna /Vindrikova/
+1 SEX F
+1 FAMS @F36@
+0 @F36@ FAM
+1 HUSB @I63@
+1 WIFE @I64@
+1 CHIL @I62@
+1 NOTE Rodovid (user-contributed). The family descends from Danila Nemirich (17th c.), per Russian Wikipedia.
+0 @I65@ INDI
+1 NAME Vasily Andreevich /Junge/
+1 SEX M
+1 BIRT
+2 DATE 1 FEB 1830
+2 PLAC Riga, Livonia, Russian Empire
+1 CHR
+2 DATE 19 MAR 1830
+2 PLAC Riga Cathedral (Dom), Riga
+1 DEAT
+2 DATE 21 DEC 1897
+2 PLAC St. Petersburg, Russian Empire
+1 FAMS @F33@
+1 FAMC @F37@
+1 NOTE Rodovid ID 422477. Married Agnes Andresen on 7 Jan 1860. Brother of Eduard Andreevich Junge (1831-1898), professor of ophthalmology at the Military Medical Academy and a founder of Koktebel, who married Countess Ekaterina Fyodorovna Tolstaya, the painter Ekaterina Junge.
+0 @I66@ INDI
+1 NAME Agnes Cecilia Eugenia Fabiana /Andresen/
+1 SEX F
+1 BIRT
+2 DATE 15 MAR 1842
+1 RESI
+2 DATE 1914
+2 PLAC Sobornaya St. 23, Gatchina, Russia
+1 DEAT
+2 DATE AFT 1914
+1 FAMS @F33@
+0 @F33@ FAM
+1 HUSB @I65@
+1 WIFE @I66@
+1 MARR
+2 DATE 7 JAN 1860
+1 CHIL @I41@
+0 @I67@ INDI
+1 NAME Johann Heinrich /Junge/
+1 SEX M
+1 BIRT
+2 DATE ABT 1802
+2 PLAC Courland
+1 OCCU Tenant (lessee) of the farm "Posedorf" (Poliems, Valmar parish; later Valmiera district, Latvia)
+1 DEAT
+2 DATE ABT 1838
+2 PLAC Mitau (Jelgava), Courland
+1 FAMS @F37@
+1 NOTE Rodovid ID 309178 / Wikidata Q109735518; cites Latvian State Historical Archives reply 3-R-8331/664 (19 Feb 2007) and the Geneanet tree "rozanov". His father was a Junge born c.1772, first name not recorded. Children: Vasily (1830, Riga), Eduard (12 Nov 1831, Mitau; the ophthalmologist) and Henrietta (15 Dec 1836, Riga). The Russian patronymic "Andreevich" used by his sons does not match "Johann Heinrich"; this is unexplained but common for Baltic Germans in Russian service.
+0 @I68@ INDI
+1 NAME Gertrude Wilhelmine /Heidel/
+1 SEX F
+1 BIRT
+2 DATE 14 MAR 1802
+2 PLAC Riga
+1 FAMS @F37@
+1 FAMC @F38@
+1 NOTE Rodovid ID 309179. Siblings: Johann Jakob Heidel (b. 17 Jan 1800, Riga, merchant) and Gottlieb Eduard Heidel (b. 1 Jun 1806, Riga). Her son Vasily's baptismal sponsors were Eduard Heidel (probably her brother), Melchior Heidel (probably her father) and Anna Christina Heidel (her mother) (Rodovid).
+0 @F37@ FAM
+1 HUSB @I67@
+1 WIFE @I68@
+1 MARR
+2 DATE 17 JUN 1823
+2 PLAC St. Peter's Church, Riga
+1 CHIL @I65@
+0 @I69@ INDI
+1 NAME Johann Melchior /Heidel/
+1 SEX M
+1 BIRT
+2 DATE ABT 1770
+2 PLAC Riga
+1 OCCU Tanner (Gerber)
+1 FAMS @F38@
+1 NOTE Rodovid ID 309180 / Wikidata Q109853762.
+0 @I70@ INDI
+1 NAME Anna Christina /Michaelis/
+1 SEX F
+1 BIRT
+2 DATE ABT 1770
+2 PLAC Riga
+1 FAMS @F38@
+1 NOTE Rodovid ID 309181 / Wikidata Q109854141.
+0 @F38@ FAM
+1 HUSB @I69@
+1 WIFE @I70@
+1 CHIL @I68@
+0 @F19@ FAM
+1 HUSB @I36@
+1 WIFE @I37@
+1 MARR
+2 DATE 23 MAR 1866
+2 NOTE Scotland Civil Registration marriage: Alexr McLellan, 24, widower, cotton weaver, son of John McLellan and Margaret Morrison, married Elizabeth Gordon, 24, daughter of William Gordon and Janet Smith. Place not shown in the index; probably Ayrshire or Glasgow.
+1 CHIL @I21@
+0 @F20@ FAM
+1 HUSB @I38@
+1 WIFE @I39@
+1 MARR
+2 DATE 19 JUL 1879
+2 PLAC Dennistoun, Glasgow, Scotland
+1 CHIL @I22@
+0 TRLR
