@@ -21,8 +21,10 @@ Research started 2026-11-18 using FamilySearch. The importable version is [[fami
 ```
 Liam M. Pek
 ├── Father: Hengky "Hank" Gunawan Pek (b. 1960, Padang, West Sumatra); the family moved to Jakarta in the late 1960s
-│   └── Father: Pek Leng Kim (born Padang; family took the Indonesian surname Gunawan)
-│       Mother: unknown
+│   ├── Father: Pek Leng Kim (born Padang; family took the Indonesian surname Gunawan); possibly the Iskandar Gunawan (b. 7 Feb 1930) in Quincy, MA public records
+│   └── Mother: Sukmawati Gunawan, born Tjoa Hong Tjoei (8 Jan 1932, Padang – 18 Jul 2004, Norfolk Co., MA); Chinese name confirmed by Liam
+│       ├── Father: Ke K. Tjoa (named in her Social Security record)
+│       └── Mother: Eng K. Ang (named in her Social Security record)
 └── Mother: Kristen A. Von Koschembahr (7 Dec 1966 – 16 Jul 2016)
     ├── Father: Alexander "Alex" Von Koschembahr (23 Jun 1946, Germany – 24 Jun 2009, St. Johns Co., FL)
     │   ├── Father: George Von Koschembahr, born Georg von Nemirowitsch-Dantschenko (6 Oct 1921, Munich – 15 Sep 1996)
@@ -241,6 +243,30 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
    - whether the family has a written genealogy book or ancestral tablet
 
    Pek (Hokkien *Pe̍h*) is the surname 白 (Bai in Mandarin), "marga Bái [Peq]" ([budaya-tionghoa.net](https://www.budaya-tionghoa.net/?p=3790)). FamilySearch's *Indonesia, Civil Registration, 1806–1997* collection indexes about 1,150 Pek records, mostly Chinese-Indonesian families in East Java (Surabaya, Pasuruan, Probolinggo, Banyuwangi), up to about 1956. None matches "Leng Kim Pek" so far. With a hometown and his grandparents' names, his great-grandparents could be searchable there. Indexes write the names given name first, e.g. "Kim Poo Pek".
+
+   **US records (found 2026-11-18):** Dad's Chinese name is **Pek Seng Ki**.
+   - US public records list a "Hemgjy" (Hengky) Gunawan, born **6 Mar 1960**, in Franklin, MA in 2008.
+   - **Sukmawati Gunawan**, born **8 Jan 1932 in Padang**, died 18 Jul 2004 in Norfolk Co., MA.
+     - Her Social Security record (NUMIDENT, ark 6KM3-29Q1) names her parents as **Eng K. Ang** and **Ke K. Tjoa**.
+     - A claims-index summary gives her name as "Hong Tjoei Tjoa", which would make her née Tjoa.
+   - An **Iskandar Gunawan**, born **7 Feb 1930**, lived in Quincy, MA in 2002–09.
+   - Property and people-search sites list Sukmawati, Iskandar and Hengky Gunawan at the same address: 45 Bradford St, Quincy.
+   - No obituary or death record was found for Iskandar.
+   - **Confirmed by Liam:** Sukmawati's Chinese name was Tjoa Hong Tjoei, so she is Dad's mother.
+   - Still to confirm: whether Iskandar Gunawan was Pek Leng Kim.
+   - **Tjoa–Ang family in Padang:**
+     - No indexed Padang record matches "Ke K. Tjoa" and "Eng K. Ang". Other Tjoa–Ang couples are indexed, but none fits:
+       - Koan Seng Tjoa and Loan Giok Nio Ang (daughter b. c.1914).
+       - Goan Seng Tjoa and Kwie Giok Nio Ang (daughter b. 1 May 1919).
+     - FamilySearch's name index for Padang stops in the 1920s.
+     - **Her birth register exists:** "Kelahiran Cina 1927–1940" (Chinese births, Kantor Catatan Sipil Padang), FamilySearch film 1474366 / DGS 9161345, 3,079 images.
+       - The images are restricted to FamilySearch Centers and affiliate libraries, and the volume isn't name-indexed.
+       - At a Center, browse to January 1932 for Tjoa Hong Tjoei. The entry should name her father in full and maybe her mother.
+       - The same catalogue has "Kematian Cina 1922–1945" (Chinese deaths; film 1474368), which may show what happened to her parents.
+   - **Immigration papers:** FamilySearch's US immigration and naturalization indexes stop before the family's arrival. The files would be **USCIS A-files**:
+     - Dad can request his own file through a USCIS FOIA request (free).
+     - Sukmawati's file can be requested through FOIA with proof of death.
+     - A-files usually include the Indonesian passport, birth details and parents' names.
 
    **Update:** the family is from **Padang**, West Sumatra, and moved to Jakarta in the late 1960s. The Indonesian surname adopted was **Gunawan**.
    - FamilySearch has only four indexed Pek records for Padang and Padangpanjang (1919–1944). One is a Pek family in Padang in 1919: Tjioe Pek and Kim Kie Nio Ang, with a daughter born 20 Oct 1919. They aren't linked to us yet.

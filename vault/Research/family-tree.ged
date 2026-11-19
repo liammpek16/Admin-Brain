@@ -22,8 +22,9 @@
 1 FAMS @F1@
 1 FAMC @F2@
 1 BIRT
-2 DATE 1960
+2 DATE 6 MAR 1960
 2 PLAC Padang, West Sumatra, Indonesia
+2 NOTE Date from US Public Records 1970-2009 ("Hemgjy Gunawan", Franklin, MA, 2008; FamilySearch ark 1:1:KL2Y-ZW3). Chinese name Pek Seng Ki (family information).
 1 RESI
 2 DATE ABT 1968
 2 PLAC Jakarta, Indonesia
@@ -40,7 +41,7 @@
 2 DATE ABT 1968
 2 PLAC Jakarta, Indonesia
 1 FAMS @F2@
-1 NOTE Name from family memory ("Pek Leng Kim, I think"); not yet confirmed by a record. FamilySearch "Indonesia, Civil Registration, 1806-1997" has only four indexed Pek entries for Padang/Padangpanjang (1919-1944) and none for Leng Kim. One possible related family: Tjioe Pek and Kim Kie Nio Ang, with a daughter Ham Hie Nio Pek born 20 Oct 1919 in Padang. No link established.
+1 NOTE Name from family memory ("Pek Leng Kim, I think"); not yet confirmed by a record. Possible US identity: Iskandar Gunawan (b. 7 Feb 1930), at Quincy, MA, 2002-2009 (US Public Records, ark 1:1:KL2Y-Z7L). People-search sites list him at 45 Bradford St, Quincy, with Sukmawati and Hengky Gunawan. No death record found; unconfirmed. FamilySearch "Indonesia, Civil Registration, 1806-1997" has only four indexed Pek entries for Padang/Padangpanjang (1919-1944) and none for Leng Kim. One possible related family: Tjioe Pek and Kim Kie Nio Ang, with a daughter Ham Hie Nio Pek born 20 Oct 1919 in Padang. No link established.
 0 @I4@ INDI
 1 NAME Kristen A. /Von Koschembahr/
 1 SEX F
@@ -605,7 +606,38 @@
 1 CHIL @I1@
 0 @F2@ FAM
 1 HUSB @I3@
+1 WIFE @I71@
 1 CHIL @I2@
+0 @I71@ INDI
+1 NAME Sukmawati /Gunawan/
+1 NAME Hong Tjoei /Tjoa/
+2 TYPE birth
+1 SEX F
+1 BIRT
+2 DATE 8 JAN 1932
+2 PLAC Padang, West Sumatra, Indonesia
+1 RESI
+2 PLAC 45 Bradford St, Quincy, Norfolk, Massachusetts, USA
+1 DEAT
+2 DATE 18 JUL 2004
+2 PLAC Norfolk County, Massachusetts, USA
+1 FAMS @F2@
+1 FAMC @F39@
+1 NOTE Mother of Hengky. Liam confirmed (18 Nov 2026) that her Chinese name was Tjoa Hong Tjoei, matching the Social Security index. Her 1932 birth should be in the Padang Chinese civil birth register 1927-1940 (Kantor Catatan Sipil Padang; FamilySearch film 1474366, DGS 9161345, 3,079 images). The images are restricted to FamilySearch Centers and affiliate libraries; the register is not name-indexed. Born in Padang, the family's hometown; lived in Norfolk County, MA; people-search sites list her at the same Quincy address as Hengky and Iskandar Gunawan. Sources: Social Security NUMIDENT (FamilySearch ark 1:1:6KM3-29Q1), parents "Eng K Ang" and "Ke K Tjoa"; SSDI (ark 1:1:J5F2-GYH), d. 18 Jul 2004, Norfolk Co. Name variants "Hong Tjoei Tjoa" / "Hong Tjheei Tjea" from a Social Security claims-index summary (sortedbyname.com), which suggests a maiden name of Tjoa. Needs confirmation from Hengky.
+0 @I72@ INDI
+1 NAME Ke K. /Tjoa/
+1 SEX M
+1 FAMS @F39@
+1 NOTE Probably Sukmawati's father, as her maiden name appears to be Tjoa. Named in her NUMIDENT.
+0 @I73@ INDI
+1 NAME Eng K. /Ang/
+1 SEX F
+1 FAMS @F39@
+1 NOTE Probably Sukmawati's mother. Named in her NUMIDENT. The Ang family was in Padang: e.g. Kim Kie Nio Ang, wife of Tjioe Pek (1919). No link established.
+0 @F39@ FAM
+1 HUSB @I72@
+1 WIFE @I73@
+1 CHIL @I71@
 0 @F3@ FAM
 1 HUSB @I5@
 1 WIFE @I6@

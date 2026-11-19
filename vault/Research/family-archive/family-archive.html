@@ -206,11 +206,14 @@ const PLACES = {
 /* status: record | probable | tree | family | living | unknown */
 const P = {
  liam:{n:"Liam M. Pek",line:"root",st:"living",gen:"You",bio:["The person this archive is built around. Liam's father's family is Chinese-Indonesian, from Padang in West Sumatra. His mother's family brings together Russian, Baltic-German, German, Scottish and Irish lines that met in and around Boston."]},
- hengky:{n:"Hengky \"Hank\" Gunawan Pek",line:"pek",st:"living",b:["1960","padang"],res:"Moved to Jakarta in the late 1960s",
+ hengky:{n:"Hengky \"Hank\" Gunawan Pek",alt:"Chinese name Pek Seng Ki",line:"pek",st:"living",b:["6 Mar 1960","padang"],res:"Moved to Jakarta in the late 1960s; later Massachusetts",
    bio:["Born in Padang, West Sumatra, into a Chinese-Indonesian family whose Hokkien surname is Pek (白, Bai in Mandarin). In the 1960s, when Chinese Indonesians were pressed to take Indonesian-sounding names, the family adopted the surname Gunawan. The family moved from Padang to Jakarta in the late 1960s.","He later married Kristen A. Von Koschembahr. Jeanne McLellan Bundtzen's 2019 obituary lists him as her son-in-law, \"Hank Hengky Gunawan Pek\"."]},
  lengkim:{n:"Pek Leng Kim",alt:"Gunawan",line:"pek",st:"family",b:["","padang"],
-   bio:["Hengky's father, known from family memory as Pek Leng Kim. Born in Padang; the family took the Indonesian surname Gunawan and moved to Jakarta in the late 1960s.","No record has been found yet. FamilySearch's indexed Padang civil registers (1912–1945) contain only four Pek entries, none for Leng Kim. His birth year would let the unindexed Padang registers be searched page by page."]},
- pekmom:{n:"Hengky's mother",line:"pek",st:"unknown",bio:["Name not yet known. Her Chinese surname would help identify the family in Padang records."]},
+   bio:["Hengky's father, known from family memory as Pek Leng Kim. Born in Padang; the family took the Indonesian surname Gunawan and moved to Jakarta in the late 1960s.","No record under the name Pek Leng Kim has been found. In the US he may be the Iskandar Gunawan, born 7 Feb 1930, whom public records place in Quincy, Massachusetts, from 2002 to 2009, at the same address as Sukmawati and Hengky Gunawan. No death record for Iskandar was found. This needs confirming with Hengky."]},
+ pekmom:{n:"Sukmawati Gunawan",alt:"born Tjoa Hong Tjoei",line:"other",st:"record",b:["8 Jan 1932","padang"],d:["18 Jul 2004","Norfolk County, Massachusetts"],res:"Quincy, Massachusetts",
+   bio:["Hengky's mother, born Tjoa Hong Tjoei on 8 Jan 1932 in Padang; the family confirms her Chinese name, which also appears in the Social Security claims index. Her Social Security record names her parents as Ke K. Tjoa and Eng K. Ang. Her birth should be in Padang's 1927–1940 Chinese birth register, which FamilySearch holds on restricted film 1474366.","She lived in Quincy, Massachusetts, where public records list her at the same address as Iskandar and Hengky Gunawan, and died in Norfolk County in July 2004. No obituary has been found."]},
+ tjoaF:{n:"Ke K. Tjoa",line:"other",st:"record",b:["","padang"],bio:["Sukmawati's father: named as a parent in her Social Security record, and the source of her family name Tjoa. Padang had a large Tjoa community; his full name should appear on her 1932 birth registration."]},
+ angM:{n:"Eng K. Ang",line:"other",st:"record",bio:["Named as a parent in Sukmawati Gunawan's Social Security record; probably her mother. The Ang family is recorded in Padang, but no link to them is established."]},
  kristen:{n:"Kristen A. Von Koschembahr",line:"kosch",st:"record",b:["7 Dec 1966",null],d:["16 Jul 2016",null],bur:"Saint Joseph Cemetery, West Roxbury, Boston",
    bio:["Liam's mother. Daughter of Alexander \"Alex\" Von Koschembahr and Jeanne McLellan, who married in Massachusetts in 1966 and divorced in 1977. Her younger brother Gregory (1968–1999) died at 31.","Public records place her in Allston, Boston, in 2000. She died in 2016 and is buried at Saint Joseph Cemetery in West Roxbury, alongside her father, brother and mother."]},
  alex:{n:"Alexander \"Alex\" Von Koschembahr",alt:"registered as Dantschenko in 1948",line:"nemir",st:"record",b:["23 Jun 1946","burg"],d:["24 Jun 2009","St Johns County, Florida"],bur:"Saint Joseph Cemetery, West Roxbury",
@@ -294,7 +297,11 @@ const P = {
 };
 
 const D = {
- fam_pek:{t:"Family information",r:"From Liam, November 2026",s:"Hengky's father was Pek Leng Kim; the family took the Indonesian surname Gunawan, came from Padang and moved to Jakarta in the late 1960s."},
+ fam_pek:{t:"Family information",r:"From Liam, November 2026",s:"Hengky's Chinese name is Pek Seng Ki; his mother's was Tjoa Hong Tjoei (Sukmawati Gunawan). His father was Pek Leng Kim; the family took the Indonesian surname Gunawan, came from Padang and moved to Jakarta in the late 1960s."},
+ numident_suk:{t:"Social Security record of Sukmawati Gunawan",r:"US Social Security NUMIDENT",u:FS("6KM3-29Q1"),s:"Born 8 Jan 1932, Padang, Indonesia; died 18 Jul 2004; parents Eng K. Ang and Ke K. Tjoa."},
+ ssdi_suk:{t:"Social Security Death Index, Sukmawati Gunawan",r:"SSDI",u:FS("J5F2-GYH"),s:"Died 18 Jul 2004, Norfolk County, Massachusetts."},
+ pubrec_hengky:{t:"US public records, Hengky Gunawan",r:"US Public Records 1970–2009",u:FS("KL2Y-ZW3"),s:"\"Hemgjy Gunawan\", born 6 Mar 1960, Franklin, Massachusetts, 2008."},
+ pubrec_isk:{t:"US public records, Iskandar Gunawan",r:"US Public Records 1970–2009",u:FS("KL2Y-Z7L"),s:"Born 7 Feb 1930; Quincy, Massachusetts, 2002–2009. Property and people-search sites list Iskandar, Sukmawati and Hengky Gunawan at the same Quincy address."},
  obit_jeanne:{t:"Obituary of Jeanne E. McLellan Bundtzen",r:"US Obituary Records 2014–2023 · 10 Apr 2019",u:FS("61JV-FZJV"),s:"Names her parents Alexander McLellan and Kathleen P. Lyons McLellan, her brother John, her children Kristen A. and Gregory Von Koschembahr, son-in-law Hank Hengky Gunawan Pek and grandson Liam M. Pek."},
  obit_greg:{t:"Obituary of Gregory Vonkoschembahr",r:"GenealogyBank · 14 Apr 1999",u:FS("QKWL-SF61"),s:"Names his parents Alexander Vonkoschembahr and Jeanne McLellan Bundtzen, stepfather John Bundtzen, and sister Kristen."},
  obit_bundtzen:{t:"Obituary of John E. Bundtzen",r:"Worcester Telegram & Gazette · 25 Nov 2003",u:FS("QKWL-QGK7"),s:"Names his wife Jeanne McLellan Bundtzen and her children Gregory and Kristen Vonkoschembahr."},
@@ -373,7 +380,9 @@ const L = [
  ["liam","hengky","bio","record",["obit_jeanne","fam_pek"]],
  ["liam","kristen","bio","record",["obit_jeanne"]],
  ["hengky","lengkim","bio","family",["fam_pek"]],
- ["hengky","pekmom","bio","unknown",[]],
+ ["hengky","pekmom","bio","record",["fam_pek","numident_suk","pubrec_hengky","pubrec_isk"]],
+ ["pekmom","tjoaF","bio","record",["numident_suk"]],
+ ["pekmom","angM","bio","record",["numident_suk"]],
  ["kristen","alex","bio","record",["obit_greg","ct_divorce"]],
  ["kristen","jeanne","bio","record",["obit_jeanne","obit_bundtzen","obit_greg"]],
  ["alex","george","bio","record",["census50_woburn","aro_cover","aro_pciro"]],
@@ -434,7 +443,7 @@ const L = [
 
 /* records about a person's own life (not a parent link) */
 const LIFE = {
- kristen:["fag_stjoseph"], alex:["batory","ssdi_alex","ct_divorce","fag_stjoseph"], george:["numident_george","nat_george","aro_interview","aro_pciro","fag_mtauburn"],
+ kristen:["fag_stjoseph"], pekmom:["numident_suk","ssdi_suk"], lengkim:["pubrec_isk"], hengky:["pubrec_hengky","fam_pek"], alex:["batory","ssdi_alex","ct_divorce","fag_stjoseph"], george:["numident_george","nat_george","aro_interview","aro_pciro","fag_mtauburn"],
  annamaria:["numident_am","nat_am","obit_am","batory","fag_mtauburn"], frederick:["decl_fred","numident_fred","census50_woburn","fag_mtauburn"],
  mathilde:["fag_mtauburn"], ernst:["burial_ernst"], georgij:["osmikon","ruwiki_g","rod_g","vgd"], annaU:["decl_fred","rod_anna","vgd","aro_arr48","me_death","fag_mtauburn"],
  vladimirP:["vgd","rod_vlad"], ekaterina:["rod_ek","vgd"], jeanne:["fs_jeanne","ct_marr77","numident_greg","fag_stjoseph"],

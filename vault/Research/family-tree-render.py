@@ -12,7 +12,9 @@ P = {
     "hengky":    ('Hengky "Hank" Gunawan Pek', "b. 1960", "b. Padang · to Jakarta late 1960s", "pek", False),
     "kristen":   ("Kristen A. Von Koschembahr", "1966 – 2016", "brother: Gregory (1968–1999)", "kosch", False),
     "lengkim":   ("Pek Leng Kim", "", "b. Padang · family name Gunawan", "pek", True),
-    "pekmom":    ("Mother: unknown", "", "", "pek", True),
+    "pekmom":    ("Sukmawati Gunawan", "1932 – 2004", "born Tjoa Hong Tjoei · Padang", "other", False),
+    "tjoaF":     ("Ke K. Tjoa", "", "Padang", "other", False),
+    "angM":      ("Eng K. Ang", "", "", "other", False),
     "alex":      ('Alexander "Alex" Von Koschembahr', "1946 – 2009", "b. Burgsteinfurt · to New York 1949", "nemir", False),
     "jeanne":    ('Jeanne "Jeane" McLellan', "1946 – 2019", "b. Boston · brother: John L. (1943–2013)", "mcl", False),
     "george":    ("George Von Koschembahr", "1921 – 1996", "born Georg v. Nemirowitsch-Dantschenko", "nemir", False),
@@ -72,6 +74,7 @@ P = {
 PARENTS = {
     "liam": ["hengky", "kristen"],
     "hengky": ["lengkim", "pekmom"],
+    "pekmom": ["tjoaF", "angM"],
     "kristen": ["alex", "jeanne"],
     "alex": ["george", "annamaria"],
     "jeanne": ["alexmcl", "kathleen"],
