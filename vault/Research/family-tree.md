@@ -82,19 +82,27 @@ Liam M. Pek
         │   │       └── Mother: Janet (Jean) Smith
         │   └── Mother: Magdalene Kennedy Pettigrew (30 Jan 1883, Camlachie, Glasgow – 30 Jan 1953, Boston), a chocolate coverer in 1901
         │       ├── Father: Archibald Kennedy Pettigrew (13 Nov 1855, Glasgow – 19 Jul 1931, Dennistoun), hoistman; married 19 Jul 1879, Dennistoun
-        │       │   ├── Father: William Pettigrew
-        │       │   └── Mother: Margaret McOnomy
+        │       │   ├── Father: William Pettigrew (b. 23 Feb 1827?, St Quivox); married 5 May 1851, Gorbals; in Glasgow 1855, Ayr 1857
+        │       │   │   ├── Father: William Pettigrew (1 Oct 1803, St Quivox – 13 May 1864, Ayr), shoemaker (probable)
+        │       │   │   │   ├── Father: John Pettigrew (b. c.1774); married 9 Jan 1795, Newton-on-Ayr
+        │       │   │   │   └── Mother: Elizabeth Downie
+        │       │   │   └── Mother: Elizabeth Kennedy (probable)
+        │       │   └── Mother: Margaret McOnomy / McConomie (probably Ulster-born)
         │       └── Mother: Sarah Nixon (19 Nov 1856, Girvan – 15 Apr 1944, Bridgeton)
         │           ├── Father: William Nixon (c.1823, Ireland – 16 Apr 1886, Girvan), cotton hand-loom weaver
-        │           └── Mother: Isabella Stead (1825–1861); married 28 Jan 1849, Girvan
+        │           └── Mother: Isabella Stead / Steed (13 Feb 1825, Girvan – 30 Mar 1861, Girvan); married 28 Jan 1849, Girvan
+        │               ├── Father: John Stead / Steed, of Girvan (perhaps from Derryaghy, Co. Antrim; unverified)
+        │               └── Mother: Jean (Jane) McWhinnie
         └── Mother: Kathleen P. Lyons (11 May 1914?, Boston – 1987?)
             ├── Father: Lawrence Francis Lyons (20 Mar 1884, Buggans/Boggauns, Killeroran, Co. Galway – after 1953), stableman; arrived Boston 3 Apr 1908 on the SS Saxonia
-            │   ├── Father: Patrick "Patt" Lyons (b. 1839), farmer at Buggans; married Mary 8 Feb 1871 at Ballygar RC chapel (he was a widower)
-            │   │   └── Father: James Lyons, farmer
+            │   ├── Father: Patrick "Patt" Lyons (b. c.1839 – prob. early 1893), farmer at Buggans; m. (1) prob. Bridget Hughes 1862, (2) Mary Naughton 6/8 Feb 1871
+            │   │   ├── Father: James Lyons, farmer, Killian parish
+            │   │   └── Mother: Anne Burke
             │   └── Mother: Mary Naughton (b. c.1844, Co. Galway); widowed head of the household at Boggauns in 1901
-            │       └── Father: Michael Naughton, farmer
+            │       ├── Father: Thomas Naughton (church register; the civil register says Michael)
+            │       └── Mother: Mary Mulligan
             └── Mother: Ellen Connell (c.1886, Dalgin, Milltown, Co. Galway), arrived 1904; married Lawrence 11 Oct 1911, Boston
-                ├── Father: John Connell (c.1853, Co. Galway), of Dalgin, later Knockaunkeel, Milltown
+                ├── Father: John Connell (c.1853, Co. Galway), of Dalgin, later Knockaunkeel, Milltown; married Mary Killeen Jan–Mar 1882 (Tuam district)
                 │   └── Mother: Nellie Connell (c.1821), in his household in 1901 (probable)
                 └── Mother: Mary Killeen (c.1860, Co. Galway); also spelled Kileen / Killian
 ```
@@ -337,14 +345,50 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
        - Margaret Morrison's parents are unknown.
        - The Gordon line reaches James Gordon and Margaret McCracken, named in William Gordon's 1871 Girvan death record. Linking that William to Elizabeth is probable, since her own baptism isn't indexed.
      - **Next:** the Scotland 1841 and 1851 censuses for Girvan would show Alexander's age and whether he was Irish-born. ScotlandsPeople has the images (pay per view).
-6. **Connell side (solved, 2026-11-19).** Ellen's family were the Connells of Dalgin (later Knockaunkeel), near Milltown in north Co. Galway, about 40 km from the Lyons farm at Buggans.
+6. **Pettigrew, Nixon/Stead and Lyons lines (searched 2026-11-19, FamilySearch indexes):**
+   - **Pettigrew:**
+     - Archibald's civil birth record confirms his parents, William Pettigrew and Margaret McOnomy (X9GN-CLV5). They married at Gorbals on 5 May 1851 (XTB6-DQZ).
+     - Siblings: William Kennedy Pettigrew, and Magdalene, born at Ayr on 29 Sep 1857.
+     - **Wall:** William's parents aren't in the index. McConomy is an Ulster surname, so Margaret was probably Irish-born. A Margaret McConomy baptised at Long Tower, Derry, in 1824 is a possible but unproven match.
+   - **Stead:**
+     - Isabella was born at Girvan on 13 Feb 1825 and christened there on 27 Feb (XY2W-CD6). She was the eldest of eleven children of John Stead (Steed) and Jean McWhinnie, and died at Girvan on 30 Mar 1861.
+     - A user-built FamilySearch tree makes John a native of Derryaghy, Co. Antrim, born about 1800, and Jean a Jane McWhinnie christened at Inch in 1809. Both claims are unverified; the 1809 date seems too late for a mother in 1825.
+   - **Nixon:** William's parents would be named on his 1886 Girvan death record. That record is only on ScotlandsPeople, which charges per view.
+   - **Lyons:**
+     - The Killian Catholic marriage register for 6 Feb 1871 (6P2H-45CV) names Patt's parents, James Lyons and Anne Burke, and Mary's parents, Thomas Naughton and Mary Mulligan.
+     - The civil register has Mary's father as Michael. A Michael Naughton was a witness, so he may have been a brother.
+     - Patt's sister Catherine was baptised at Killian in 1833.
+     - His probable first marriage was to Bridget Hughes at Killian on 26 Feb 1862.
+     - He probably died in January–March 1893, registered in Mountbellew district (FTC1-TWL).
+   - **Next:**
+     - Killian baptisms before about 1840 on registers.nli.ie (free images), to find Patt's own baptism and James and Anne's marriage.
+     - Mary Naughton's baptism, about 1844.
+7. **Further back (searched 2026-11-19):**
+   - **Pettigrew:**
+     - William (m. 1851) was probably the son of William Pettigrew (b. 1 Oct 1803, St Quivox; d. 13 May 1864, Ayr), a shoemaker, and Elizabeth Kennedy. That William's 1864 death record (6TGH-X16V) names his parents, John Pettigrew and Elizabeth Downie, who married at Newton-on-Ayr on 9 Jan 1795 (XT2V-9ZQ).
+     - The 1827 link is probable rather than proven. Evidence for it:
+       - Two of his sons carried the middle name Kennedy, his mother's surname.
+       - One son was named Archibald, after his brother Archibald (b. 1837).
+       - He moved back to Ayr by 1857.
+       - A FamilySearch tree lists a William born 23 Feb 1827 to that couple.
+     - John Pettigrew and Elizabeth Downie are your 6× great-grandparents. No earlier generation is indexed.
+   - **Lyons:**
+     - Patt's own baptism (c.1839) and James Lyons and Anne Burke's marriage aren't in the Killian index, which is thin for 1834–1844. A James Lyons, born c.1780, was buried at Killian on 23 Jul 1850. He could be Patt's father or grandfather; that is unproven.
+     - **Naughton:** the 1871 witnesses Michael Naughton and Biddy Mulligan were a married couple at Killian, with children baptised in 1851 and 1854. That explains why the civil register named "Michael" as Mary's father.
+   - **Connell:** John Connell and Mary Killeen's civil marriage is indexed at Tuam, Jan–Mar 1882, vol. 4, p. 414 (FYWQ-Z3P / FYW3-DM2). The full entry on irishgenealogy.ie would name both fathers; Liam fetches it.
+   - **For Liam to fetch:**
+     - irishgenealogy.ie civil marriages: Tuam, 1882, Connell/Killeen. This would give John's father and Mary's father.
+     - Patt Lyons's death register, Mountbellew district, 1893.
+     - Killian baptisms before 1840 on registers.nli.ie.
+     - Patt's 1893 death register on irishgenealogy.ie. Liam fetches it, since the site blocks automated access.
+8. **Connell side (solved, 2026-11-19).** Ellen's family were the Connells of Dalgin (later Knockaunkeel), near Milltown in north Co. Galway, about 40 km from the Lyons farm at Buggans.
    - **How it's identified:** the children in the 1901 household match five Boston marriages that all name John Connell and Mary Killeen. The census doesn't give Mary's maiden name, so that part rests on the marriages.
    - **Next, all free on irishgenealogy.ie** (Liam fetches, since the site blocks automated access):
      - John Connell's marriage to Mary Killeen, about 1880–82, Tuam registration district. It would name both fathers.
      - Ellen's birth, Tuam district, possibly Apr–Jun 1886.
      - Mary's birth, about 1883.
    - **Catholic registers:** Milltown parish (Addergoole and Liskeevy) on registers.nli.ie, for baptisms and the marriage if before 1880.
-7. **Wessels side.** Anna Maria grew up in Burgsteinfurt, where her parents, August Wessels and Anna M. Elsen, presumably married around 1920–23.
+9. **Wessels side.** Anna Maria grew up in Burgsteinfurt, where her parents, August Wessels and Anna M. Elsen, presumably married around 1920–23.
    - German civil records from that era aren't online. The **Standesamt Steinfurt** (or Stadtarchiv Steinfurt) holds:
      - Anna Maria's 1924 birth register, open to the public after 110 years, so a direct descendant may need to request it.
      - August and Anna's marriage register, open after 80 years.

@@ -263,7 +263,7 @@
 2 PLAC Dennistoun, Glasgow, Scotland
 1 FAMS @F20@
 1 FAMC @F30@
-1 NOTE 1901 census household: wife Sarah, children Magdalene (18, chocolate coverer), Archibald (15), James (12), Maggie (9) and William (5). FamilySearch Family Tree ID 93R9-NDS; 7 children in the tree.
+1 NOTE 1901 census household: wife Sarah, children Magdalene (18, chocolate coverer), Archibald (15), James (12), Maggie (9) and William (5). FamilySearch Family Tree ID 93R9-NDS; 7 children in the tree. Birth: Scotland Civil Registration (ark 1:1:X9GN-CLV5), Glasgow, 13 Nov 1855, parents William Pettigrew and Margaret McOnomy. Siblings: William Kennedy Pettigrew; Magdalene, born 29 Sep 1857 at Ayr (ark 1:1:6TLX-N556, mother "McConomie").
 0 @I39@ INDI
 1 NAME Sarah /Nixon/
 1 SEX F
@@ -434,16 +434,89 @@
 0 @I55@ INDI
 1 NAME William /Pettigrew/
 1 SEX M
+1 RESI
+2 DATE 1855
+2 PLAC Glasgow, Lanarkshire, Scotland
+1 RESI
+2 DATE 1857
+2 PLAC Ayr, Ayrshire, Scotland
+1 BIRT
+2 DATE 23 FEB 1827
+2 PLAC St Quivox (Newton-on-Ayr), Ayrshire, Scotland
+2 NOTE From the FamilySearch Family Tree (KZR7-8C9), unsourced; his baptism is not in the index.
 1 FAMS @F30@
+1 FAMC @F48@
+1 NOTE Probably the eldest son of William Pettigrew (1803-1864), a shoemaker of Ayr, and Elizabeth Kennedy. Evidence: the FamilySearch tree lists a son William born at St Quivox in 1827; he named his own sons Archibald Kennedy and William Kennedy, matching his mother's surname and his brother Archibald (b. 1837); and he was living in Ayr by 1857.
 0 @I56@ INDI
 1 NAME Margaret /McOnomy/
+1 NAME Margaret /McConomie/
+2 TYPE aka
+1 NAME Margaret /McConaway/
+2 TYPE aka
 1 SEX F
 1 FAMS @F30@
+1 NOTE McConomy is an Ulster surname (Derry/Tyrone), so she was probably Irish-born. One unproven candidate: Margaret McConomy, baptised 8 Aug 1824 at Long Tower, Derry, daughter of Neil McConomy and Mary Quigly (ark 1:1:6DQH-QV2V). Not linked.
+0 @I92@ INDI
+1 NAME William /Pettigrew/
+1 NAME William /Petticrew/
+2 TYPE aka
+1 SEX M
+1 BIRT
+2 DATE 1 OCT 1803
+2 PLAC St Quivox, Ayrshire, Scotland
+1 CHR
+2 DATE 3 OCT 1803
+2 PLAC St Quivox, Ayrshire, Scotland
+2 NOTE Scotland Births and Baptisms (ark 1:1:XYQ8-651): parents John Pettigrew and Elisabeth Downie.
+1 OCCU Shoemaker
+1 DEAT
+2 DATE 13 MAY 1864
+2 PLAC Ayr, Ayrshire, Scotland
+2 NOTE Scotland Civil Registration (ark 1:1:6TGH-X16V): married shoemaker, age 60; parents John Pettigrew and Elizabeth Downie; spouse Elizabeth Kennedy.
+1 FAMS @F48@
+1 FAMC @F49@
+0 @I93@ INDI
+1 NAME Elizabeth /Kennedy/
+1 SEX F
+1 FAMS @F48@
+0 @F48@ FAM
+1 HUSB @I92@
+1 WIFE @I93@
+1 CHIL @I55@
+1 NOTE Of St Quivox / Newton-on-Ayr and Ayr. Children per records and the FamilySearch tree (K8K8-8BM): William (1827, probable), John (1828), Robert (c.1830, shoemaker, m. Jane Martin 1870), Thomas (1832), Andrew (1833), Archibald (b. 20 Jul 1837, St Quivox; d. Ayr 1862), Jane (1839), Daniel (1840), Alexander (c.1843; d. Ayr 1864), Catherine (c.1848; d. Ayr 1866).
+0 @I94@ INDI
+1 NAME John /Pettigrew/
+1 NAME John /Petticrew/
+2 TYPE aka
+1 SEX M
+1 BIRT
+2 DATE ABT 1774
+2 NOTE FamilySearch Family Tree (MP8G-HY7) gives 1774, St Quivox, and death 1864; unverified.
+1 FAMS @F49@
+0 @I95@ INDI
+1 NAME Elizabeth /Downie/
+1 NAME Elizabeth /Dounie/
+2 TYPE aka
+1 SEX F
+1 FAMS @F49@
+0 @F49@ FAM
+1 HUSB @I94@
+1 WIFE @I95@
+1 MARR
+2 DATE 9 JAN 1795
+2 PLAC Newton on Ayr (St Quivox), Ayrshire, Scotland
+2 NOTE Scotland Marriages (ark 1:1:XT2V-9ZQ), "John Petticrew" and "Elizabeth Dounie".
+1 CHIL @I92@
+1 NOTE Children baptised at St Quivox: John (1799), James (1801; d. Ayr 1864, m. Agnes Kennedy), William (1803), Thomas (1806), Daniel (1808), Elizabeth (1810), Lauchline (1814), Archibald (1816). The FamilySearch tree adds Flora (1796) and Alexander (1797).
 0 @F30@ FAM
 1 HUSB @I55@
 1 WIFE @I56@
+1 MARR
+2 DATE 5 MAY 1851
+2 PLAC Gorbals, Lanarkshire, Scotland
+2 NOTE Scotland Marriages (ark 1:1:XTB6-DQZ).
 1 CHIL @I38@
-1 NOTE From the FamilySearch Family Tree (user-contributed).
+1 NOTE Confirmed by Archibald's 1855 civil birth registration (ark 1:1:X9GN-CLV5).
 0 @I57@ INDI
 1 NAME William /Nixon/
 1 SEX M
@@ -458,12 +531,47 @@
 1 NOTE FamilySearch Family Tree ID L7X5-XLQ.
 0 @I58@ INDI
 1 NAME Isabella /Stead/
+1 NAME Isabella /Steed/
+2 TYPE aka
 1 SEX F
 1 BIRT
-2 DATE 1825
+2 DATE 13 FEB 1825
+2 PLAC Girvan, Ayrshire, Scotland
+1 CHR
+2 DATE 27 FEB 1825
+2 PLAC Girvan, Ayrshire, Scotland
+2 NOTE Scotland Births and Baptisms (ark 1:1:XY2W-CD6): parents John Stead and Jean McWhinnie.
 1 DEAT
-2 DATE 1861
+2 DATE 30 MAR 1861
+2 PLAC Girvan, Ayrshire, Scotland
+2 NOTE From the FamilySearch Family Tree (L7X5-XLT).
 1 FAMS @F31@
+1 FAMC @F47@
+0 @I90@ INDI
+1 NAME John /Stead/
+1 NAME John /Steed/
+2 TYPE aka
+1 SEX M
+1 RESI
+2 DATE FROM 1825 TO 1861
+2 PLAC Girvan, Ayrshire, Scotland
+1 FAMS @F47@
+1 NOTE The FamilySearch Family Tree (235T-3G6) says he was born about 1800 in Derryaghy parish, Co. Antrim, son of William Joseph Steed and Mary Munro. That claim is unverified.
+0 @I91@ INDI
+1 NAME Jean /McWhinnie/
+1 NAME Jane /McWhinnie/
+2 TYPE aka
+1 SEX F
+1 FAMS @F47@
+1 NOTE The FamilySearch Family Tree (K8RK-TJL) identifies her with a Jane McWhinnie christened 3 May 1809 at Inch, Wigtownshire, daughter of John McWhinnie and Helenora Dalrymple. Doubtful: she would have been 15 at Isabella's birth.
+0 @F47@ FAM
+1 HUSB @I90@
+1 WIFE @I91@
+1 MARR
+2 DATE ABT 1824
+2 PLAC Girvan, Ayrshire, Scotland
+1 CHIL @I58@
+1 NOTE Eleven children baptised at Girvan 1825-1849: Isabella, Jean, Elizabeth, Hannah, William, Mary, Hugh, Anne, Margaret, Helen and Sarah.
 0 @F31@ FAM
 1 HUSB @I57@
 1 WIFE @I58@
@@ -1028,7 +1136,7 @@
 2 PLAC Buggans (Boggauns), Killeroran, Co. Galway, Ireland
 1 FAMS @F23@
 1 FAMC @F26@
-1 NOTE A widower when he married Mary Naughton in 1871, so he had an earlier wife, name unknown. Absent from the 1901 census household at Boggauns; possibly deceased by then.
+1 NOTE A widower when he married Mary Naughton in 1871. His first wife was probably Bridget Hughes, whom a Patrick Lyons married at Killian on 26 Feb 1862 (Ireland Catholic Parish Registers, ark 1:1:6P13-T613). Sister: Catherine, baptised at Killian on 22 Jul 1833 to James Lyons and Anne Burke (ark 1:1:6P5Q-PGJG); a Catherine Lyons born c.1833 was buried at Killian on 5 Dec 1859. His own baptism (c.1839) is not in the index. Probable death: Patt Lyons, Mountbellew registration district, Jan-Mar 1893, age c.56 (Ireland Civil Registration Indexes, ark 1:1:FTC1-TWL).
 0 @I45@ INDI
 1 NAME Mary /Naughton/
 1 SEX F
@@ -1049,10 +1157,15 @@
 1 HUSB @I44@
 1 WIFE @I45@
 1 MARR
+2 DATE 6 FEB 1871
+2 PLAC Killian Roman Catholic parish, County Galway, Ireland
+2 NOTE Ireland Catholic Parish Registers (ark 1:1:6P2H-45CV), in Latin: Patritius Lyons, son of James Lyons and Anne Burke, married Maria Naughton, daughter of Thomas Naughton and Mary Mulligan.
+1 MARR
 2 DATE 8 FEB 1871
 2 PLAC Roman Catholic Chapel of Ballygar, Killeroran district, Mountbellew Union, County Galway, Ireland
 2 NOTE Civil marriage register, Killeroran, 1871, entry no. 50 (irishgenealogy.ie copy 08161097). Groom Patt Lyons, full age, widower, farmer, of Buggane(s), son of James Lyons, farmer. Bride Mary Naughton, full age, spinster, of Coolarcha (?), daughter of Michael Naughton, farmer. Witnesses Michael Naughton and Biddy Mulligan (their marks). Officiant William Magauran, P.P.
 1 CHIL @I42@
+1 NOTE Other children (1901 census, Boggauns): Patrick (c.1877), Thomas (c.1883), Peter (c.1890) and John (c.1893).
 0 @I49@ INDI
 1 NAME James /Lyons/
 1 SEX M
@@ -1061,17 +1174,29 @@
 1 NOTE Named as Patrick Lyons's father in the 1871 marriage register.
 0 @F26@ FAM
 1 HUSB @I49@
+1 WIFE @I88@
 1 CHIL @I44@
+1 NOTE Of Killian parish, Co. Galway. Children include Catherine (bap. 22 Jul 1833) and Patrick (c.1839).
+0 @I88@ INDI
+1 NAME Anne /Burke/
+1 SEX F
+1 FAMS @F26@
+1 NOTE Named as Patt Lyons's mother in the 1871 Killian Catholic marriage register and in daughter Catherine's 1833 baptism.
 0 @I50@ INDI
-1 NAME Michael /Naughton/
+1 NAME Thomas /Naughton/
 1 SEX M
 1 OCCU Farmer
 1 FAMS @F27@
-1 NOTE Named as Mary Naughton's father in the 1871 marriage register. A Michael Naughton was a witness at the wedding, either her father or a brother.
+1 NOTE Named as Mary's father in the 1871 Killian Catholic marriage register. The civil register of the same wedding gives her father as Michael Naughton. The witnesses, Michael Naughton and Biddy Mulligan, were themselves a married couple of Killian parish (children Catherine bap. 15 Jul 1851, ark 1:1:6P23-8R86, and Patrick bap. 25 Mar 1854). So the registrar probably took the witness's name, and Michael was likely Mary's brother or uncle. The church entry is preferred here.
+0 @I89@ INDI
+1 NAME Mary /Mulligan/
+1 SEX F
+1 FAMS @F27@
+1 NOTE Named as Mary Naughton's mother in the 1871 Killian Catholic marriage register. A Biddy Mulligan witnessed the wedding.
 0 @F27@ FAM
 1 HUSB @I50@
+1 WIFE @I89@
 1 CHIL @I45@
-1 NOTE Other children (1901 census, Boggauns): Patrick (c.1877), Thomas (c.1883), Peter (c.1890) and John (c.1893).
 0 @I46@ INDI
 1 NAME John /Connell/
 1 SEX M
@@ -1102,6 +1227,10 @@
 0 @F24@ FAM
 1 HUSB @I46@
 1 WIFE @I47@
+1 MARR
+2 DATE BET 1 JAN 1882 AND 31 MAR 1882
+2 PLAC Tuam registration district, Ireland
+2 NOTE Ireland Civil Registration Indexes: John Connell (ark 1:1:FYWQ-Z3P) and Mary Killeen (ark 1:1:FYW3-DM2), both Tuam, Jan-Mar 1882, vol. 4, p. 414. The full register entry on irishgenealogy.ie would name both fathers.
 1 CHIL @I43@
 1 NOTE Other children (1901/1911 censuses and Massachusetts marriages): Mary E. (c.1883; m. William M. Lally, Boston, 21 Feb 1909), Michael (c.1885), William (c.1889), Margaret "Maggie" (c.1892; m. Michael Crehin, Boston, 4 Jun 1911; arrived 1908), John J. (c.1896; m. Catherine M. Dunning, Boston, 1 Oct 1917), Nora Maria (c.1898; m. Patrick J. Kenney, Newton, 19 Nov 1923), Catherine (c.1903).
 0 @I75@ INDI
