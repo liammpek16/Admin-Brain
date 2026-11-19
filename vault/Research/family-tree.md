@@ -21,10 +21,12 @@ Research started 2026-11-18 using FamilySearch. The importable version is [[fami
 ```
 Liam M. Pek
 ├── Father: Hengky "Hank" Gunawan Pek (b. 1960, Padang, West Sumatra); the family moved to Jakarta in the late 1960s; sister Susy I. Gunawan (b. 1961)
-│   ├── Father: Pek Leng Kim (born Padang; family took the Indonesian surname Gunawan); possibly the Iskandar Gunawan (b. 7 Feb 1930) in Quincy, MA public records
-│   └── Mother: Sukmawati Gunawan, born Tjoa Hong Tjoei (8 Jan 1932, Padang – 18 Jul 2004, Norfolk Co., MA); Chinese name confirmed by Liam
-│       ├── Father: Ke K. Tjoa (named in her Social Security record)
-│       └── Mother: Eng K. Ang (named in her Social Security record)
+│   ├── Father: Pek Leng Kim, Indonesian name Iskandar Gunawan (7 Feb 1930, Padang); later of Quincy, MA
+│   │   ├── Father: Pek Ho, who migrated from China aged 18 or 21
+│   │   └── Mother: Tjia Kim Nio
+│   └── Mother: Sukmawati Gunawan, born Tjoa Tjie Hong (8 Jan 1932, Padang – 18 Jul 2004, Norfolk Co., MA)
+│       ├── Father: Ke K. Tjoa (b. 16 May 1901), named in her Social Security record
+│       └── Mother: Ang Kheng Eng ("Eng K. Ang" in her Social Security record); b. 13 Jul 1903
 └── Mother: Kristen A. Von Koschembahr (7 Dec 1966 – 16 Jul 2016)
     ├── Father: Alexander "Alex" Von Koschembahr (23 Jun 1946, Germany – 24 Jun 2009, St. Johns Co., FL)
     │   ├── Father: George Von Koschembahr, born Georg von Nemirowitsch-Dantschenko (6 Oct 1921, Munich – 15 Sep 1996)
@@ -270,7 +272,14 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
    - An **Iskandar Gunawan**, born **7 Feb 1930**, lived in Quincy, MA in 2002–09.
    - Property and people-search sites list Sukmawati, Iskandar and Hengky Gunawan at the same address: 45 Bradford St, Quincy.
    - No obituary or death record was found for Iskandar.
-   - **Iskandar vs. Dad (checked 2026-11-19):** Liam remembers "Iskandar Gunawan" as a name used for his dad. The records point to a separate, older person, but don't rule it out.
+   - **Family information from Liam (19 Nov 2026):**
+     - Iskandar Gunawan is Pek Leng Kim, Liam's grandfather. His parents were Pek Ho, who migrated from China aged 18 or 21, and Tjia Kim Nio.
+     - Sukmawati's Chinese name is Tjoa Tjie Hong. Earlier, and in a Social Security claims index, it was given as Tjoa Hong Tjoei.
+     - Her father Tjoa was born on 16 May 1901, and her mother was Ang Kheng Eng.
+     - Ang Kheng Eng was born on 13 Jul 1903.
+     - Liam's aunt has a family book and will send images.
+     - **Searched online (19 Nov 2026), nothing found:** FamilySearch's Indonesian civil indexes have no Pek–Tjia couple, no Tjoa–Ang marriage, no 1901 Tjoa birth in Padang, and no Pek Ho. Their Padang coverage is patchy, mostly 1911–1926, and the 1927–1940 Chinese birth register that would hold Iskandar (1930) and Sukmawati (1932) is restricted film 1474366. Delpher's colonial newspapers turned up only an unrelated "Sin Pek Ho" (1914).
+   - **Iskandar vs. Dad (checked 2026-11-19; resolved: Iskandar was the grandfather):** Liam remembers "Iskandar Gunawan" as a name used for his dad. The records point to a separate, older person, but don't rule it out.
      - Iskandar's record (KL2Y-Z7L, alias "Iskawiar") has its own birth date, 7 Feb 1930, and its own Quincy residence history: 02169 from Jun 1993, 02171 in Mar 1994, and 02169 through Jan 2009.
      - Dad's record (KL2Y-ZW3) keeps his 6 Mar 1960 birth date. It lists Quincy 02171 (1992–2001), a Quincy 02269 PO box (1993–98) and Franklin (1997–2009).
      - These compiled records are built around a Social Security number, so a separate birth date usually means a separate SSN.
@@ -278,7 +287,11 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
      - A 1930 birth fits a husband for Sukmawati (b. 1932) and a father for a son born in 1960.
      - Also at Quincy 02169: **Susy I. Gunawan**, b. 12 May 1961 (KL2Y-Z7H), from 1990 to 2008. **Liam confirms she is his aunt, Dad's sister.**
    - **Confirmed by Liam:** Sukmawati's Chinese name was Tjoa Hong Tjoei, so she is Dad's mother.
-   - Still to confirm, best asked of Dad: whether Iskandar Gunawan was Pek Leng Kim, and whether Dad ever used the name himself.
+   - **Next:**
+     - The family book. Look for Pek Ho's home village in China, his Chinese characters, and dates.
+     - Chinese characters for each name.
+     - Tjoa's full given name (the "Ke K.").
+     - Iskandar's date of death, if he has died.
    - **Tjoa–Ang family in Padang:**
      - No indexed Padang record matches "Ke K. Tjoa" and "Eng K. Ang". Other Tjoa–Ang couples are indexed, but none fits:
        - Koan Seng Tjoa and Loan Giok Nio Ang (daughter b. c.1914).

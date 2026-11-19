@@ -33,15 +33,24 @@
 0 @I3@ INDI
 1 NAME Leng Kim /Pek/
 2 NOTE Chinese order: Pek Leng Kim. Indonesian family name adopted: Gunawan.
+1 NAME Iskandar /Gunawan/
+2 TYPE aka
+2 NOTE Indonesian name, confirmed by Liam (19 Nov 2026).
 1 SEX M
 1 BIRT
+2 DATE 7 FEB 1930
 2 PLAC Padang, West Sumatra, Indonesia
-2 NOTE Family information.
+2 NOTE Date from US Public Records 1970-2009 (Iskandar Gunawan, ark 1:1:KL2Y-Z7L); Padang from family information. His birth should be in the Padang Chinese civil birth register 1927-1940 (FamilySearch film 1474366, DGS 9161345; restricted).
+1 RESI
+2 DATE FROM 1993 TO 2009
+2 PLAC Quincy, Norfolk, Massachusetts, USA
+2 NOTE 45 Bradford St area (02169), with Sukmawati.
+1 FAMC @F46@
 1 RESI
 2 DATE ABT 1968
 2 PLAC Jakarta, Indonesia
 1 FAMS @F2@
-1 NOTE Name from family memory ("Pek Leng Kim, I think"); not yet confirmed by a record. Possible US identity: Iskandar Gunawan (b. 7 Feb 1930), at Quincy, MA, 2002-2009 (US Public Records, ark 1:1:KL2Y-Z7L). People-search sites list him at 45 Bradford St, Quincy, with Sukmawati and Hengky Gunawan. No death record found; unconfirmed. FamilySearch "Indonesia, Civil Registration, 1806-1997" has only four indexed Pek entries for Padang/Padangpanjang (1919-1944) and none for Leng Kim. One possible related family: Tjioe Pek and Kim Kie Nio Ang, with a daughter Ham Hie Nio Pek born 20 Oct 1919 in Padang. No link established.
+1 NOTE Chinese name Pek Leng Kim; Indonesian name Iskandar Gunawan (both confirmed by Liam, 19 Nov 2026). Son of Pek Ho and Tjia Kim Nio. US Public Records (ark 1:1:KL2Y-Z7L, alias "Iskawiar") place him in Quincy, MA, 1993-2009; people-search sites list him at 45 Bradford St, Quincy, with Sukmawati and Hengky Gunawan. No death record found. FamilySearch "Indonesia, Civil Registration, 1806-1997" has only four indexed Pek entries for Padang/Padangpanjang (1919-1944) and none for Leng Kim. One possible related family: Tjioe Pek and Kim Kie Nio Ang, with a daughter Ham Hie Nio Pek born 20 Oct 1919 in Padang. No link established.
 0 @I4@ INDI
 1 NAME Kristen A. /Von Koschembahr/
 1 SEX F
@@ -740,8 +749,12 @@
 1 CHIL @I74@
 0 @I71@ INDI
 1 NAME Sukmawati /Gunawan/
-1 NAME Hong Tjoei /Tjoa/
+1 NAME Tjie Hong /Tjoa/
 2 TYPE birth
+2 NOTE Chinese name Tjoa Tjie Hong (Liam, 19 Nov 2026).
+1 NAME Hong Tjoei /Tjoa/
+2 TYPE aka
+2 NOTE Form in a Social Security claims-index summary, earlier also given by Liam.
 1 SEX F
 1 BIRT
 2 DATE 8 JAN 1932
@@ -757,13 +770,23 @@
 0 @I72@ INDI
 1 NAME Ke K. /Tjoa/
 1 SEX M
+1 BIRT
+2 DATE 16 MAY 1901
+2 NOTE Family information (Liam, 19 Nov 2026).
 1 FAMS @F39@
-1 NOTE Probably Sukmawati's father, as her maiden name appears to be Tjoa. Named in her NUMIDENT.
+1 NOTE Sukmawati's father, confirmed by Liam. Named "Ke K Tjoa" in her Social Security NUMIDENT; full Chinese name not yet known. No matching 1901 Tjoa birth or Tjoa-Ang marriage is in FamilySearch's Indonesian indexes, which cover Padang only for scattered years (e.g. 1911-1926).
 0 @I73@ INDI
+1 NAME Kheng Eng /Ang/
+2 NOTE Chinese order: Ang Kheng Eng (family information, 19 Nov 2026).
 1 NAME Eng K. /Ang/
+2 TYPE aka
+2 NOTE As written in Sukmawati's Social Security NUMIDENT (given name and initial reversed).
 1 SEX F
+1 BIRT
+2 DATE 13 JUL 1903
+2 NOTE Family information; Liam confirmed (19 Nov 2026) that this is Ang Kheng Eng's birth date.
 1 FAMS @F39@
-1 NOTE Probably Sukmawati's mother. Named in her NUMIDENT. The Ang family was in Padang: e.g. Kim Kie Nio Ang, wife of Tjioe Pek (1919). No link established.
+1 NOTE Sukmawati's mother (confirmed by Liam).
 0 @I74@ INDI
 1 NAME Susy I. /Gunawan/
 1 SEX F
@@ -776,6 +799,25 @@
 2 NOTE Quincy 02169, the same postal area as Iskandar Gunawan.
 1 FAMC @F2@
 1 NOTE Living. Hengky's sister, Liam's aunt (confirmed by Liam, 19 Nov 2026). Chinese name not yet known.
+0 @I86@ INDI
+1 NAME Ho /Pek/
+2 NOTE Chinese order: Pek Ho.
+1 SEX M
+1 IMMI
+2 PLAC Dutch East Indies (from China)
+2 NOTE Migrated from China aged 18 or 21 (family information, Liam, 19 Nov 2026). Probably Hokkien (Pek = Bai), so likely from southern Fujian.
+1 FAMS @F46@
+1 NOTE Father of Iskandar Gunawan / Pek Leng Kim. A family book held by Liam's aunt may give more.
+0 @I87@ INDI
+1 NAME Kim Nio /Tjia/
+2 NOTE Chinese order: Tjia Kim Nio.
+1 SEX F
+1 FAMS @F46@
+1 NOTE Mother of Iskandar Gunawan / Pek Leng Kim (family information, 19 Nov 2026). Several women of this name appear in Indonesian civil records; none is yet linked.
+0 @F46@ FAM
+1 HUSB @I86@
+1 WIFE @I87@
+1 CHIL @I3@
 0 @F39@ FAM
 1 HUSB @I72@
 1 WIFE @I73@
