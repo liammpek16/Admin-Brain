@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 # id: (name, dates, detail, line, unconfirmed)
 P = {
     "liam":      ("Liam M. Pek", "", "you", "root", False),
-    "hengky":    ('Hengky "Hank" Gunawan Pek', "b. 1960", "b. Padang · to Jakarta late 1960s", "pek", False),
+    "hengky":    ('Hengky "Hank" Gunawan Pek', "b. 1960 · Padang", "sister: Susy (b. 1961)", "pek", False),
     "kristen":   ("Kristen A. Von Koschembahr", "1966 – 2016", "brother: Gregory (1968–1999)", "kosch", False),
     "lengkim":   ("Pek Leng Kim", "", "b. Padang · family name Gunawan", "pek", True),
     "pekmom":    ("Sukmawati Gunawan", "1932 – 2004", "born Tjoa Hong Tjoei · Padang", "other", False),
@@ -36,13 +36,14 @@ P = {
     "alexmcl":   ("Alexander McLellan", "c.1910 – 1982?", "b. Glasgow · to Boston 1911", "mcl", False),
     "kathleen":  ("Kathleen P. Lyons", "1914? – 1987?", "b. Boston", "lyons", False),
     "lawrence":  ("Lawrence F. Lyons", "b. 20 Mar 1884", "b. Buggans, Co. Galway · to Boston 1908", "lyons", False),
-    "ellen":     ("Ellen Connell", "b. c.1885", "b. Ireland · to US 1904", "conn", False),
+    "ellen":     ("Ellen Connell", "b. c.1886", "b. Milltown, Co. Galway · to US 1904", "conn", False),
     "patrick":   ("Patrick \"Patt\" Lyons", "b. 1839", "farmer, Buggans, Co. Galway", "lyons", False),
     "naughton":  ("Mary Naughton", "b. c.1844", "m. 1871, Ballygar · Co. Galway", "other", False),
     "jamesl":    ("James Lyons", "", "farmer, Co. Galway", "lyons", False),
     "michaeln":  ("Michael Naughton", "", "farmer, Co. Galway", "other", False),
-    "johnc":     ("John Connell", "", "Ireland", "conn", False),
-    "kileen":    ("Mary Kileen", "", "Ireland", "other", False),
+    "johnc":     ("John Connell", "b. c.1853", "Dalgin, Milltown, Co. Galway", "conn", False),
+    "kileen":    ("Mary Killeen", "b. c.1860", "Co. Galway", "other", False),
+    "nelliec":   ("Nellie Connell", "b. c.1821", "in son John's household, 1901", "conn", True),
     "frederick": ("Frederick W. Von Koschembahr", "1889 – 1963", "STEPFATHER (m. Anna 1929) · born Bruck ★", "bruck", False),
     "annaF":     ("Anna V. Udyanovskaya", "1895 – 1982", "b. Kharkiv · d. York Co., Maine", "ulj", False),
     "august":    ("August Wessels", "", "", "wes", False),
@@ -53,10 +54,20 @@ P = {
     "elizabeth": ("Elizabeth Gordon", "b. c.1842", "b. Girvan, Ayrshire", "other", False),
     "archibald": ("Archibald K. Pettigrew", "1855 – 1931", "b. Glasgow · hoistman", "pett", False),
     "sarah":     ("Sarah Nixon", "1856 – 1944", "b. Girvan, Ayrshire", "other", False),
-    "johnmcl":   ("John McLellan", "", "Ayrshire", "mcl", False),
-    "morrison":  ("Margaret Morrison", "", "", "other", False),
-    "wgordon":   ("William Gordon", "", "", "other", False),
-    "jsmith":    ("Janet Smith", "", "", "other", False),
+    "johnmcl":   ("John McLellan", "c.1821 – 1872", "pattern weaver · m. Maybole 1840", "mcl", False),
+    "morrison":  ("Margaret Morrison", "", "m. 31 Dec 1840, Maybole", "other", False),
+    "wgordon":   ("William Gordon", "c.1788 – 1871", "cotton weaver, Girvan", "other", True),
+    "jsmith":    ("Janet (Jean) Smith", "", "Girvan", "other", False),
+    "alexmcc":   ("Alexander McClellan", "b. c.1780s", "Girvan · perhaps from Ireland", "mcl", False),
+    "susanna":   ("Susanna Shaw", "bap. 14 Dec 1779", "Girvan", "other", False),
+    "jamesg":    ("James Gordon", "", "", "other", True),
+    "mccracken": ("Margaret McCracken", "", "", "other", True),
+    "davidsh":   ("David Shaw", "bap. 2 Mar 1746", "Straiton · later Girvan", "other", True),
+    "annmcq":    ("Ann McQueen", "bap. 12 Feb 1749", "Straiton", "other", True),
+    "davidsh1":  ("David Shaw", "m. 1739, Barr", "Straiton", "other", True),
+    "agnesf":    ("Agnes Ferguson", "", "Barr / Straiton", "other", True),
+    "thomasmcq": ("Thomas McQueen", "", "Straiton", "other", True),
+    "margf":     ("Margaret Ferguson", "", "Straiton", "other", True),
     "wpett":     ("William Pettigrew", "", "Glasgow", "pett", True),
     "mconomy":   ("Margaret McOnomy", "", "", "other", True),
     "wnixon":    ("William Nixon", "c.1823 – 1886", "b. Ireland · weaver, Girvan", "other", False),
@@ -86,6 +97,11 @@ PARENTS = {
     "magdalene": ["archibald", "sarah"],
     "alexsr": ["johnmcl", "morrison"],
     "elizabeth": ["wgordon", "jsmith"],
+    "johnmcl": ["alexmcc", "susanna"],
+    "susanna": ["davidsh", "annmcq"],
+    "davidsh": ["davidsh1", "agnesf"],
+    "annmcq": ["thomasmcq", "margf"],
+    "wgordon": ["jamesg", "mccracken"],
     "archibald": ["wpett", "mconomy"],
     "sarah": ["wnixon", "stead"],
     "kathleen": ["lawrence", "ellen"],
@@ -93,6 +109,7 @@ PARENTS = {
     "patrick": ["jamesl"],
     "naughton": ["michaeln"],
     "ellen": ["johnc", "kileen"],
+    "johnc": ["nelliec"],
     "vladimir": ["prokofij", "kalinina"],
     "prokofij": ["vasilyp"],
     "vasilyp": ["prokop"],
@@ -201,7 +218,7 @@ for pid, (name, dates, detail, line, unconf) in P.items():
 
 # generation headers
 heads = ["You", "Parents", "Grandparents", "Great-\ngrandparents", "2× great-", "3× great-",
-         "4× great-", "5× great-", "6× great-"]
+         "4× great-", "5× great-", "6× great-", "7× great-"]
 for g in range(n_gen):
     ax.text(X(g) + BW / 2, 0.95, heads[g], ha="center", va="center", fontsize=8.5,
             color="#56616D", fontweight="bold")
@@ -211,7 +228,7 @@ ax.text(-0.3, 1.6, "Family Tree — Pek · Von Koschembahr · McLellan", fontsiz
         fontweight="bold", color="#1D232B", va="center")
 
 # 1938 branch note (empty lower-right area)
-nx, ny = X(7), Y(17.0)
+nx, ny = X(5.75), 0.45
 note = ("Step-line: Frederick's 1941 naturalization papers list George as\n"
         "his stepson, \"Georg von Nemirowitsch-Dantschenko\", born Munich\n"
         "6 Oct 1921. The Bruck / von Koschembahr ancestors (teal & blue,\n"
@@ -232,7 +249,7 @@ handles.append(Line2D([0], [0], color="#1F7A6D", lw=1.4, ls=(0, (1.5, 2)), label
 ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, -0.005), ncol=4, fontsize=8,
           frameon=False, handlelength=1.6, columnspacing=1.6)
 ax.text(n_gen * COLW - (COLW - BW) + 0.3, Y(n_slots) - 0.8,
-        "Sources: FamilySearch records & Family Tree, Bruck family research. Compiled 18 Nov 2026.",
+        "Sources: FamilySearch records & Family Tree, Bruck family research. Compiled 19 Nov 2026.",
         fontsize=7, color="#8A8F98", ha="right", va="bottom")
 
 fig.savefig(OUT, bbox_inches="tight", facecolor="white")

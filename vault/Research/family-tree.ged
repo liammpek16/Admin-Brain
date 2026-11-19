@@ -217,7 +217,7 @@
 1 NAME Alexander /McLellan/
 1 SEX M
 1 BIRT
-2 DATE ABT 1842
+2 DATE 26 APR 1842
 2 PLAC Maybole, Ayrshire, Scotland
 1 OCCU Cotton weaver (1866); wool weaver / weaver (1901)
 1 RESI
@@ -229,7 +229,7 @@
 2 NOTE Age 58, weaver, with wife Elizabeth and son Gordon (18, general labourer).
 1 FAMS @F19@
 1 FAMC @F28@
-1 NOTE A widower when he married Elizabeth Gordon in 1866. Deceased by 1921 (son Gordon's passport application). FamilySearch Family Tree ID KCBK-KFP. Children included Margaret, Ellen/Helen, John, Elizabeth, Jane and Gordon (spelled McClelland in many indexes).
+1 NOTE A widower when he married Elizabeth Gordon in 1866. Deceased by 1921 (son Gordon's passport application). FamilySearch Family Tree ID KCBK-KFP. Children included Margaret, Ellen/Helen, John, Elizabeth, Jane and Gordon (spelled McClelland in many indexes). Born 26 Apr 1842, christened 29 May 1842 at Maybole (Scotland Births and Baptisms, ark 1:1:XTK4-9BV, "Alexander McClelland", parents John McClelland and Margaret Morrison). First married Margaret Walker on 31 Dec 1863 (ark 1:1:XS91-CBQH).
 0 @I37@ INDI
 1 NAME Elizabeth /Gordon/
 1 SEX F
@@ -269,23 +269,51 @@
 1 NOTE FamilySearch Family Tree ID 9MXH-JDP.
 0 @I51@ INDI
 1 NAME John /McLellan/
+1 NAME John /McClelland/
+2 TYPE aka
 1 SEX M
+1 BIRT
+2 DATE ABT 1821
+2 PLAC Girvan, Ayrshire, Scotland
+2 NOTE Age 51 at death. Baptism not found in the FamilySearch index; Girvan is inferred from his parents' residence.
+1 OCCU Pattern weaver
+1 DEAT
+2 DATE 29 JUL 1872
+2 PLAC Old Monkland, Lanarkshire, Scotland
+2 NOTE Scotland Civil Registration death (FamilySearch ark 1:1:XSH2-1V67): married, pattern weaver, age 51; parents Alexander McLellan and Susan Shaw; spouse Margaret Morrison.
 1 FAMS @F28@
+1 FAMC @F41@
 0 @I52@ INDI
 1 NAME Margaret /Morrison/
 1 SEX F
 1 FAMS @F28@
+1 NOTE Parents not yet identified; no death record found in the FamilySearch indexes.
 0 @F28@ FAM
 1 HUSB @I51@
 1 WIFE @I52@
+1 MARR
+2 DATE 31 DEC 1840
+2 PLAC Maybole, Ayrshire, Scotland
+2 NOTE Scotland Marriages index (FamilySearch ark 1:1:XT26-KLW), "John McClelland" and Margaret Morrison.
 1 CHIL @I36@
-1 NOTE Named as Alexander's parents in his 1866 marriage record (Scotland Civil Registration).
+1 NOTE Named as Alexander's parents in his 1863 and 1866 marriage records (Scotland Civil Registration).
 0 @I53@ INDI
 1 NAME William /Gordon/
 1 SEX M
+1 BIRT
+2 DATE ABT 1788
+1 OCCU Cotton weaver
+1 DEAT
+2 DATE 5 JUN 1871
+2 PLAC Girvan, Ayrshire, Scotland
+2 NOTE Scotland Civil Registration death (ark 1:1:X9GJ-2NTP): widower, cotton weaver, age 83; parents James Gordon and Margaret MacCracken; spouse Jean Smith.
 1 FAMS @F29@
+1 FAMC @F42@
+1 NOTE Probable identification: the Girvan weaver William Gordon whose wife was Jean (Jane) Smith; children William (bap. 1829) and Thomas (bap. 1832) baptised at Girvan. Elizabeth's own baptism (c.1842) is not in the index. A separate William Gordon and Jean Smith couple married in Barony, Glasgow in 1828 and is a different family.
 0 @I54@ INDI
 1 NAME Janet /Smith/
+1 NAME Jean /Smith/
+2 TYPE aka
 1 SEX F
 1 FAMS @F29@
 0 @F29@ FAM
@@ -293,6 +321,107 @@
 1 WIFE @I54@
 1 CHIL @I37@
 1 NOTE Named as Elizabeth's parents in her 1866 marriage record.
+0 @I76@ INDI
+1 NAME Alexander /McClellan/
+1 SEX M
+1 BIRT
+2 DATE ABT 1785
+2 NOTE A FamilySearch Family Tree profile (KHXW-178) gives 1786, Ireland, unsourced. Not verified.
+1 RESI
+2 DATE FROM 1804 TO 1815
+2 PLAC Girvan, Ayrshire, Scotland
+1 FAMS @F41@
+0 @I77@ INDI
+1 NAME Susanna /Shaw/
+1 NAME Susan /Shaw/
+2 TYPE aka
+1 SEX F
+1 BIRT
+2 DATE 11 DEC 1779
+2 PLAC Girvan, Ayrshire, Scotland
+1 CHR
+2 DATE 14 DEC 1779
+2 PLAC Girvan, Ayrshire, Scotland
+2 NOTE Scotland Births and Baptisms (ark 1:1:XY2W-977): parents David Shaw and Ann McQueen. Identified as Alexander's wife because she is the only Susanna Shaw baptised in Girvan in this period (probable).
+1 FAMS @F41@
+1 FAMC @F43@
+0 @F41@ FAM
+1 HUSB @I76@
+1 WIFE @I77@
+1 MARR
+2 DATE ABT 1803
+2 PLAC Girvan, Ayrshire, Scotland
+1 CHIL @I51@
+1 NOTE Children baptised at Girvan: Ann (22 Oct 1804), William (10 Nov 1806), Jannet (31 Dec 1808), David (3 Mar 1811), Susanna (15 Jan 1815). John (c.1821) is not in the baptism index; his parents come from his 1872 death record.
+0 @I78@ INDI
+1 NAME James /Gordon/
+1 SEX M
+1 FAMS @F42@
+0 @I79@ INDI
+1 NAME Margaret /McCracken/
+1 SEX F
+1 FAMS @F42@
+0 @F42@ FAM
+1 HUSB @I78@
+1 WIFE @I79@
+1 CHIL @I53@
+1 NOTE Named as William Gordon's parents in his 1871 Girvan death record.
+0 @I80@ INDI
+1 NAME David /Shaw/
+1 SEX M
+1 BIRT
+2 DATE 2 MAR 1745
+2 PLAC Straiton, Ayrshire, Scotland
+1 CHR
+2 DATE 2 MAR 1746
+2 PLAC Straiton, Ayrshire, Scotland
+2 NOTE Scotland Births and Baptisms (ark 1:1:XTKG-S9Y): parents David Shaw and Agnes Ferguson. Linked to the Girvan David Shaw via the FamilySearch Family Tree (L6GZ-B25) (probable).
+1 FAMS @F43@
+1 FAMC @F44@
+0 @I81@ INDI
+1 NAME Ann /McQueen/
+1 SEX F
+1 CHR
+2 DATE 12 FEB 1749
+2 PLAC Straiton, Ayrshire, Scotland
+2 NOTE Scotland Births and Baptisms (ark 1:1:XY2X-D7S), "Anne McQueen": parents Thomas McQueen and Margaret Ferguson. Linked via FamilySearch Family Tree (L6GZ-BGX) (probable).
+1 FAMS @F43@
+1 FAMC @F45@
+0 @F43@ FAM
+1 HUSB @I80@
+1 WIFE @I81@
+1 CHIL @I77@
+1 NOTE Children baptised at Girvan: David (12 Sep 1773), William (7 Jan 1777), Susanna (14 Dec 1779). The FamilySearch tree gives an earlier marriage (1765, Straiton) and a son Alexander (1765); these are unverified and probably conflated.
+0 @I82@ INDI
+1 NAME David /Shaw/
+1 SEX M
+1 FAMS @F44@
+0 @I83@ INDI
+1 NAME Agnes /Ferguson/
+1 SEX F
+1 FAMS @F44@
+0 @F44@ FAM
+1 HUSB @I82@
+1 WIFE @I83@
+1 MARR
+2 DATE 22 NOV 1739
+2 PLAC Barr, Ayrshire, Scotland
+2 NOTE Scotland Marriages (ark 1:1:XTKT-32H), "Agnas Fergusone".
+1 CHIL @I80@
+1 NOTE Children baptised at Straiton include John (c.1743), David (1746), Jean (1752) and William (1753).
+0 @I84@ INDI
+1 NAME Thomas /McQueen/
+1 SEX M
+1 FAMS @F45@
+0 @I85@ INDI
+1 NAME Margaret /Ferguson/
+1 SEX F
+1 FAMS @F45@
+0 @F45@ FAM
+1 HUSB @I84@
+1 WIFE @I85@
+1 CHIL @I81@
+1 NOTE Of Straiton; children Andrew and Anne (bap. 12 Feb 1749).
 0 @I55@ INDI
 1 NAME William /Pettigrew/
 1 SEX M
@@ -608,6 +737,7 @@
 1 HUSB @I3@
 1 WIFE @I71@
 1 CHIL @I2@
+1 CHIL @I74@
 0 @I71@ INDI
 1 NAME Sukmawati /Gunawan/
 1 NAME Hong Tjoei /Tjoa/
@@ -634,6 +764,18 @@
 1 SEX F
 1 FAMS @F39@
 1 NOTE Probably Sukmawati's mother. Named in her NUMIDENT. The Ang family was in Padang: e.g. Kim Kie Nio Ang, wife of Tjioe Pek (1919). No link established.
+0 @I74@ INDI
+1 NAME Susy I. /Gunawan/
+1 SEX F
+1 BIRT
+2 DATE 12 MAY 1961
+2 NOTE Date from US Public Records 1970-2009 (FamilySearch ark 1:1:KL2Y-Z7H).
+1 RESI
+2 DATE FROM 1990 TO 2008
+2 PLAC Quincy, Norfolk, Massachusetts, USA
+2 NOTE Quincy 02169, the same postal area as Iskandar Gunawan.
+1 FAMC @F2@
+1 NOTE Living. Hengky's sister, Liam's aunt (confirmed by Liam, 19 Nov 2026). Chinese name not yet known.
 0 @F39@ FAM
 1 HUSB @I72@
 1 WIFE @I73@
@@ -820,8 +962,13 @@
 1 NAME Ellen /Connell/
 1 SEX F
 1 BIRT
-2 DATE ABT 1885
-2 PLAC Ireland
+2 DATE ABT 1886
+2 PLAC Milltown, County Galway, Ireland
+2 NOTE Age 14 in the 1901 census (b. c.1887); 26 at her 1911 marriage (b. c.1885). An Irish civil birth index entry, Ellen Connell, Tuam district (which covers Milltown), Apr-Jun 1886, may be hers.
+1 RESI
+2 DATE 1901
+2 PLAC Dalgin, Milltown, County Galway, Ireland
+2 NOTE Ireland Census 1901 (FamilySearch ark 1:1:QPBP-CMNC): scholar, with parents John (48) and Mary (40), siblings and grandmother Nellie (80).
 1 IMMI
 2 DATE 1904
 1 FAMS @F22@
@@ -886,15 +1033,46 @@
 0 @I46@ INDI
 1 NAME John /Connell/
 1 SEX M
+1 BIRT
+2 DATE ABT 1853
+2 PLAC County Galway, Ireland
+1 RESI
+2 DATE 1901
+2 PLAC Dalgin, Milltown, County Galway, Ireland
+1 RESI
+2 DATE 1911
+2 PLAC Knockaunkeel, Milltown, County Galway, Ireland
 1 FAMS @F24@
+1 FAMC @F40@
+1 NOTE Roman Catholic. Ireland Census 1901 (ark 1:1:QPBP-CMNC), age 48; Ireland Census 1911 (ark 1:1:QYJL-XYT2), age 58. Identified as Ellen's father because the 1901 household's children (Mary 18, Michael 16, Ellen 14, William 12, Maggie 9, John 5, Norah 3) match the Boston marriages of Mary, Ellen, Margaret, John and Nora, all naming parents John Connell and Mary Killeen. Mary's maiden name does not appear in the census itself.
 0 @I47@ INDI
+1 NAME Mary /Killeen/
 1 NAME Mary /Kileen/
+2 TYPE aka
+1 NAME Mary /Killian/
+2 TYPE aka
 1 SEX F
+1 BIRT
+2 DATE ABT 1860
+2 PLAC County Galway, Ireland
 1 FAMS @F24@
+1 NOTE Age 40 in 1901 and 51 in 1911 (Dalgin / Knockaunkeel, Milltown, Co. Galway). Maiden name from her children's Massachusetts marriage records (Killeen 1911/1917/1923, Kileen 1911, Killian 1909).
 0 @F24@ FAM
 1 HUSB @I46@
 1 WIFE @I47@
 1 CHIL @I43@
+1 NOTE Other children (1901/1911 censuses and Massachusetts marriages): Mary E. (c.1883; m. William M. Lally, Boston, 21 Feb 1909), Michael (c.1885), William (c.1889), Margaret "Maggie" (c.1892; m. Michael Crehin, Boston, 4 Jun 1911; arrived 1908), John J. (c.1896; m. Catherine M. Dunning, Boston, 1 Oct 1917), Nora Maria (c.1898; m. Patrick J. Kenney, Newton, 19 Nov 1923), Catherine (c.1903).
+0 @I75@ INDI
+1 NAME Nellie /Connell/
+1 SEX F
+1 BIRT
+2 DATE ABT 1821
+2 PLAC County Galway, Ireland
+1 FAMS @F40@
+1 NOTE Paternal grandmother, age 80, in John Connell's household at Dalgin, Milltown, in the 1901 census (ark 1:1:QPBP-CMNC). Absent in 1911. Her maiden name is unknown; Connell may be her married name.
+0 @F40@ FAM
+1 WIFE @I75@
+1 CHIL @I46@
 0 @F21@ FAM
 1 HUSB @I40@
 1 WIFE @I41@

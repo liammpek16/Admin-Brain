@@ -20,7 +20,7 @@ Research started 2026-11-18 using FamilySearch. The importable version is [[fami
 
 ```
 Liam M. Pek
-├── Father: Hengky "Hank" Gunawan Pek (b. 1960, Padang, West Sumatra); the family moved to Jakarta in the late 1960s
+├── Father: Hengky "Hank" Gunawan Pek (b. 1960, Padang, West Sumatra); the family moved to Jakarta in the late 1960s; sister Susy I. Gunawan (b. 1961)
 │   ├── Father: Pek Leng Kim (born Padang; family took the Indonesian surname Gunawan); possibly the Iskandar Gunawan (b. 7 Feb 1930) in Quincy, MA public records
 │   └── Mother: Sukmawati Gunawan, born Tjoa Hong Tjoei (8 Jan 1932, Padang – 18 Jul 2004, Norfolk Co., MA); Chinese name confirmed by Liam
 │       ├── Father: Ke K. Tjoa (named in her Social Security record)
@@ -62,12 +62,22 @@ Liam M. Pek
     └── Mother: Jeanne E. "Jeane" McLellan (16 Jun 1946, Boston – 7 Apr 2019)
         ├── Father: Alexander McLellan (c.1910–11, Glasgow – 14 Jan 1982?)
         │   ├── Father: Gordon McLellan (24 Nov 1883, Glasgow – 1952, Boston), iron worker, later a carpenter
-        │   │   ├── Father: Alexander McLellan (c.1842, Maybole, Ayrshire – before 1921), cotton/wool weaver; married 23 Mar 1866 (he was a widower)
-        │   │   │   ├── Father: John McLellan
-        │   │   │   └── Mother: Margaret Morrison
+        │   │   ├── Father: Alexander McLellan (26 Apr 1842, Maybole, Ayrshire – before 1921), cotton/wool weaver; m. (1) Margaret Walker 1863, (2) Elizabeth Gordon 23 Mar 1866
+        │   │   │   ├── Father: John McLellan / McClelland (c.1821, prob. Girvan – 29 Jul 1872, Old Monkland), pattern weaver; m. 31 Dec 1840, Maybole
+        │   │   │   │   ├── Father: Alexander McClellan (b. c.1780s; perhaps from Ireland), of Girvan 1804–1815: the McLellan surname wall
+        │   │   │   │   └── Mother: Susanna Shaw (bap. 14 Dec 1779, Girvan) (probable)
+        │   │   │   │       ├── Father: David Shaw (bap. 2 Mar 1746, Straiton), later in Girvan (probable)
+        │   │   │   │       │   ├── Father: David Shaw, m. 22 Nov 1739, Barr (7× great-grandfather)
+        │   │   │   │       │   └── Mother: Agnes Ferguson (7× great-grandmother)
+        │   │   │   │       └── Mother: Ann McQueen (bap. 12 Feb 1749, Straiton) (probable)
+        │   │   │   │           ├── Father: Thomas McQueen, of Straiton (7× great-grandfather)
+        │   │   │   │           └── Mother: Margaret Ferguson (7× great-grandmother)
+        │   │   │   └── Mother: Margaret Morrison (parents not found)
         │   │   └── Mother: Elizabeth Gordon (c.1842, Girvan, Ayrshire)
-        │   │       ├── Father: William Gordon
-        │   │       └── Mother: Janet Smith
+        │   │       ├── Father: William Gordon (c.1788 – 5 Jun 1871, Girvan), cotton weaver (probable)
+        │   │       │   ├── Father: James Gordon
+        │   │       │   └── Mother: Margaret McCracken
+        │   │       └── Mother: Janet (Jean) Smith
         │   └── Mother: Magdalene Kennedy Pettigrew (30 Jan 1883, Camlachie, Glasgow – 30 Jan 1953, Boston), a chocolate coverer in 1901
         │       ├── Father: Archibald Kennedy Pettigrew (13 Nov 1855, Glasgow – 19 Jul 1931, Dennistoun), hoistman; married 19 Jul 1879, Dennistoun
         │       │   ├── Father: William Pettigrew
@@ -81,9 +91,10 @@ Liam M. Pek
             │   │   └── Father: James Lyons, farmer
             │   └── Mother: Mary Naughton (b. c.1844, Co. Galway); widowed head of the household at Boggauns in 1901
             │       └── Father: Michael Naughton, farmer
-            └── Mother: Ellen Connell (c.1885, Ireland), arrived 1904; married Lawrence 11 Oct 1911, Boston
-                ├── Father: John Connell
-                └── Mother: Mary Kileen
+            └── Mother: Ellen Connell (c.1886, Dalgin, Milltown, Co. Galway), arrived 1904; married Lawrence 11 Oct 1911, Boston
+                ├── Father: John Connell (c.1853, Co. Galway), of Dalgin, later Knockaunkeel, Milltown
+                │   └── Mother: Nellie Connell (c.1821), in his household in 1901 (probable)
+                └── Mother: Mary Killeen (c.1860, Co. Galway); also spelled Kileen / Killian
 ```
 
 `?` marks a probable match that isn't confirmed yet.
@@ -202,6 +213,13 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
 - **Irish civil marriage register, Killeroran, 1871, entry 50** (irishgenealogy.ie copy 08161097). Patt Lyons, widower, farmer, of Buggane(s), son of James Lyons, married Mary Naughton, spinster, of Coolarcha (?), daughter of Michael Naughton, on 8 Feb 1871 at the Ballygar RC chapel.
 - **Ireland census 1901, Boggauns, Cloonkeen DED, Co. Galway.** Laurence Lyons, 16, with his mother Mary (57) and brothers Patrick (24), Thomas (18), Peter (11) and John (8).
 - **Massachusetts marriage, 11 Oct 1911, Boston** (p. 261 no. 5997). Lawrence Lyons, son of Patrick Lyons and Mary Naughton, married Ellen Connell, daughter of John Connell and Mary Kileen.
+- **Ireland census 1901, Dalgin, Milltown, Co. Galway** (FS QPBP-CMNC). John Connell (48), Mary (40), and children Mary (18), Michael (16), Ellen (14, scholar), William (12), Maggie (9), John (5) and Norah (3), with the grandmother Nellie (80). All were Roman Catholic and born in Co. Galway.
+- **Ireland census 1911, Knockaunkeel, Milltown** (FS QYJL-XYT2). John (58) and Mary (51), with William (21), John (15), Norah (13) and Catherine (8).
+- **Massachusetts marriages of Ellen's siblings**, each naming John Connell and Mary Killeen (or Killian/Kileen) as parents:
+  - Mary E., 25, married William M. Lally, 21 Feb 1909 (FS N4D8-ZPQ).
+  - Margaret, 18, married Michael Crehin, Boston, 4 Jun 1911 (FS Q282-J9RS). She arrived in 1908.
+  - John J. married Catherine M. Dunning, Boston, 1 Oct 1917 (FS Q2Z7-CGMV).
+  - Nora Maria, 29, married Patrick J. Kenney, Newton, 19 Nov 1923 (FS Q28J-BJM3).
 - **Massachusetts births, 1912–1920.** Children of Lawrence Lyons and Ellen Connell, including an unnamed child born 11 May 1914, probably Kathleen.
 - **Russian Wikipedia:**
   - [Georgij Vladimirovich Nemirovich-Danchenko](https://ru.wikipedia.org/wiki/Немирович-Данченко,_Георгий_Владимирович).
@@ -252,8 +270,15 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
    - An **Iskandar Gunawan**, born **7 Feb 1930**, lived in Quincy, MA in 2002–09.
    - Property and people-search sites list Sukmawati, Iskandar and Hengky Gunawan at the same address: 45 Bradford St, Quincy.
    - No obituary or death record was found for Iskandar.
+   - **Iskandar vs. Dad (checked 2026-11-19):** Liam remembers "Iskandar Gunawan" as a name used for his dad. The records point to a separate, older person, but don't rule it out.
+     - Iskandar's record (KL2Y-Z7L, alias "Iskawiar") has its own birth date, 7 Feb 1930, and its own Quincy residence history: 02169 from Jun 1993, 02171 in Mar 1994, and 02169 through Jan 2009.
+     - Dad's record (KL2Y-ZW3) keeps his 6 Mar 1960 birth date. It lists Quincy 02171 (1992–2001), a Quincy 02269 PO box (1993–98) and Franklin (1997–2009).
+     - These compiled records are built around a Social Security number, so a separate birth date usually means a separate SSN.
+     - The one overlap is Quincy 02171 around 1994. Credit-header data often mixes up a parent and an adult child at the same address, which could explain why people-search sites tie the name to Dad.
+     - A 1930 birth fits a husband for Sukmawati (b. 1932) and a father for a son born in 1960.
+     - Also at Quincy 02169: **Susy I. Gunawan**, b. 12 May 1961 (KL2Y-Z7H), from 1990 to 2008. **Liam confirms she is his aunt, Dad's sister.**
    - **Confirmed by Liam:** Sukmawati's Chinese name was Tjoa Hong Tjoei, so she is Dad's mother.
-   - Still to confirm: whether Iskandar Gunawan was Pek Leng Kim.
+   - Still to confirm, best asked of Dad: whether Iskandar Gunawan was Pek Leng Kim, and whether Dad ever used the name himself.
    - **Tjoa–Ang family in Padang:**
      - No indexed Padang record matches "Ke K. Tjoa" and "Eng K. Ang". Other Tjoa–Ang couples are indexed, but none fits:
        - Koan Seng Tjoa and Loan Giok Nio Ang (daughter b. c.1914).
@@ -286,7 +311,27 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
    - Find their marriage (Boston, about 1935–40). Massachusetts marriage records after 1927 aren't on FamilySearch, so request it from the Boston City Clerk or the state Registry of Vital Records.
    - Identify Kathleen's Irish-born parents. Start with the Helen C. Lyons obituary (Boston Herald, 16 Dec 1957) on GenealogyBank.
    - Trace Gordon and Magdalene McLellan back to Scotland. ScotlandsPeople has the birth and marriage records.
-6. **Wessels side.** Anna Maria grew up in Burgsteinfurt, where her parents, August Wessels and Anna M. Elsen, presumably married around 1920–23.
+   - **Back to the 7× great-grandparents (searched 2026-11-19, FamilySearch indexes of Scottish parish and civil records):**
+     - Alexander was christened at Maybole on 29 May 1842 (XTK4-9BV). His parents, John McClelland and Margaret Morrison, married there on 31 Dec 1840 (XT26-KLW).
+     - John died a pattern weaver at Old Monkland on 29 Jul 1872, aged 51. His death record names his parents, Alexander McLellan and Susan Shaw (XSH2-1V67).
+     - Alexander McClellan and Susanna Shaw baptised children at Girvan from 1804 to 1815. John's own baptism (c.1821) isn't indexed.
+     - Susanna was christened at Girvan on 14 Dec 1779, daughter of David Shaw and Ann McQueen (XY2W-977).
+     - David was christened at Straiton on 2 Mar 1746, son of David Shaw and Agnes Ferguson, who married at Barr on 22 Nov 1739.
+     - Ann was christened at Straiton on 12 Feb 1749, daughter of Thomas McQueen and Margaret Ferguson.
+     - **How sure:** each name above comes from a record. Two links come from a user-built FamilySearch tree rather than a document: Susanna of the 1779 baptism being Alexander's wife, and the Straiton baptisms belonging to the Girvan parents. Those are marked probable. The same tree's 1765 marriage and 1765 son are probably conflated and were not used.
+     - **Walls:**
+       - The McLellan surname stops at Alexander McClellan (b. c.1780s). An unsourced tree says he was born in Ireland in 1786, which would end the paper trail.
+       - Margaret Morrison's parents are unknown.
+       - The Gordon line reaches James Gordon and Margaret McCracken, named in William Gordon's 1871 Girvan death record. Linking that William to Elizabeth is probable, since her own baptism isn't indexed.
+     - **Next:** the Scotland 1841 and 1851 censuses for Girvan would show Alexander's age and whether he was Irish-born. ScotlandsPeople has the images (pay per view).
+6. **Connell side (solved, 2026-11-19).** Ellen's family were the Connells of Dalgin (later Knockaunkeel), near Milltown in north Co. Galway, about 40 km from the Lyons farm at Buggans.
+   - **How it's identified:** the children in the 1901 household match five Boston marriages that all name John Connell and Mary Killeen. The census doesn't give Mary's maiden name, so that part rests on the marriages.
+   - **Next, all free on irishgenealogy.ie** (Liam fetches, since the site blocks automated access):
+     - John Connell's marriage to Mary Killeen, about 1880–82, Tuam registration district. It would name both fathers.
+     - Ellen's birth, Tuam district, possibly Apr–Jun 1886.
+     - Mary's birth, about 1883.
+   - **Catholic registers:** Milltown parish (Addergoole and Liskeevy) on registers.nli.ie, for baptisms and the marriage if before 1880.
+7. **Wessels side.** Anna Maria grew up in Burgsteinfurt, where her parents, August Wessels and Anna M. Elsen, presumably married around 1920–23.
    - German civil records from that era aren't online. The **Standesamt Steinfurt** (or Stadtarchiv Steinfurt) holds:
      - Anna Maria's 1924 birth register, open to the public after 110 years, so a direct descendant may need to request it.
      - August and Anna's marriage register, open after 80 years.
@@ -299,3 +344,8 @@ The von Koschembahr line itself is old Silesian nobility, documented from about 
    - **Not found:** August Wessels or Anna Elsen in FamilySearch's German indexes, or any Wessels in the Arolsen Archives for Burgsteinfurt. FamilySearch's only Wessels–Elsen marriages are just over the Dutch border, in Gelderland and Overijssel (1828, 1887). Burgsteinfurt is about 30 km from that border.
    - **Weak lead:** a local-history newsletter from Emsdetten (Heimatblatt Nr. 93) mentions a vocational-school teacher (*Gewerbeoberlehrer*) August Wessels of Emsdetten, who trained a bakers' class at the Burgsteinfurt trade school. The date is unknown, and he isn't linked to us.
    - George and Anne Marie's marriage, around 1945–46, probably in Burgsteinfurt, would also be held there.
+   - **Searched 2026-11-19 (free sources):**
+     - The genealogy.net metasearch covers GEDBAS, the online local heritage books, the address books and the WWI casualty lists.
+     - The WWI casualty lists include Wessels men from the Steinfurt district: Heinrich of Burgsteinfurt (killed, list of 22 Mar 1917), Wilhelm of Burgsteinfurt (killed, 22 Nov 1917), and "Aug. Wessels II" of Neuenkirchen (wounded, Infantry Regiment 112, 23 Jan 1915). None of them is linked to August.
+     - **Not found:** any Elsen in the Steinfurt district, any August Wessels in FamilySearch's German indexes, or any Wessels–Elsen record on Open Archives (openarchieven.nl).
+     - A Find a Grave entry lists an August Wessels, born 5 Sep 1897, buried at the Dachau concentration-camp cemetery. Nothing ties him to Burgsteinfurt; his record could be checked in the Arolsen Archives.

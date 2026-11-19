@@ -197,9 +197,9 @@ const PLACES = {
   padang:["Padang, West Sumatra",-0.947,100.417], burg:["Burgsteinfurt, Westphalia",52.147,7.338], munich:["Munich, Bavaria",48.137,11.576],
   spb:["St Petersburg",59.939,30.314], kharkiv:["Kharkiv (Charkow)",49.994,36.230], riga:["Riga",56.950,24.105],
   courland:["Courland (near Mitau/Jelgava)",56.65,23.72,true], boston:["Boston, Massachusetts",42.360,-71.059],
-  glasgow:["Glasgow",55.864,-4.252], camlachie:["Camlachie, Glasgow",55.854,-4.212], maybole:["Maybole, Ayrshire",55.354,-4.683],
+  glasgow:["Glasgow",55.864,-4.252], camlachie:["Camlachie, Glasgow",55.854,-4.212], maybole:["Maybole, Ayrshire",55.354,-4.683], straiton:["Straiton, Ayrshire",55.316,-4.523], barr:["Barr, Ayrshire",55.214,-4.722], oldmonk:["Old Monkland (Coatbridge), Lanarkshire",55.858,-4.030],
   girvan:["Girvan, Ayrshire",55.243,-4.857], buggans:["Buggans, Killeroran, Co. Galway",53.49,-8.37,true],
-  galway:["County Galway",53.33,-8.70,true], berlin:["Berlin",52.520,13.405], ratibor:["Ratibor (Racibórz)",50.092,18.220],
+  galway:["County Galway",53.33,-8.70,true], milltown:["Dalgin, Milltown, Co. Galway",53.61,-8.90,true], berlin:["Berlin",52.520,13.405], ratibor:["Ratibor (Racibórz)",50.092,18.220],
   lissa:["Lissa (Leszno), Posen",51.841,16.575], silesia:["Silesia",51.10,17.03,true]
 };
 
@@ -207,7 +207,7 @@ const PLACES = {
 const P = {
  liam:{n:"Liam M. Pek",line:"root",st:"living",gen:"You",bio:["The person this archive is built around. Liam's father's family is Chinese-Indonesian, from Padang in West Sumatra. His mother's family brings together Russian, Baltic-German, German, Scottish and Irish lines that met in and around Boston."]},
  hengky:{n:"Hengky \"Hank\" Gunawan Pek",alt:"Chinese name Pek Seng Ki",line:"pek",st:"living",b:["6 Mar 1960","padang"],res:"Moved to Jakarta in the late 1960s; later Massachusetts",
-   bio:["Born in Padang, West Sumatra, into a Chinese-Indonesian family whose Hokkien surname is Pek (白, Bai in Mandarin). In the 1960s, when Chinese Indonesians were pressed to take Indonesian-sounding names, the family adopted the surname Gunawan. The family moved from Padang to Jakarta in the late 1960s.","He later married Kristen A. Von Koschembahr. Jeanne McLellan Bundtzen's 2019 obituary lists him as her son-in-law, \"Hank Hengky Gunawan Pek\"."]},
+   bio:["Born in Padang, West Sumatra, into a Chinese-Indonesian family whose Hokkien surname is Pek (白, Bai in Mandarin). In the 1960s, when Chinese Indonesians were pressed to take Indonesian-sounding names, the family adopted the surname Gunawan. The family moved from Padang to Jakarta in the late 1960s. His younger sister, Susy I. Gunawan (born 12 May 1961), also settled in Quincy, Massachusetts.","He later married Kristen A. Von Koschembahr. Jeanne McLellan Bundtzen's 2019 obituary lists him as her son-in-law, \"Hank Hengky Gunawan Pek\"."]},
  lengkim:{n:"Pek Leng Kim",alt:"Gunawan",line:"pek",st:"family",b:["","padang"],
    bio:["Hengky's father, known from family memory as Pek Leng Kim. Born in Padang; the family took the Indonesian surname Gunawan and moved to Jakarta in the late 1960s.","No record under the name Pek Leng Kim has been found. In the US he may be the Iskandar Gunawan, born 7 Feb 1930, whom public records place in Quincy, Massachusetts, from 2002 to 2009, at the same address as Sukmawati and Hengky Gunawan. No death record for Iskandar was found. This needs confirming with Hengky."]},
  pekmom:{n:"Sukmawati Gunawan",alt:"born Tjoa Hong Tjoei",line:"other",st:"record",b:["8 Jan 1932","padang"],d:["18 Jul 2004","Norfolk County, Massachusetts"],res:"Quincy, Massachusetts",
@@ -269,12 +269,22 @@ const P = {
    bio:["Son of the weaver Alexander McLellan and Elizabeth Gordon, whose surname became his first name. In 1901 he was a general labourer living at 24 David Street, Camlachie. An iron worker, he sailed from Glasgow to Boston on the Allan Line's Numidian on 6 Jul 1911 with his wife Magdalene and baby Alexander.","He worked as a carpenter in Boston, was naturalised in 1918 and 1920, and visited Scotland in 1921."]},
  magdalene:{n:"Magdalene Kennedy Pettigrew",line:"pett",st:"record",b:["30 Jan 1883","camlachie"],d:["30 Jan 1953","Boston"],
    bio:["Born in Camlachie, Glasgow, to Archibald Kennedy Pettigrew and Sarah Nixon. In 1901 she was a chocolate coverer living at 30 Brown Street, Bridgeton. She married Gordon McLellan and emigrated with him in 1911. Her 1953 obituary names her sons Alexander and Gordon Jr."]},
- alexSr:{n:"Alexander McLellan",line:"mcl",st:"record",b:["c. 1842","maybole"],d:["before 1921",null],
-   bio:["A cotton weaver, later a wool weaver, born in Maybole, Ayrshire. Already a widower when he married Elizabeth Gordon on 23 Mar 1866. By 1901 they lived at 24 David Street, Camlachie, Glasgow. He had died by the time of his son Gordon's 1921 passport application."]},
+ alexSr:{n:"Alexander McLellan",alt:"McClelland",line:"mcl",st:"record",b:["26 Apr 1842","maybole"],d:["before 1921",null],
+   bio:["A cotton weaver, later a wool weaver, born in Maybole, Ayrshire. Christened at Maybole on 29 May 1842, son of John McClelland and Margaret Morrison. His first wife was Margaret Walker, whom he married on 31 Dec 1863. Already a widower when he married Elizabeth Gordon on 23 Mar 1866. By 1901 they lived at 24 David Street, Camlachie, Glasgow. He had died by the time of his son Gordon's 1921 passport application."]},
  elizGordon:{n:"Elizabeth Gordon",line:"other",st:"record",b:["c. 1842","girvan"],bio:["Born in Girvan, Ayrshire, daughter of William Gordon and Janet Smith. Married Alexander McLellan in 1866; in 1901 she was 58 and living in Camlachie, Glasgow."]},
- johnMcL:{n:"John McLellan",line:"mcl",st:"record",bio:["Named as Alexander McLellan's father in his 1866 marriage record."]},
- morrison:{n:"Margaret Morrison",line:"other",st:"record",bio:["Named as Alexander McLellan's mother in his 1866 marriage record."]},
- wGordon:{n:"William Gordon",line:"other",st:"record",bio:["Named as Elizabeth Gordon's father in her 1866 marriage record."]},
+ johnMcL:{n:"John McLellan",alt:"McClelland",line:"mcl",st:"record",b:["c. 1821","girvan"],d:["29 Jul 1872","oldmonk"],bio:["A pattern weaver, probably born in Girvan about 1821, son of Alexander McClellan and Susanna Shaw. As \"John McClelland\" he married Margaret Morrison at Maybole on 31 Dec 1840, and their son Alexander was born there in April 1842.","Like many Ayrshire handloom weavers he moved to industrial Lanarkshire, where he died at Old Monkland (Coatbridge) on 29 Jul 1872, aged 51. His death record names his parents."]},
+ alexMcC:{n:"Alexander McClellan",line:"mcl",st:"record",b:["c. 1780s",null],res:"Girvan, Ayrshire",bio:["Father of John McLellan, and the earliest McLellan found so far. With his wife Susanna Shaw he had children baptised at Girvan between 1804 and 1815: Ann, William, Jannet, David and Susanna. John followed about 1821.","A user-contributed FamilySearch tree says he was born in Ireland in 1786, but cites no source. Girvan drew many Irish weavers at the time. That makes him the likely brick wall on the McLellan surname."]},
+ susanna:{n:"Susanna Shaw",alt:"Susan",line:"other",st:"probable",b:["14 Dec 1779","girvan"],bio:["Probably the Susanna Shaw born on 11 Dec 1779 and christened at Girvan on 14 Dec 1779, daughter of David Shaw and Ann McQueen. She is the only Susanna Shaw baptised there at the right time. She married Alexander McClellan about 1803 and raised her family in Girvan."]},
+ davidSh:{n:"David Shaw",line:"other",st:"probable",b:["2 Mar 1746","straiton"],bio:["Christened at Straiton, Ayrshire, in March 1746, son of David Shaw and Agnes Ferguson. With Ann McQueen he had children baptised at Girvan: David (1773), William (1777) and Susanna (1779). The link from the Straiton baptism to the Girvan father comes from the FamilySearch Family Tree."]},
+ annMcQ:{n:"Ann McQueen",line:"other",st:"probable",b:["12 Feb 1749","straiton"],bio:["Christened at Straiton on 12 Feb 1749, daughter of Thomas McQueen and Margaret Ferguson. She was the wife of David Shaw and mother of Susanna."]},
+ davidSh1:{n:"David Shaw",line:"other",st:"probable",res:"Barr and Straiton, Ayrshire",bio:["Married Agnes Ferguson at Barr, in the Carrick hills of south Ayrshire, on 22 Nov 1739. Their children were baptised at nearby Straiton: John, David (1746), Jean and William. He is your 7× great-grandfather."]},
+ agnesF:{n:"Agnes Ferguson",alt:"Agnas Fergusone",line:"other",st:"probable",bio:["Married David Shaw at Barr on 22 Nov 1739. She is your 7× great-grandmother."]},
+ thomasMcQ:{n:"Thomas McQueen",line:"other",st:"probable",res:"Straiton, Ayrshire",bio:["Of Straiton parish, Ayrshire. He and Margaret Ferguson had their children Andrew and Anne baptised there; Anne was christened on 12 Feb 1749. He is your 7× great-grandfather."]},
+ margF:{n:"Margaret Ferguson",line:"other",st:"probable",bio:["Wife of Thomas McQueen of Straiton and mother of Ann McQueen. She is your 7× great-grandmother."]},
+ jamesG:{n:"James Gordon",line:"other",st:"probable",bio:["Named as William Gordon's father in William's 1871 Girvan death record."]},
+ mccracken:{n:"Margaret McCracken",alt:"MacCracken",line:"other",st:"probable",bio:["Named as William Gordon's mother in William's 1871 Girvan death record."]},
+ morrison:{n:"Margaret Morrison",line:"other",st:"record",bio:["Alexander McLellan's mother. She married John McClelland at Maybole on 31 Dec 1840. Her parents have not been found yet: Morrison is a common name, and no death record for her has turned up."]},
+ wGordon:{n:"William Gordon",line:"other",st:"probable",b:["c. 1788",null],d:["5 Jun 1871","girvan"],bio:["Named as Elizabeth Gordon's father in her 1866 marriage record. He was probably the Girvan cotton weaver William Gordon, husband of Jean Smith, who died there on 5 Jun 1871 aged 83, a widower. His death record names his parents as James Gordon and Margaret McCracken.","Two of the couple's children, William (1829) and Thomas (1832), were baptised at Girvan. Elizabeth's own baptism isn't in the index, so the link is probable."]},
  jSmith:{n:"Janet Smith",line:"other",st:"record",bio:["Named as Elizabeth Gordon's mother in her 1866 marriage record."]},
  archibald:{n:"Archibald Kennedy Pettigrew",line:"pett",st:"record",b:["13 Nov 1855","glasgow"],d:["19 Jul 1931","Dennistoun, Glasgow"],
    bio:["A hoistman (hoist operator) in Glasgow. He married Sarah Nixon in Dennistoun on 19 Jul 1879. In 1901 the family lived at 30 Brown Street, Bridgeton, with children Magdalene, Archibald, James, Maggie and William."]},
@@ -285,21 +295,23 @@ const P = {
  stead:{n:"Isabella Stead",line:"other",st:"tree",b:["1825",null],d:["1861",null],bio:["Wife of William Nixon and mother of Sarah."]},
  lawrence:{n:"Lawrence Francis Lyons",line:"lyons",st:"record",b:["20 Mar 1884","buggans"],
    bio:["Born at Buggans, a townland in Killeroran registration district near Ballygar, County Galway, to the farmer Patt Lyons and Mary Naughton. In 1901 he lived there with his widowed mother and brothers Patrick, Thomas, Peter and John.","After a spell in Warrington, England, he sailed from Liverpool on the Saxonia and reached Boston on 3 Apr 1908, working as a stableman. He married Ellen Connell in Boston on 11 Oct 1911 and became a citizen in 1916. Later records give his birth year as 1886 or his birthday as 21 Feb, but the Irish register shows 20 Mar 1884."]},
- ellen:{n:"Ellen Connell",line:"conn",st:"record",b:["c. 1885","Ireland"],bio:["Born in Ireland to John Connell and Mary Kileen; came to the US in 1904. Married Lawrence Lyons in Boston in 1911 and raised five children there."]},
+ ellen:{n:"Ellen Connell",line:"conn",st:"record",b:["c. 1886","milltown"],bio:["Born about 1886 to John Connell and Mary Killeen (spelled Kileen in her marriage record). In 1901 she was 14 and at school, living with her parents, six siblings and her 80-year-old grandmother Nellie at Dalgin, near Milltown in north County Galway.","She sailed for the US in 1904 and married Lawrence Lyons in Boston in 1911, raising five children there. At least four of her siblings followed her to Boston: Mary (married William Lally, 1909), Margaret (married Michael Crehin, 1911), John (married Catherine Dunning, 1917) and Nora (married Patrick Kenney in Newton, 1923). Each of their marriage records names the same parents."]},
  patrick:{n:"Patrick \"Patt\" Lyons",line:"lyons",st:"record",b:["1839",null],res:"Farmer at Buggans, Killeroran",
    bio:["A farmer at Buggans, Co. Galway, son of James Lyons. Already a widower when he married Mary Naughton at the Catholic chapel in Ballygar on 8 Feb 1871. He was not in the household in 1901 and had probably died."]},
  maryN:{n:"Mary Naughton",line:"other",st:"record",b:["c. 1844","galway"],
    bio:["Daughter of the farmer Michael Naughton. Married Patt Lyons in 1871 and registered her son Laurence's birth in 1884 with her mark. In 1901, aged 57, she headed the household at Boggauns."]},
  jamesL:{n:"James Lyons",line:"lyons",st:"record",bio:["A farmer in Co. Galway, named as Patt Lyons's father in the 1871 marriage register."]},
  michaelN:{n:"Michael Naughton",line:"other",st:"record",bio:["A farmer in Co. Galway, named as Mary Naughton's father in the 1871 marriage register. A Michael Naughton also witnessed the wedding."]},
- johnC:{n:"John Connell",line:"conn",st:"record",bio:["Named as Ellen Connell's father in her 1911 Boston marriage record."]},
- kileen:{n:"Mary Kileen",line:"other",st:"record",bio:["Named as Ellen Connell's mother in her 1911 Boston marriage record."]}
+ johnC:{n:"John Connell",line:"conn",st:"record",b:["c. 1853","milltown"],res:"Dalgin, then Knockaunkeel, Milltown, Co. Galway",bio:["Ellen's father, a Catholic small farmer near Milltown in north County Galway. In 1901, aged 48, he lived at Dalgin with his wife Mary, their children Mary, Michael, Ellen, William, Maggie, John and Norah, and his mother Nellie.","By 1911 the family was at nearby Knockaunkeel, with only William, John, Norah and a younger daughter, Catherine, still at home. The older daughters had gone to Boston. Five of his children's Massachusetts marriage records name him and his wife, Mary Killeen."]},
+ kileen:{n:"Mary Killeen",alt:"Kileen, Killian",line:"other",st:"record",b:["c. 1860","galway"],bio:["Ellen's mother. Her maiden name appears as Killeen, Kileen or Killian in her children's Boston marriage records. She was 40 in the 1901 census and 51 in 1911, living with her husband John near Milltown, Co. Galway. Killeen is a common surname in north Galway and Mayo."]},
+ nellieC:{n:"Nellie Connell",line:"conn",st:"probable",b:["c. 1821","galway"],bio:["Listed as Ellen's paternal grandmother, aged 80, in the 1901 census household at Dalgin, Milltown. This makes her John Connell's mother. Ellen was probably named after her, following the Irish custom of naming children after grandparents. She does not appear in 1911 and had probably died."]}
 };
 
 const D = {
  fam_pek:{t:"Family information",r:"From Liam, November 2026",s:"Hengky's Chinese name is Pek Seng Ki; his mother's was Tjoa Hong Tjoei (Sukmawati Gunawan). His father was Pek Leng Kim; the family took the Indonesian surname Gunawan, came from Padang and moved to Jakarta in the late 1960s."},
  numident_suk:{t:"Social Security record of Sukmawati Gunawan",r:"US Social Security NUMIDENT",u:FS("6KM3-29Q1"),s:"Born 8 Jan 1932, Padang, Indonesia; died 18 Jul 2004; parents Eng K. Ang and Ke K. Tjoa."},
  ssdi_suk:{t:"Social Security Death Index, Sukmawati Gunawan",r:"SSDI",u:FS("J5F2-GYH"),s:"Died 18 Jul 2004, Norfolk County, Massachusetts."},
+ pubrec_susy:{t:"US public records, Susy I. Gunawan",r:"US Public Records 1970–2009",u:FS("KL2Y-Z7H"),s:"Born 12 May 1961; Quincy, Massachusetts (02169), 1990–2008. Hengky's sister, confirmed by Liam."},
  pubrec_hengky:{t:"US public records, Hengky Gunawan",r:"US Public Records 1970–2009",u:FS("KL2Y-ZW3"),s:"\"Hemgjy Gunawan\", born 6 Mar 1960, Franklin, Massachusetts, 2008."},
  pubrec_isk:{t:"US public records, Iskandar Gunawan",r:"US Public Records 1970–2009",u:FS("KL2Y-Z7L"),s:"Born 7 Feb 1930; Quincy, Massachusetts, 2002–2009. Property and people-search sites list Iskandar, Sukmawati and Hengky Gunawan at the same Quincy address."},
  obit_jeanne:{t:"Obituary of Jeanne E. McLellan Bundtzen",r:"US Obituary Records 2014–2023 · 10 Apr 2019",u:FS("61JV-FZJV"),s:"Names her parents Alexander McLellan and Kathleen P. Lyons McLellan, her brother John, her children Kristen A. and Gregory Von Koschembahr, son-in-law Hank Hengky Gunawan Pek and grandson Liam M. Pek."},
@@ -357,6 +369,17 @@ const D = {
  numident_gj:{t:"Social Security record of Gordon McLellan Jr",r:"US Social Security NUMIDENT",u:FS("6KMC-JBWZ"),s:"Parents Gordon McLellan and Magdalene Pettigrew."},
  scot01_g:{t:"Scotland Census 1901, Camlachie",r:"1901 Census · 24 David Street, Glasgow",u:FS("7YDX-1P6Z"),s:"Gordon McLelland, 18, general labourer; father Alexander, 58, weaver, born Maybole; mother Elizabeth, 58, born Girvan."},
  scot01_m:{t:"Scotland Census 1901, Bridgeton",r:"1901 Census · 30 Brown Street, Glasgow",u:FS("7YD8-6KT2"),s:"Magdalene Pettigrew, 18, chocolate coverer; father Archibald, 46, hoistman; mother Sarah, 45, born Girvan; siblings Archibald, James, Maggie and William."},
+ bap1842:{t:"Baptism of Alexander McClelland, Maybole",r:"Scotland Births and Baptisms · 29 May 1842",u:FS("XTK4-9BV"),s:"Born 26 Apr 1842; parents John McClelland and Margaret Morrison."},
+ marr1840:{t:"Marriage of John McClelland and Margaret Morrison",r:"Scotland Marriages · Maybole · 31 Dec 1840",u:FS("XT26-KLW"),s:"John McClelland and Margaret Morrison."},
+ marr1863:{t:"First marriage of Alexander McLellan",r:"Scotland Civil Registration · 31 Dec 1863",u:FS("XS91-CBQH"),s:"Alexa McLellan, born c.1841, son of John McLellan and Margaret Morrison, married Margaret Walker."},
+ death1872:{t:"Death of John McLellan, Old Monkland",r:"Scotland Civil Registration · 29 Jul 1872",u:FS("XSH2-1V67"),s:"Married pattern weaver, aged 51; parents Alexander McLellan and Susan Shaw; spouse Margaret Morrison."},
+ bap_mcc:{t:"Girvan baptisms of Alexander McClellan and Susanna Shaw's children",r:"Scotland Births and Baptisms · Girvan 1804–1815",u:FS("XY27-555"),s:"Ann (22 Oct 1804), William (10 Nov 1806), Jannet (31 Dec 1808), David (3 Mar 1811) and Susanna (15 Jan 1815); parents Alexander McClellan and Susanna Shaw."},
+ bap1779:{t:"Baptism of Susanna Shaw, Girvan",r:"Scotland Births and Baptisms · 14 Dec 1779",u:FS("XY2W-977"),s:"Parents David Shaw and Ann McQueen. Her brothers David (1773) and William (1777) were also baptised at Girvan."},
+ bap1746:{t:"Baptism of David Shaw, Straiton",r:"Scotland Births and Baptisms · 2 Mar 1746",u:FS("XTKG-S9Y"),s:"Parents David Shaw and Agnes Ferguson."},
+ bap1749:{t:"Baptism of Anne McQueen, Straiton",r:"Scotland Births and Baptisms · 12 Feb 1749",u:FS("XY2X-D7S"),s:"Parents Thomas McQueen and Margaret Ferguson."},
+ marr1739:{t:"Marriage of David Shaw and Agnes Ferguson",r:"Scotland Marriages · Barr · 22 Nov 1739",u:FS("XTKT-32H"),s:"David Shaw and \"Agnas Fergusone\"."},
+ fst_shaw:{t:"FamilySearch tree profiles, Shaw family",r:"FamilySearch Family Tree · user-contributed",u:FST("LCTQ-XRZ"),s:"Susanna Shaw (LCTQ-XRZ), David Shaw (L6GZ-B25), Ann McQueen (L6GZ-BGX) and Alexander McClellan (KHXW-178). These link the Straiton baptisms to the Girvan family."},
+ death1871:{t:"Death of William Gordon, Girvan",r:"Scotland Civil Registration · 5 Jun 1871",u:FS("X9GJ-2NTP"),s:"Widowed cotton weaver, aged 83; parents James Gordon and Margaret MacCracken; spouse Jean Smith."},
  marr1866:{t:"Marriage of Alexander McLellan and Elizabeth Gordon",r:"Scotland Civil Registration · 23 Mar 1866",u:FS("XSNW-937R"),s:"Alexr McLellan, 24, widower, cotton weaver, son of John McLellan and Margaret Morrison; Elizabeth Gordon, 24, daughter of William Gordon and Janet Smith."},
  fs_magd:{t:"FamilySearch tree profile, Magdalene Kennedy Pettigrew",r:"FamilySearch Family Tree GZYP-P6X",u:FST("GZYP-P6X"),s:"Born 30 Jan 1883, Camlachie; parents Archibald Kennedy Pettigrew and Sarah Nixon, married 19 Jul 1879, Dennistoun."},
  fs_arch:{t:"FamilySearch tree profile, Archibald Kennedy Pettigrew",r:"FamilySearch Family Tree 93R9-NDS",u:FST("93R9-NDS"),s:"Born 13 Nov 1855; died 19 Jul 1931; parents William Pettigrew and Margaret McOnomy."},
@@ -372,6 +395,9 @@ const D = {
  birth1884:{t:"Birth register, Killeroran district, 1884, entry 438",r:"Irish civil registration · Mountbellew union · irishgenealogy.ie copy 01989838",s:"Laurence, born 20 Mar 1884 at Buggans; father Patt Lyons, farmer, Buggans; mother Mary Lyons, formerly Naughton; registered 24 Apr 1884 by the mother (her mark). You have the PDF."},
  marr1871:{t:"Marriage register, Killeroran district, 1871, entry 50",r:"Irish civil registration · Ballygar RC chapel · irishgenealogy.ie copy 08161097",s:"8 Feb 1871: Patt Lyons, widower, farmer, of Buggane(s), son of James Lyons, farmer; Mary Naughton, spinster, of Coolarcha (?), daughter of Michael Naughton, farmer. Witnesses Michael Naughton and Biddy Mulligan. You have the PDF."},
  fs_law:{t:"FamilySearch tree profile, Lawrence F. Lyons",r:"FamilySearch Family Tree GKKB-H2P",u:FST("GKKB-H2P"),s:"Lived in Boston 1930–1950."},
+ ire1901_conn:{t:"Ireland census 1901, Dalgin, Milltown",r:"Ireland Census 1901 · Co. Galway · household 10",u:FS("QPBP-CMNC"),s:"John Connell, 48; Mary, 40; children Mary 18, Michael 16, Ellen 14 (scholar), William 12, Maggie 9, John 5, Norah 3; grandmother Nellie, 80. All born Co. Galway, Roman Catholic."},
+ ire1911_conn:{t:"Ireland census 1911, Knockaunkeel, Milltown",r:"Ireland Census 1911 · Co. Galway",u:FS("QYJL-XYT2"),s:"John Connell, 58; Mary, 51; William 21, John 15, Norah 13, Catherine 8. Ellen, Mary and Maggie had emigrated."},
+ marr_conn_sibs:{t:"Boston marriages of Ellen's siblings",r:"Massachusetts Vital Records 1909–1923",u:FS("N4D8-ZPQ"),s:"All name the parents John Connell and Mary Killeen (Killian/Kileen): Mary E., 25, m. William M. Lally, 21 Feb 1909; Margaret, 18, m. Michael Crehin, Boston, 4 Jun 1911 (FS Q282-J9RS); John J., m. Catherine M. Dunning, Boston, 1 Oct 1917 (FS Q2Z7-CGMV); Nora Maria, 29, m. Patrick J. Kenney, Newton, 19 Nov 1923 (FS Q28J-BJM3)."},
  fs_ellen:{t:"FamilySearch tree profile, Ellen Connell Lyons",r:"FamilySearch Family Tree GKKB-78P",u:FST("GKKB-78P"),s:"Born 1885, Ireland; arrived 1904; married 11 Oct 1911."}
 };
 
@@ -380,7 +406,7 @@ const L = [
  ["liam","hengky","bio","record",["obit_jeanne","fam_pek"]],
  ["liam","kristen","bio","record",["obit_jeanne"]],
  ["hengky","lengkim","bio","family",["fam_pek"]],
- ["hengky","pekmom","bio","record",["fam_pek","numident_suk","pubrec_hengky","pubrec_isk"]],
+ ["hengky","pekmom","bio","record",["fam_pek","numident_suk","pubrec_hengky","pubrec_isk","pubrec_susy"]],
  ["pekmom","tjoaF","bio","record",["numident_suk"]],
  ["pekmom","angM","bio","record",["numident_suk"]],
  ["kristen","alex","bio","record",["obit_greg","ct_divorce"]],
@@ -423,8 +449,18 @@ const L = [
  ["gordon","elizGordon","bio","record",["scot01_g"]],
  ["magdalene","archibald","bio","record",["scot01_m","fs_magd"]],
  ["magdalene","sarah","bio","record",["scot01_m","fs_magd"]],
- ["alexSr","johnMcL","bio","record",["marr1866"]],
- ["alexSr","morrison","bio","record",["marr1866"]],
+ ["alexSr","johnMcL","bio","record",["marr1866","bap1842","marr1863"]],
+ ["alexSr","morrison","bio","record",["marr1866","bap1842","marr1863"]],
+ ["johnMcL","alexMcC","bio","record",["death1872"]],
+ ["johnMcL","susanna","bio","record",["death1872","bap_mcc"]],
+ ["susanna","davidSh","bio","probable",["bap1779","fst_shaw"]],
+ ["susanna","annMcQ","bio","probable",["bap1779","fst_shaw"]],
+ ["davidSh","davidSh1","bio","probable",["bap1746","marr1739"]],
+ ["davidSh","agnesF","bio","probable",["bap1746","marr1739"]],
+ ["annMcQ","thomasMcQ","bio","probable",["bap1749"]],
+ ["annMcQ","margF","bio","probable",["bap1749"]],
+ ["wGordon","jamesG","bio","probable",["death1871"]],
+ ["wGordon","mccracken","bio","probable",["death1871"]],
  ["elizGordon","wGordon","bio","record",["marr1866"]],
  ["elizGordon","jSmith","bio","record",["marr1866"]],
  ["archibald","wPett","bio","tree",["fs_arch"]],
@@ -437,18 +473,20 @@ const L = [
  ["lawrence","maryN","bio","record",["birth1884","marr1911","ire1901"]],
  ["patrick","jamesL","bio","record",["marr1871"]],
  ["maryN","michaelN","bio","record",["marr1871"]],
- ["ellen","johnC","bio","record",["marr1911"]],
- ["ellen","kileen","bio","record",["marr1911"]]
+ ["ellen","johnC","bio","record",["marr1911","ire1901_conn","marr_conn_sibs"]],
+ ["ellen","kileen","bio","record",["marr1911","ire1901_conn","marr_conn_sibs"]],
+ ["johnC","nellieC","bio","probable",["ire1901_conn"]]
 ];
 
 /* records about a person's own life (not a parent link) */
 const LIFE = {
- kristen:["fag_stjoseph"], pekmom:["numident_suk","ssdi_suk"], lengkim:["pubrec_isk"], hengky:["pubrec_hengky","fam_pek"], alex:["batory","ssdi_alex","ct_divorce","fag_stjoseph"], george:["numident_george","nat_george","aro_interview","aro_pciro","fag_mtauburn"],
+ alexMcC:["bap_mcc","fst_shaw"], johnMcL:["marr1840","death1872"], susanna:["bap1779","bap_mcc"], davidSh:["bap1746","bap1779"], annMcQ:["bap1749"], davidSh1:["marr1739"], wGordon:["death1871"], morrison:["marr1840"],
+ kristen:["fag_stjoseph"], pekmom:["numident_suk","ssdi_suk"], lengkim:["pubrec_isk"], hengky:["pubrec_hengky","fam_pek","pubrec_susy"], alex:["batory","ssdi_alex","ct_divorce","fag_stjoseph"], george:["numident_george","nat_george","aro_interview","aro_pciro","fag_mtauburn"],
  annamaria:["numident_am","nat_am","obit_am","batory","fag_mtauburn"], frederick:["decl_fred","numident_fred","census50_woburn","fag_mtauburn"],
  mathilde:["fag_mtauburn"], ernst:["burial_ernst"], georgij:["osmikon","ruwiki_g","rod_g","vgd"], annaU:["decl_fred","rod_anna","vgd","aro_arr48","me_death","fag_mtauburn"],
  vladimirP:["vgd","rod_vlad"], ekaterina:["rod_ek","vgd"], jeanne:["fs_jeanne","ct_marr77","numident_greg","fag_stjoseph"],
  alexMcL:["c40_mcl","c50_natick","ma_death82"], kathleen:["c40_mcl","c50_natick","obit_helen"], gordon:["out1911","passport21","scot01_g"],
- magdalene:["numident_gj","scot01_m"], lawrence:["decl1909","numident_law","ire1901","fs_law"], ellen:["fs_ellen"], maryN:["ire1901"],
+ magdalene:["numident_gj","scot01_m"], lawrence:["decl1909","numident_law","ire1901","fs_law"], ellen:["fs_ellen","ire1901_conn"], johnC:["ire1901_conn","ire1911_conn"], kileen:["ire1901_conn","ire1911_conn"], maryN:["ire1901"],
  jhJunge:["rod_jh"], vasJunge:["rod_vasJ"], prokofij:["rod_prok"], vasilyP:["rod_vasP"]
 };
 
@@ -622,7 +660,7 @@ function ensureMap(){
     $("#pop").hidden=true; });
   svg.call(mz).on("dblclick.zoom",null);
   svg.on("click",()=>{ $("#pop").hidden=true; });
-  const presets={ "Europe":["burg","spb","kharkiv","glasgow","buggans","munich"], "Britain & Ireland":["glasgow","girvan","maybole","buggans","galway"],
+  const presets={ "Europe":["burg","spb","kharkiv","glasgow","buggans","munich"], "Britain & Ireland":["glasgow","girvan","maybole","straiton","barr","buggans","milltown","galway"],
     "Baltic & Russia":["riga","spb","kharkiv","courland"], "Germany & Poland":["burg","munich","berlin","ratibor","lissa","silesia"], "Boston":["boston"], "Sumatra":["padang"], "Everywhere":Object.keys(byPlace) };
   $("#map-tools").innerHTML = Object.keys(presets).map(n=>`<button data-preset="${esc(n)}">${esc(n)}</button>`).join("");
   $("#map-tools").querySelectorAll("button").forEach(b=>b.onclick=()=>fitPlaces(presets[b.dataset.preset]));
